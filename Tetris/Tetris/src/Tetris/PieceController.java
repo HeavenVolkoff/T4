@@ -85,7 +85,7 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
     }
 	//==============================================================//
 
-    //===================Handle HotKeys Save File===================//  
+    //===================Handle HotKeys Save File===================//
     public void saveHotKeys(String file){
         Properties INIFile = new Properties();
         try {
