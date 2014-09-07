@@ -1,5 +1,6 @@
 package Tetris;
 
+import com.jme3.collision.Collidable;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -7,12 +8,14 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
 
+import java.awt.*;
+
 /**
  * T4
  * @author BlackPearl & HeavenVolkoff & ykane
  */
 
-public class Piece extends Node{
+public class Piece extends Node {
 
 	//===================Constant===================//
     //Movement Directions
@@ -27,6 +30,7 @@ public class Piece extends Node{
 		- peça fantasma:
 			A peça atravessa as outras enquanto em estado fantasma, e se solidifica ao apertar uma tecla. Se a peça
 		    passar o jogo sem ser solidificada, ela empurra tudo para cima e se solidifica.)
+		- board variavel
 	*/
 	public final int CUBE = 0;
 	public final int LINE = 1;
@@ -57,7 +61,7 @@ public class Piece extends Node{
 		this.startFallTime = 0;
         this.pieceFallingTime = 500;
         this.falling = true; // Start falling
-		this.posX = posX;
+		this.posX = posX+(cubeSize * 1.25f);;
 		this.posY = posY;
 		setLocalTranslation(new Vector3f(this.posX, this.posY, 0));
 
@@ -75,9 +79,9 @@ public class Piece extends Node{
         }
 
         if (pieceType == CUBE){
-            setLocalTranslation(new Vector3f(this.posX + (cubeSize * 1.25f), this.posY + (cubeSize * 1.25f), 0));
             this.posX = posX+(cubeSize * 1.25f);
             this.posY = posY+(cubeSize * 1.25f);
+            setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
         }
 	} //Specific Piece Constructor
 
@@ -91,7 +95,7 @@ public class Piece extends Node{
         this.startFallTime = 0;
         this.pieceFallingTime = 500;
         this.falling = true; // Start falling
-        this.posX = posX;
+        this.posX = posX+(cubeSize * 1.25f);
         this.posY = posY;
         setLocalTranslation(new Vector3f(this.posX, this.posY, 0));
 
@@ -112,9 +116,9 @@ public class Piece extends Node{
         }
 
         if (pieceType == CUBE){
-            setLocalTranslation(new Vector3f(this.posX + (cubeSize * 1.25f), this.posY + (cubeSize * 1.25f), 0));
-            this.posX = posX+(cubeSize * 1.25f);
+            this.posX = posX+(cubeSize * 2.50f);
             this.posY = posY+(cubeSize * 1.25f);
+            setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
         }
     } //Random Piece Constructor
 	//==============================================================//
@@ -202,6 +206,7 @@ public class Piece extends Node{
         geoItens[1].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 0.00f) , 0 ));
         geoItens[2].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 2.50f) , 0 ));
         geoItens[3].setLocalTranslation(new Vector3f( +(cubeSize * 2.50f) , +(cubeSize * 2.50f) , 0 ));
+
 	}
 
 	private void constructT(Geometry[] geoItens){
@@ -220,15 +225,14 @@ public class Piece extends Node{
 	private void constructL(Geometry[] geoItens){
 		//L
 			/*          ***|2| Pivot***
-				|0|
-				|1|
-				|2||3|
+				      |3|
+				|0||1||2|
 			 */
 
-        geoItens[0].setLocalTranslation(new Vector3f( -(cubeSize * 0.00f) , +(cubeSize * 5.00f) , 0 ));
-        geoItens[1].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 2.50f) , 0 ));
+        geoItens[0].setLocalTranslation(new Vector3f( -(cubeSize * 5.00f) , +(cubeSize * 0.00f) , 0 ));
+        geoItens[1].setLocalTranslation(new Vector3f( -(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
         geoItens[2].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 0.00f) , 0 ));
-        geoItens[3].setLocalTranslation(new Vector3f( +(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
+        geoItens[3].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 2.50f) , 0 ));
 	}
 
     private void constructT4(Geometry[] geoItens){

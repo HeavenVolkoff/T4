@@ -138,7 +138,7 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
 		if (name.equals("ChangePiece") && pressed){
             int actualPieceFalingTime = ((Piece)spatial).getPieceFallingTime();
             setSpatial(null);
-            Main.app.setCurrentPiece(new Piece(0.1f, 0f, 3.4f, Main.app.mat, this));
+            Main.app.setCurrentPiece(new Piece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(7.5f*0.15f), Main.app.mat, this));//0.15 = cubesize, 20 = rows, 1.15 = espaco entre cubos
             ((Piece)spatial).setPieceFallingTime(actualPieceFalingTime);
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){

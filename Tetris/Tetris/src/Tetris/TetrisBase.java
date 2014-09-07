@@ -1,6 +1,7 @@
 package Tetris;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.collision.CollisionResults;
 import com.jme3.material.Material;
 import com.jme3.renderer.RenderManager;
 
@@ -14,17 +15,21 @@ public class TetrisBase extends SimpleApplication {
 	private Piece currentPiece; //Current Piece on Screen
     private PieceController control;
 	public Material mat;
+    CollisionResults results;
 
 	@Override
 	public void simpleInitApp(){
 		//Material Def
 		mat = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
 
+        Board board = new Board(10,20,0.15f,mat);
+        rootNode.attachChild(board);
+
         //Create and Defined Current Piece Controller
         control = new PieceController(inputManager, 300);
 
         //Create Initial Piece
-		currentPiece = new Piece(0.1f, 5, 00f, 3.4f, mat, 0, 0, control);
+		currentPiece = new Piece(0.15f, 5, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), mat, 0, 0, control);
 		this.currentPiece.setPieceIndex(rootNode.attachChild(currentPiece));
 
 		//Fixed Cam
