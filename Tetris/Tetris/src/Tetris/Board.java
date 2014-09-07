@@ -14,10 +14,15 @@ import com.jme3.scene.shape.Box;
  */
 
 public class Board extends Node {
-	private Box[][] matrix;
+	private Box[][] map;
 	private int objNum;
 	private int col;
 	private int row;
+    private int[] colStartFloor;
+
+    public Board(){
+
+    }
 
 	public int getCol() {
 		return col;

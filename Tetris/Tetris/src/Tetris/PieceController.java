@@ -32,7 +32,7 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
 
 	private List<Keys> hotKeys = new ArrayList<Keys>();
 	private ActionListener actionKeyPress;
-	private AnalogListener analogKeyPress;   
+	private AnalogListener analogKeyPress;
 
 	//=========================== Constructors =====================//
 	public PieceController(){} //empty serialization constructor
