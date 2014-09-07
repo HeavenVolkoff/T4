@@ -17,34 +17,66 @@ import com.jme3.scene.shape.Box;
 public class Board extends Node {
 	private Box[][] map;
     private Geometry[][] geoMap;
-    private int[][] posMap;
 	private int objNum;
 	private int col;
 	private int row;
     private float cubeSize;
-    private int[] colStartFloor;
+    public Geometry[] frame;
 
     public Board(int col, int row, float cubeSize, Material mat){
+        this.cubeSize = cubeSize;
+        frame = new Geometry[3];
+
         Box bottom = new Box(col*cubeSize*1.25f,cubeSize*0.25f,cubeSize*1.5f);
-        Geometry geoBottom = new Geometry("BottomBoard",bottom);
-        geoBottom.setLocalTranslation(new Vector3f(0, -row*cubeSize*1.25f, 0));
-        geoBottom.setMaterial(mat);
-        attachChild(geoBottom);
+        frame[0] = new Geometry("BottomBoard",bottom);
+        frame[0].setLocalTranslation(new Vector3f(0, -row * cubeSize * 1.25f, 0));
+        frame[0].setMaterial(mat);
+        attachChild(frame[0]);
 
         Box Left = new Box(cubeSize*0.25f,row*cubeSize*1.25f,cubeSize*1.5f);
-        Geometry geoLeft = new Geometry("LeftBoard",Left);
-        geoLeft.setLocalTranslation(new Vector3f(-(col*cubeSize*1.25f), 0, 0));
-        geoLeft.setMaterial(mat);
-        attachChild(geoLeft);
+        frame[1] = new Geometry("LeftBoard",Left);
+        frame[1].setLocalTranslation(new Vector3f(-(col * cubeSize * 1.25f), 0, 0));
+        frame[1].setMaterial(mat);
+        attachChild(frame[1]);
 
         Box Right = new Box(cubeSize*0.25f,row*cubeSize*1.25f,cubeSize*1.5f);
-        Geometry geoRight = new Geometry("RightBoard",Right);
-        geoRight.setLocalTranslation(new Vector3f(+(col*cubeSize*1.25f), 0, 0));
-        geoRight.setMaterial(mat);
-        attachChild(geoRight);
+        frame[2] = new Geometry("RightBoard",Right);
+        frame[2].setLocalTranslation(new Vector3f(+(col * cubeSize * 1.25f), 0, 0));
+        frame[2].setMaterial(mat);
+        attachChild(frame[2]);
     }
 
-	public int getCol() {
+    public boolean hitBottomFrame(Vector3f[] pieceBoxesAbsolutePos, float tolerance){
+        float frameThickness = cubeSize*0.25f;
+        for (Vector3f pieceAbsolutePos : pieceBoxesAbsolutePos){
+            if (pieceAbsolutePos.distance(new Vector3f(pieceAbsolutePos.x,frame[0].getWorldBound().getCenter().y,0))+frameThickness-cubeSize*1.5f<=tolerance){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hitLeftFrame(Vector3f[] pieceBoxesAbsolutePos, float tolerance){
+        float frameThickness = cubeSize*0.25f;
+        for (Vector3f pieceAbsolutePos : pieceBoxesAbsolutePos){
+            if (pieceAbsolutePos.distance(new Vector3f(frame[1].getWorldBound().getCenter().x,pieceAbsolutePos.y,0))+frameThickness-cubeSize*1.5f<=tolerance){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hitRightFrame(Vector3f[] pieceBoxesAbsolutePos, float tolerance) {
+        float frameThickness = cubeSize * 0.25f;
+        for (Vector3f pieceAbsolutePos : pieceBoxesAbsolutePos) {
+            if (pieceAbsolutePos.distance(new Vector3f(frame[2].getWorldBound().getCenter().x, pieceAbsolutePos.y, 0)) + frameThickness - cubeSize * 1.5f <= tolerance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getCol() {
 		return col;
 	}
 

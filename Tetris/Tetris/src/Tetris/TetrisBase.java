@@ -15,14 +15,14 @@ public class TetrisBase extends SimpleApplication {
 	private Piece currentPiece; //Current Piece on Screen
     private PieceController control;
 	public Material mat;
-    CollisionResults results;
+    Board board;
 
 	@Override
 	public void simpleInitApp(){
 		//Material Def
 		mat = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
 
-        Board board = new Board(10,20,0.15f,mat);
+        board = new Board(10,20,0.15f,mat);
         rootNode.attachChild(board);
 
         //Create and Defined Current Piece Controller

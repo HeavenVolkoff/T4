@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -151,9 +152,13 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
 		}else if(name.equals("RotateCounterClockwise") && pressed){
 			rotate(0, 0, -90);
 		}else if(name.equals("MoveRight") && pressed){
-			moveX(((Piece)spatial).RIGHT,(2.5f*((Piece)spatial).getCubeSize()));
+            if (!Main.app.board.hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(), 1f * ((Piece) spatial).getCubeSize())) {
+                moveX(((Piece) spatial).RIGHT, (2.5f * ((Piece) spatial).getCubeSize()));
+            }
 		}else if(name.equals("MoveLeft") && pressed){
-			moveX(((Piece)spatial).LEFT,(2.5f*((Piece)spatial).getCubeSize()));
+            if (!Main.app.board.hitLeftFrame(((Piece) spatial).getBoxAbsolutePoint(), 1f * ((Piece) spatial).getCubeSize())) {
+                moveX(((Piece) spatial).LEFT, (2.5f * ((Piece) spatial).getCubeSize()));
+            }
 		}
 
         getKeyByActionName(name).setStartTime(System.nanoTime());
@@ -183,11 +188,12 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
     //==========================Movement============================//
     public void rotate(float degreesX, float degreesY, float degreesZ){
         spatial.rotate((float) Math.toRadians(degreesX), (float) Math.toRadians(degreesY), (float) Math.toRadians(degreesZ));
+
     }
 
     public void moveX(int orientation, float distance){
-        spatial.setLocalTranslation(new Vector3f(((Piece)spatial).getPosX() + (distance * orientation), ((Piece)spatial).getPosY(), 0));
-        ((Piece)spatial).setPosX(((Piece)spatial).getPosX()+(distance*orientation));
+        spatial.setLocalTranslation(new Vector3f(((Piece) spatial).getPosX() + (distance * orientation), ((Piece) spatial).getPosY(), 0));
+        ((Piece) spatial).setPosX(((Piece) spatial).getPosX() + (distance * orientation));
     }
 
     public void moveY(int orientation, float distance){
@@ -199,7 +205,12 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
         int keyElapsedTime = (int) ((System.nanoTime() - ((Piece)spatial).getStartFallTime()) / 1000000);
         if (keyElapsedTime >= ((Piece)spatial).getPieceFallingTime()) {
             if (((Piece)spatial).isFalling()) {
-                moveY(((Piece)spatial).DOWN, ((Piece)spatial).getCubeSize() * heightRelativeToCubeSize);
+                //Not hit Horizontal frame
+                if (!Main.app.board.hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), 1f * ((Piece) spatial).getCubeSize())) {
+                    moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
+                }else{
+                    //Add to board
+                }
             }
             ((Piece)spatial).setStartFallTime(System.nanoTime());
         }
