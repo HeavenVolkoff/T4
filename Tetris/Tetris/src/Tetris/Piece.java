@@ -1,14 +1,11 @@
 package Tetris;
 
-import com.jme3.collision.Collidable;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
-
-import java.awt.*;
 
 /**
  * T4
