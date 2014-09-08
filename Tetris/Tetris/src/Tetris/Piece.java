@@ -46,6 +46,9 @@ public class Piece extends Node {
 	private float posY;
     private Vector3f[] boxAbsolutePoint;
     private int numBox;
+    private Geometry[] boxGeometries;
+    private Box[] boxes;
+    private Material mat;
 
 
 	//================ Class Constructors==========================//
@@ -63,6 +66,8 @@ public class Piece extends Node {
         this.falling = true; // Start falling
 		this.posX = posX+(cubeSize * 1.25f);
 		this.posY = posY;
+        this.mat = mat;
+
 		setLocalTranslation(new Vector3f(this.posX, this.posY, 0));
 
 		rotate(0, (float) (invert * Math.PI), rotate);
@@ -73,7 +78,8 @@ public class Piece extends Node {
             numBox = 4;
         }
 
-        for(Geometry geoPiece : constructPiece(pieceType, numBox, this.posX, this.posY, mat)) {
+        boxGeometries = constructPiece(pieceType, numBox, this.posX, this.posY, mat);
+        for(Geometry geoPiece : boxGeometries) {
             attachChild(geoPiece);
         }
 
@@ -109,7 +115,8 @@ public class Piece extends Node {
             numBox = 4;
         }
 
-        for(Geometry geoPiece : constructPiece(pieceType, numBox, this.posX, this.posY, mat)) {
+        boxGeometries = constructPiece(pieceType, numBox, this.posX, this.posY, mat);
+        for(Geometry geoPiece : boxGeometries) {
             attachChild(geoPiece);
         }
 
@@ -123,12 +130,12 @@ public class Piece extends Node {
 
 	//================= Constructor Manager=========================//
 	private Geometry[] constructPiece(int pieceType, int numBox, float posX, float posY, Material mat){
-        Box[] pieceItens = new Box[numBox];
+        boxes = new Box[numBox];
 		Geometry[] geoItens = new Geometry[numBox];
         boxAbsolutePoint = new Vector3f[numBox];
 
 		int count = 0;
-		for(Box boxObj : pieceItens){
+		for(Box boxObj : boxes){
 			boxObj = new Box(cubeSize, cubeSize, cubeSize);
 			geoItens[count] = new Geometry("Box"+count, boxObj);
 			geoItens[count].setMaterial(mat);
@@ -368,4 +375,15 @@ public class Piece extends Node {
         return numBox;
     }
 
+    public Geometry[] getBoxGeometries() {
+        return boxGeometries;
+    }
+
+    public Box[] getBoxes() {
+        return boxes;
+    }
+
+    public Material getMat() {
+        return mat;
+    }
 }

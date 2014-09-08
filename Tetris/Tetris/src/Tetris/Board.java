@@ -15,17 +15,22 @@ import com.jme3.scene.shape.Box;
  */
 
 public class Board extends Node {
-	private Box[][] map;
-    private Geometry[][] geoMap;
+	private Box[] map;
+    private Geometry[] geoMap;
+    private float cubeSize;
 	private int objNum;
 	private int col;
 	private int row;
-    private float cubeSize;
     public Geometry[] frame;
 
     public Board(int col, int row, float cubeSize, Material mat){
         this.cubeSize = cubeSize;
-        frame = new Geometry[3];
+        this.frame = new Geometry[3];
+        this.objNum = 0;
+        this.col = col;
+        this.row = col;
+        this.map = new Box[col*row];
+        this.geoMap = new Geometry[col*row];
 
         Box bottom = new Box(col*cubeSize*1.25f,cubeSize*0.25f,cubeSize*1.5f);
         frame[0] = new Geometry("BottomBoard",bottom);
@@ -51,6 +56,21 @@ public class Board extends Node {
         for (Vector3f pieceAbsolutePos : pieceBoxesAbsolutePos){
             if (pieceAbsolutePos.distance(new Vector3f(pieceAbsolutePos.x,frame[0].getWorldBound().getCenter().y,0))+frameThickness-cubeSize*1.5f<=tolerance){
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean bottomHitOtherPiece(Vector3f[] pieceBoxesAbsolutePos, float tolerance){
+        for (Geometry geoBoxOnMap : geoMap) {
+            if (geoBoxOnMap != null) {
+                for (Vector3f pieceBoxCenter : pieceBoxesAbsolutePos) {
+                    if (pieceBoxCenter.distance(new Vector3f(pieceBoxCenter.x, geoBoxOnMap.getWorldBound().getCenter().y, 0)) - (cubeSize * 2.5f) == tolerance) {
+                        if (pieceBoxCenter.x == geoBoxOnMap.getWorldBound().getCenter().x && pieceBoxCenter.y > geoBoxOnMap.getWorldBound().getCenter().y) {
+                            return true;
+                        }
+                    }
+                }
             }
         }
         return false;
@@ -84,8 +104,14 @@ public class Board extends Node {
 		return row;
 	}
 
-	public void addBlock(int x, int y, Piece piece){
-		Box b = new Box(piece.getCubeSize(), piece.getCubeSize(), piece.getCubeSize());
-		Geometry geom = new Geometry("Box", b);
+	public void addPiece(Piece piece, Material mat){
+        for (Geometry geo : piece.getBoxGeometries()){
+            map[objNum] = new Box(cubeSize, cubeSize, cubeSize);
+            geoMap[objNum] = new Geometry("Box"+objNum, map[objNum]);
+            geoMap[objNum].setMaterial(mat);
+            geoMap[objNum].setLocalTranslation(geo.getWorldBound().getCenter().x, geo.getWorldBound().getCenter().y, geo.getWorldBound().getCenter().z);
+            attachChild(geoMap[objNum]);
+            objNum++;
+        }
 	}
 }
