@@ -168,6 +168,47 @@ public class Board extends Node {
         return false;
     }
 
+    public int getCompleteLineNum(){
+        for (int line = 0; line < row; line++) {
+            int boxesInLine = 0;
+            for (int i = 0; i < col; i++) {
+                if (geoMap[i][line] != null) {
+                    boxesInLine++;
+                }
+            }
+            if (boxesInLine == col) {
+                return line;
+            }
+        }
+        return -1;
+    }
+
+    public void destroyCompletedLines(){
+        int line = getCompleteLineNum();
+        while (line != -1){
+            //Erase Line
+            for (int i = 0; i < col; i++) {
+                if (geoMap[i][line] != null) {
+                    detachChild(geoMap[i][line]);
+                    geoMap[i][line] = null;
+                }
+            }
+            //Move other lines
+            for (int j = line; j < row - 1; j++) {
+                for (int i = 0; i < col; i++) {
+                    if (geoMap[i][j + 1] != null) {
+                        geoMap[i][j] = geoMap[i][j + 1];
+                        geoMap[i][j].setName("Box" + String.valueOf(i) + String.valueOf(j));
+                        geoMap[i][j].setLocalTranslation(geoMap[i][j].getWorldBound().getCenter().getX(), geoMap[i][j].getWorldBound().getCenter().getY() - 2.5f * cubeSize, geoMap[i][j].getWorldBound().getCenter().getZ());
+                        geoMap[i][j + 1] = null;
+                    }
+                }
+            }
+            //Update line num
+            line = getCompleteLineNum();
+        }
+    }
+
     public int getCol() {
 		return col;
 	}
