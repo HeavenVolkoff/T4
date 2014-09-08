@@ -9,14 +9,15 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
+import java.util.Arrays;
+
 /**
  * T4
  * @author BlackPearl & HeavenVolkoff & ykane
  */
 
 public class Board extends Node {
-	private Box[] map;
-    private Geometry[] geoMap;
+    private Geometry[][] geoMap;
     private float cubeSize;
 	private int objNum;
 	private int col;
@@ -28,9 +29,8 @@ public class Board extends Node {
         this.frame = new Geometry[3];
         this.objNum = 0;
         this.col = col;
-        this.row = col;
-        this.map = new Box[col*row];
-        this.geoMap = new Geometry[col*row];
+        this.row = row;
+        this.geoMap = new Geometry[col][row];
 
         Box bottom = new Box(col*cubeSize*1.25f,cubeSize*0.25f,cubeSize*1.5f);
         frame[0] = new Geometry("BottomBoard",bottom);
@@ -51,47 +51,119 @@ public class Board extends Node {
         attachChild(frame[2]);
     }
 
-    public boolean hitBottomFrame(Vector3f[] pieceBoxesAbsolutePos, float tolerance){
-        float frameThickness = cubeSize*0.25f;
-        for (Vector3f pieceAbsolutePos : pieceBoxesAbsolutePos){
-            if (pieceAbsolutePos.distance(new Vector3f(pieceAbsolutePos.x,frame[0].getWorldBound().getCenter().y,0))+frameThickness-cubeSize*1.5f<=tolerance){
+    public Vector3f[] piecePosRelativeToBoard(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+        Vector3f[] pos = new Vector3f[boxNum];
+        for(int i = 0; i < pieceBoxesAbsolutePos.length; i++){
+            pos[i] = new Vector3f();
+            pos[i].setX(Math.round((((pieceBoxesAbsolutePos[i].distance(new Vector3f(frame[1].getWorldTranslation().getX(), pieceBoxesAbsolutePos[i].getY(), 0))) - (cubeSize * 1.25f)) / (cubeSize * 2.5f))));
+            pos[i].setY(Math.round((((pieceBoxesAbsolutePos[i].distance(new Vector3f(pieceBoxesAbsolutePos[i].getX(), frame[0].getWorldTranslation().getY(), 0))) - (cubeSize * 1.25f)) / (cubeSize * 2.5f))));
+            pos[i].setZ(0);
+        }
+        return pos;
+    }
+
+    public boolean hitBottomFrame(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+        for (Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+            if (boxPos.getY() == 0) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean bottomHitOtherPiece(Vector3f[] pieceBoxesAbsolutePos, float tolerance){
-        for (Geometry geoBoxOnMap : geoMap) {
-            if (geoBoxOnMap != null) {
-                for (Vector3f pieceBoxCenter : pieceBoxesAbsolutePos) {
-                    if (pieceBoxCenter.distance(new Vector3f(pieceBoxCenter.x, geoBoxOnMap.getWorldBound().getCenter().y, 0)) - (cubeSize * 2.5f) == tolerance) {
-                        if (pieceBoxCenter.x == geoBoxOnMap.getWorldBound().getCenter().x && pieceBoxCenter.y > geoBoxOnMap.getWorldBound().getCenter().y) {
-                            return true;
-                        }
-                    }
+    public boolean hitBottomPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+        for (Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+            if ((int)boxPos.getX()<col && (int)boxPos.getY()<row && (int)boxPos.getY()-1>=0) {
+                if (geoMap[(int) boxPos.getX()][(int) boxPos.getY() - 1] != null) {
+                    return true;
                 }
             }
         }
         return false;
     }
 
-    public boolean hitLeftFrame(Vector3f[] pieceBoxesAbsolutePos, float tolerance){
-        float frameThickness = cubeSize*0.25f;
-        for (Vector3f pieceAbsolutePos : pieceBoxesAbsolutePos){
-            if (pieceAbsolutePos.distance(new Vector3f(frame[1].getWorldBound().getCenter().x,pieceAbsolutePos.y,0))+frameThickness-cubeSize*1.5f<=tolerance){
+    public boolean hitLeftFrame(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+        for (Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+            if (boxPos.getX() == 0) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean hitRightFrame(Vector3f[] pieceBoxesAbsolutePos, float tolerance) {
-        float frameThickness = cubeSize * 0.25f;
-        for (Vector3f pieceAbsolutePos : pieceBoxesAbsolutePos) {
-            if (pieceAbsolutePos.distance(new Vector3f(frame[2].getWorldBound().getCenter().x, pieceAbsolutePos.y, 0)) + frameThickness - cubeSize * 1.5f <= tolerance) {
+    public boolean hitLeftPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+        for (Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+            if ((int)boxPos.getX()<col && (int)boxPos.getY()<row && (int)boxPos.getX()-1>=0) {
+                if (geoMap[(int) boxPos.getX()-1][(int) boxPos.getY()] != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean hitRightFrame(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+        for (Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+            if (boxPos.getX() == col-1) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean hitRightPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+        for (Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+            if ((int)boxPos.getX()+1<col && (int)boxPos.getY()<row) {
+                if (geoMap[(int) boxPos.getX()+1][(int) boxPos.getY()] != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void addPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum, Material mat){
+        int count = 0;
+        for (Vector3f piecePos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+            Box box = new Box(cubeSize,cubeSize,cubeSize);
+            geoMap[(int)piecePos.getX()][(int)piecePos.getY()] = new Geometry("Box"+String.valueOf((int)piecePos.getX())+String.valueOf((int)piecePos.getY()),box);
+            geoMap[(int)piecePos.getX()][(int)piecePos.getY()].setLocalTranslation(pieceBoxesAbsolutePos[count].getX(),pieceBoxesAbsolutePos[count].getY(),0);
+            geoMap[(int)piecePos.getX()][(int)piecePos.getY()].setMaterial(mat);
+            attachChild(geoMap[(int) piecePos.getX()][(int) piecePos.getY()]);
+            count++;
+        }
+    }
+
+    public void destroyLine(int line){
+        //Erase Line
+        for (int i = 0; i < col; i++){
+            if (geoMap[i][line] != null){
+                detachChild(geoMap[i][line]);
+                geoMap[i][line] = null;
+            }
+        }
+        //Move other lines
+        for (int j = line; j < row-1; j++){
+            for (int i = 0; i < col; i++) {
+                if (geoMap[i][j + 1] != null) {
+                    geoMap[i][j] = geoMap[i][j + 1];
+                    geoMap[i][j].setName("Box" + String.valueOf(i) + String.valueOf(j));
+                    geoMap[i][j].setLocalTranslation(geoMap[i][j].getWorldBound().getCenter().getX(), geoMap[i][j].getWorldBound().getCenter().getY() - 2.5f * cubeSize, geoMap[i][j].getWorldBound().getCenter().getZ());
+                    geoMap[i][j + 1] = null;
+                }
+            }
+        }
+    }
+
+    public boolean lineComplete(int Line){
+        int boxesInLine = 0;
+        for (int i = 0; i < col; i++){
+            if (geoMap[i][Line] != null){
+                boxesInLine++;
+            }
+        }
+        if (boxesInLine == col){
+            return true;
         }
         return false;
     }
@@ -102,16 +174,5 @@ public class Board extends Node {
 
 	public int getRow() {
 		return row;
-	}
-
-	public void addPiece(Piece piece, Material mat){
-        for (Geometry geo : piece.getBoxGeometries()){
-            map[objNum] = new Box(cubeSize, cubeSize, cubeSize);
-            geoMap[objNum] = new Geometry("Box"+objNum, map[objNum]);
-            geoMap[objNum].setMaterial(mat);
-            geoMap[objNum].setLocalTranslation(geo.getWorldBound().getCenter().x, geo.getWorldBound().getCenter().y, geo.getWorldBound().getCenter().z);
-            attachChild(geoMap[objNum]);
-            objNum++;
-        }
 	}
 }

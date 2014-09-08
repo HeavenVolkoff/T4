@@ -152,11 +152,13 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
 		}else if(name.equals("RotateCounterClockwise") && pressed){
 			rotate(0, 0, -90);
 		}else if(name.equals("MoveRight") && pressed){
-            if (!Main.app.board.hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(), 1f * ((Piece) spatial).getCubeSize())){
+            if (!Main.app.board.hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
+                !Main.app.board.hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
                     moveX(((Piece) spatial).RIGHT, (2.5f * ((Piece) spatial).getCubeSize()));
             }
 		}else if(name.equals("MoveLeft") && pressed){
-            if (!Main.app.board.hitLeftFrame(((Piece) spatial).getBoxAbsolutePoint(), 1f * ((Piece) spatial).getCubeSize())) {
+            if (!Main.app.board.hitLeftFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
+            !Main.app.board.hitLeftPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
                 moveX(((Piece) spatial).LEFT, (2.5f * ((Piece) spatial).getCubeSize()));
             }
 		}
@@ -205,12 +207,15 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
         if (keyElapsedTime >= ((Piece)spatial).getPieceFallingTime()) {
             if (((Piece)spatial).isFalling()) {
                 //Not hit Horizontal frame
-                if (!Main.app.board.hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), 1f * ((Piece) spatial).getCubeSize()) &&
-                    !Main.app.board.bottomHitOtherPiece(((Piece) spatial).getBoxAbsolutePoint(), 1f * ((Piece) spatial).getCubeSize())) {
+                if (!Main.app.board.hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
+                !Main.app.board.hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
                     moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
                 }else{
-                    Main.app.board.addPiece(((Piece) spatial), Main.app.mat);
+                    Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), Main.app.mat);
                     keyActions("ChangePiece",true);
+                    if (Main.app.board.lineComplete(0)){
+                        Main.app.board.destroyLine(0);
+                    }
                 }
             }
             ((Piece)spatial).setStartFallTime(System.nanoTime());

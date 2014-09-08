@@ -371,7 +371,7 @@ public class Piece extends Node {
         this.boxAbsolutePoint = boxAbsolutePoint;
     }
 
-    public float getNumBox() {
+    public int getNumBox() {
         return numBox;
     }
 
