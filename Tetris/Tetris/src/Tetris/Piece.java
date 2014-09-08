@@ -54,7 +54,8 @@ public class Piece extends Node {
     private Geometry[] boxGeometries;
     private Box[] boxes;
     private Material material;
-    private int pieceType;
+    private int initialType;
+    private int initialInvert;
 
 
 	//================ Class Constructors==========================//
@@ -69,7 +70,8 @@ public class Piece extends Node {
         this.cubeSize = cubeSize;
 		this.startFallTime = 0;
         this.pieceFallingTime = 500;
-        this.pieceType = pieceType;
+        this.initialType = pieceType;
+        this.initialInvert = invert;
         this.posX = posX+(cubeSize * 1.25f);
 		this.posY = posY;
 		setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
@@ -77,19 +79,19 @@ public class Piece extends Node {
 
         rotate(0, (float) (invert * Math.PI), rotate);
 
-        if (this.pieceType == T4){
+        if (pieceType == T4){
             numBox = 17;
         }else{
             numBox = 4;
         }
 
-        boxGeometries = constructPiece(this.pieceType, numBox, this.posX, this.posY, createSpecificMaterial(this.pieceType, assetManager));
+        boxGeometries = constructPiece(pieceType, numBox, this.posX, this.posY, createSpecificMaterial(pieceType, assetManager));
         for(Geometry geoPiece : boxGeometries) {
             attachChild(geoPiece);
         }
 
-        if (this.pieceType == CUBE){
-            this.posX = posX+(cubeSize * 1.25f);
+        if (pieceType == CUBE){
+            this.posX = posX+(cubeSize * 2.50f);
             this.posY = posY+(cubeSize * 1.25f);
             setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
         }
@@ -98,7 +100,9 @@ public class Piece extends Node {
     public Piece(float cubeSize, float posX, float posY, AssetManager assetManager, Control controler){
         super("rotationPivot");
 
-        addControl(controler);
+        if (controler != null) {
+            addControl(controler);
+        }
 
         this.PieceIndex = null;
         this.cubeSize = cubeSize;
@@ -109,23 +113,23 @@ public class Piece extends Node {
         setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
         this.falling = true; // Start falling
 
-		int invert = ((int)(Math.random()*10)%2);
-		rotate(0, (float) (invert * Math.PI), 0);
+		this.initialInvert = ((int)(Math.random()*10)%2);
+		rotate(0, (float) (this.initialInvert * Math.PI), 0);
 
-        this.pieceType = ((int)(Math.random()*10)%5);
+        this.initialType = ((int)(Math.random()*10)%5);
 
-        if (this.pieceType == T4){
+        if (this.initialType == T4){
             numBox = 17;
         }else {
             numBox = 4;
         }
 
-        boxGeometries = constructPiece(this.pieceType, numBox, this.posX, this.posY, createSpecificMaterial(this.pieceType, assetManager));
+        boxGeometries = constructPiece(this.initialType, numBox, this.posX, this.posY, createSpecificMaterial(this.initialType, assetManager));
         for(Geometry geoPiece : boxGeometries) {
             attachChild(geoPiece);
         }
 
-        if (this.pieceType == CUBE){
+        if (this.initialType == CUBE){
             this.posX = posX+(cubeSize * 2.50f);
             this.posY = posY+(cubeSize * 1.25f);
             setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
@@ -428,7 +432,11 @@ public class Piece extends Node {
         return material;
     }
 
-    public int getPieceType() {
-        return pieceType;
+    public int getInitialType() {
+        return initialType;
+    }
+
+    public int getInitialInvert() {
+        return initialInvert;
     }
 }

@@ -55,7 +55,7 @@ public class TetrisBase extends SimpleApplication {
 		currentPiece = new Piece(0.15f, 5, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, 0, assetManager ,control);
 		currentPiece.setPieceIndex(rootNode.attachChild(currentPiece));
 
-        nextPiece = new Piece(0.15f, 3f, 3f, assetManager, new PieceController(inputManager, assetManager, 300));
+        nextPiece = new Piece(0.15f, 3.2f, 2.5f, assetManager, null);
         nextPiece.setPieceIndex(rootNode.attachChild(nextPiece));
         nextPiece.setFalling(false);
 
@@ -75,9 +75,22 @@ public class TetrisBase extends SimpleApplication {
 
 	public void setCurrentPiece(Piece currentPiece){
 		if(this.currentPiece.getPieceIndex() != null) {
-			this.rootNode.detachChildAt(this.currentPiece.getPieceIndex()-1);
+			this.rootNode.detachChild(this.currentPiece);
 		}
 		this.currentPiece = currentPiece;
 		this.currentPiece.setPieceIndex(this.rootNode.attachChild(this.currentPiece));
 	}
+
+    public Piece getNextPiece() {
+        return nextPiece;
+    }
+
+    public void setNextPiece(Piece nextPiece){
+        if(this.nextPiece.getPieceIndex() != null) {
+            this.rootNode.detachChild(this.nextPiece);
+        }
+        this.nextPiece = nextPiece;
+        this.nextPiece.setPieceIndex(this.rootNode.attachChild(this.nextPiece));
+        this.nextPiece.setFalling(false);
+    }
 }
