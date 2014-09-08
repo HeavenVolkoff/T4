@@ -213,7 +213,7 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
                 }else{
                     Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), Main.app.mat);
                     keyActions("ChangePiece",true);
-                    if (Main.app.board.lineComplete(0)){
+                    while (Main.app.board.lineComplete(0)){
                         Main.app.board.destroyLine(0);
                     }
                 }
