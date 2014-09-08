@@ -135,7 +135,7 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
         return null;
     }
 
-	private void keyActions(String name, boolean pressed){
+	public void keyActions(String name, boolean pressed){
 		if (name.equals("ChangePiece") && pressed){
             int actualPieceFalingTime = ((Piece)spatial).getPieceFallingTime();
             setSpatial(null);

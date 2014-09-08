@@ -25,14 +25,7 @@ public class TetrisBase extends SimpleApplication {
 
 	@Override
 	public void simpleInitApp(){
-		//Material Def
-		mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        mat.setColor("Ambient", ColorRGBA.White);
-        mat.setColor("Diffuse", ColorRGBA.White);
-        mat.setColor("Specular", ColorRGBA.White);
-        mat.setFloat("Shininess", 2);
-        mat.setBoolean("UseMaterialColors", true);
-
+        //light Def
         SpotLight spot = new SpotLight();
         spot.setSpotRange(100f);                           // distance
         spot.setSpotInnerAngle(15f * FastMath.DEG_TO_RAD); // inner light cone (central beam)
@@ -42,6 +35,15 @@ public class TetrisBase extends SimpleApplication {
         spot.setDirection(cam.getDirection());             // shine forward from camera loc
         rootNode.addLight(spot);
 
+		//Material Def
+		mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        mat.setColor("Ambient", ColorRGBA.White);
+        mat.setColor("Diffuse", ColorRGBA.White);
+        mat.setColor("Specular", ColorRGBA.White);
+        mat.setFloat("Shininess", 2);
+        mat.setBoolean("UseMaterialColors", true);
+
+        //Create Board
         board = new Board(10,20,0.15f,mat);
         rootNode.attachChild(board);
 
