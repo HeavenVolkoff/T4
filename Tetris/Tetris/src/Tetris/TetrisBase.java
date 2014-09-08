@@ -19,6 +19,7 @@ import com.jme3.renderer.RenderManager;
 public class TetrisBase extends SimpleApplication {
 
 	private Piece currentPiece; //Current Piece on Screen
+    private Piece nextPiece;
     private PieceController control;
 	public Material mat;
     Board board;
@@ -37,9 +38,9 @@ public class TetrisBase extends SimpleApplication {
 
 		//Material Def
 		mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        mat.setColor("Ambient", ColorRGBA.White);
-        mat.setColor("Diffuse", ColorRGBA.White);
-        mat.setColor("Specular", ColorRGBA.White);
+        mat.setColor("Ambient", ColorRGBA.DarkGray);
+        mat.setColor("Diffuse", ColorRGBA.DarkGray);
+        mat.setColor("Specular", ColorRGBA.DarkGray);
         mat.setFloat("Shininess", 2);
         mat.setBoolean("UseMaterialColors", true);
 
@@ -48,11 +49,15 @@ public class TetrisBase extends SimpleApplication {
         rootNode.attachChild(board);
 
         //Create and Defined Current Piece Controller
-        control = new PieceController(inputManager, 300);
+        control = new PieceController(inputManager, assetManager, 300);
 
-        //Create Initial Piece
-		currentPiece = new Piece(0.15f, 5, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), mat, 0, 0, control);
-		this.currentPiece.setPieceIndex(rootNode.attachChild(currentPiece));
+        //Create T4
+		currentPiece = new Piece(0.15f, 5, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, 0, assetManager ,control);
+		currentPiece.setPieceIndex(rootNode.attachChild(currentPiece));
+
+        nextPiece = new Piece(0.15f, 3f, 3f, assetManager, new PieceController(inputManager, assetManager, 300));
+        nextPiece.setPieceIndex(rootNode.attachChild(nextPiece));
+        nextPiece.setFalling(false);
 
 		//Fixed Cam
 		flyCam.setEnabled(false);

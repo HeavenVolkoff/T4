@@ -1,11 +1,15 @@
 package Tetris;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
+
+import java.awt.*;
 
 /**
  * T4
@@ -22,20 +26,21 @@ public class Piece extends Node {
     public final int DOWN = -1;
 
     //Piece Type
-	/*
-		TODO: (Novos tipos de peças)
-		- peça fantasma:
-			A peça atravessa as outras enquanto em estado fantasma, e se solidifica ao apertar uma tecla. Se a peça
-		    passar o jogo sem ser solidificada, ela empurra tudo para cima e se solidifica.)
-		- board variavel
-	*/
 	public final int CUBE = 0;
 	public final int LINE = 1;
 	public final int Z = 2;
 	public final int T = 3;
 	public final int L = 4;
     public final int T4 = 5;
-	//==============================================//
+  	/*
+		TODO: (Novos tipos de peças)
+		- peça fantasma:
+			A peça atravessa as outras enquanto em estado fantasma, e se solidifica ao apertar uma tecla. Se a peça
+		    passar o jogo sem ser solidificada, ela empurra tudo para cima e se solidifica.)
+		- board variavel
+	*/
+
+    //==============================================//
 
     private Integer PieceIndex; //rootNode Index
 	private float cubeSize;
@@ -48,13 +53,14 @@ public class Piece extends Node {
     private int numBox;
     private Geometry[] boxGeometries;
     private Box[] boxes;
-    private Material mat;
+    private Material material;
+    private int pieceType;
 
 
 	//================ Class Constructors==========================//
     public Piece() {} //empty serialization constructor
 
-	public Piece(float cubeSize, int pieceType, float posX, float posY, Material mat, float rotate, int invert, Control controler){
+	public Piece(float cubeSize, int pieceType, float posX, float posY, float rotate, int invert, AssetManager assetManager, Control controler){
         super("rotationPivot");
 
         addControl(controler);
@@ -63,34 +69,33 @@ public class Piece extends Node {
         this.cubeSize = cubeSize;
 		this.startFallTime = 0;
         this.pieceFallingTime = 500;
-        this.falling = true; // Start falling
-		this.posX = posX+(cubeSize * 1.25f);
+        this.pieceType = pieceType;
+        this.posX = posX+(cubeSize * 1.25f);
 		this.posY = posY;
-        this.mat = mat;
+		setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
+        this.falling = true; // Start falling
 
-		setLocalTranslation(new Vector3f(this.posX, this.posY, 0));
+        rotate(0, (float) (invert * Math.PI), rotate);
 
-		rotate(0, (float) (invert * Math.PI), rotate);
-
-        if (pieceType == T4){
+        if (this.pieceType == T4){
             numBox = 17;
         }else{
             numBox = 4;
         }
 
-        boxGeometries = constructPiece(pieceType, numBox, this.posX, this.posY, mat);
+        boxGeometries = constructPiece(this.pieceType, numBox, this.posX, this.posY, createSpecificMaterial(this.pieceType, assetManager));
         for(Geometry geoPiece : boxGeometries) {
             attachChild(geoPiece);
         }
 
-        if (pieceType == CUBE){
+        if (this.pieceType == CUBE){
             this.posX = posX+(cubeSize * 1.25f);
             this.posY = posY+(cubeSize * 1.25f);
             setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
         }
 	} //Specific Piece Constructor
 
-    public Piece(float cubeSize, float posX, float posY, Material mat, Control controler){
+    public Piece(float cubeSize, float posX, float posY, AssetManager assetManager, Control controler){
         super("rotationPivot");
 
         addControl(controler);
@@ -99,34 +104,70 @@ public class Piece extends Node {
         this.cubeSize = cubeSize;
         this.startFallTime = 0;
         this.pieceFallingTime = 500;
-        this.falling = true; // Start falling
         this.posX = posX+(cubeSize * 1.25f);
         this.posY = posY;
-        setLocalTranslation(new Vector3f(this.posX, this.posY, 0));
+        setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
+        this.falling = true; // Start falling
 
 		int invert = ((int)(Math.random()*10)%2);
 		rotate(0, (float) (invert * Math.PI), 0);
 
-        int pieceType = ((int)(Math.random()*10)%5);
+        this.pieceType = ((int)(Math.random()*10)%5);
 
-        if (pieceType == T4){
+        if (this.pieceType == T4){
             numBox = 17;
-        }else{
+        }else {
             numBox = 4;
         }
 
-        boxGeometries = constructPiece(pieceType, numBox, this.posX, this.posY, mat);
+        boxGeometries = constructPiece(this.pieceType, numBox, this.posX, this.posY, createSpecificMaterial(this.pieceType, assetManager));
         for(Geometry geoPiece : boxGeometries) {
             attachChild(geoPiece);
         }
 
-        if (pieceType == CUBE){
+        if (this.pieceType == CUBE){
             this.posX = posX+(cubeSize * 2.50f);
             this.posY = posY+(cubeSize * 1.25f);
             setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
         }
     } //Random Piece Constructor
 	//==============================================================//
+
+    //===================Material Manager===========================//
+    private Material createSpecificMaterial(int pieceType, AssetManager assetManager){
+        material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        switch(pieceType) {
+            case CUBE:
+                setMaterialColor(material, ColorRGBA.Red, 2);
+                break;
+            case LINE:
+                setMaterialColor(material, ColorRGBA.Blue, 2);
+                break;
+            case Z:
+                setMaterialColor(material, ColorRGBA.Yellow, 2);
+                break;
+            case T:
+                setMaterialColor(material, ColorRGBA.Green, 2);
+                break;
+            case L:
+                setMaterialColor(material, ColorRGBA.Brown, 2);
+                break;
+            default:
+                setMaterialColor(material, ColorRGBA.randomColor(), 2);
+                break;
+        }
+        return material;
+    }
+
+    private void setMaterialColor(Material material, ColorRGBA color, float shine){
+        material.setColor("Ambient", color);
+        material.setColor("Diffuse", color);
+        material.setColor("Specular", color);
+        material.setFloat("Shininess", shine);
+        material.setBoolean("UseMaterialColors", true);
+    }
+
+    //==============================================================//
 
 	//================= Constructor Manager=========================//
 	private Geometry[] constructPiece(int pieceType, int numBox, float posX, float posY, Material mat){
@@ -384,6 +425,10 @@ public class Piece extends Node {
     }
 
     public Material getMat() {
-        return mat;
+        return material;
+    }
+
+    public int getPieceType() {
+        return pieceType;
     }
 }

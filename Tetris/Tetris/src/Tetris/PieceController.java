@@ -1,5 +1,6 @@
 package Tetris;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.export.*;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -34,11 +35,13 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
 	private List<Keys> hotKeys = new ArrayList<Keys>();
 	private ActionListener actionKeyPress;
 	private AnalogListener analogKeyPress;
+    private AssetManager assetManager;
 
 	//=========================== Constructors =====================//
 	public PieceController(){} //empty serialization constructor
 
-	public PieceController(InputManager inputManager, int timeKeyRepeat) {
+	public PieceController(InputManager inputManager, AssetManager assetManager, int timeKeyRepeat) {
+        this.assetManager = assetManager;
         this.actionKeyPress = new ActionListener() {
             public void onAction(String name, boolean pressed, float tpf) {
                 keyActions(name, pressed);
@@ -139,7 +142,7 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
 		if (name.equals("ChangePiece") && pressed){
             int actualPieceFalingTime = ((Piece)spatial).getPieceFallingTime();
             setSpatial(null);
-            Main.app.setCurrentPiece(new Piece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(7.5f*0.15f), Main.app.mat, this));//0.15 = cubesize, 20 = rows, 1.15 = espaco entre cubos
+            Main.app.setCurrentPiece(new Piece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(7.5f*0.15f), this.assetManager, this));//0.15 = cubesize, 20 = rows, 1.15 = espaco entre cubos
             ((Piece)spatial).setPieceFallingTime(actualPieceFalingTime);
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
@@ -211,7 +214,7 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
                 !Main.app.board.hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
                     moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
                 }else{
-                    Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), Main.app.mat);
+                    Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat());
                     keyActions("ChangePiece",true);
                     Main.app.board.destroyCompletedLines();
                 }
