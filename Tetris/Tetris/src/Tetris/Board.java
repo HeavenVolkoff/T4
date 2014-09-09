@@ -19,7 +19,6 @@ import java.util.Arrays;
 public class Board extends Node {
     private Geometry[][] geoMap;
     private float cubeSize;
-	private int objNum;
 	private int col;
 	private int row;
     public Geometry[] frame;
@@ -27,7 +26,6 @@ public class Board extends Node {
     public Board(int col, int row, float cubeSize, Material mat){
         this.cubeSize = cubeSize;
         this.frame = new Geometry[3];
-        this.objNum = 0;
         this.col = col;
         this.row = row;
         this.geoMap = new Geometry[col][row];
@@ -60,6 +58,26 @@ public class Board extends Node {
             pos[i].setZ(0);
         }
         return pos;
+    }
+
+    public void clearBoard(){
+        for (int i = 0; i<col; i++) {
+            for (int j = 0; j < row; j++) {
+                if (geoMap[i][j] != null) {
+                    detachChild(geoMap[i][j]);
+                    geoMap[i][j] = null;
+                }
+            }
+        }
+    }
+
+    public boolean gameOver(){
+        for (int i = 0; i<col; i++){
+            if (geoMap[i][row-2] != null){
+               return true;
+            }
+        }
+        return false;
     }
 
     public boolean hitBottomFrame(Vector3f[] pieceBoxesAbsolutePos, int boxNum){

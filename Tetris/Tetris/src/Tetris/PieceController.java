@@ -19,7 +19,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -190,7 +189,6 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
 		}
 	}
 
-
     //==========================Movement============================//
     public Spatial rotate(float degreesX, float degreesY, float degreesZ){
         return spatial.rotate((float) Math.toRadians(degreesX), (float) Math.toRadians(degreesY), (float) Math.toRadians(degreesZ));
@@ -209,16 +207,21 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
     public void fall(float heightRelativeToCubeSize) {
         int keyElapsedTime = (int) ((System.nanoTime() - ((Piece)spatial).getStartFallTime()) / 1000000);
         if (keyElapsedTime >= ((Piece)spatial).getPieceFallingTime()) {
-            if (((Piece)spatial).isFalling()) {
-                //Not hit Horizontal frame
-                if (!Main.app.board.hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
-                !Main.app.board.hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
-                    moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
-                }else{
-                    Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat());
-                    keyActions("ChangePiece",true);
-                    Main.app.board.destroyCompletedLines();
+            if (!Main.app.board.gameOver()){
+                if (((Piece)spatial).isFalling()) {
+                    //Not hit Horizontal frame
+                    if (!Main.app.board.hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
+                            !Main.app.board.hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
+                        moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
+                    } else {
+                        Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat());
+                        keyActions("ChangePiece", true);
+                        Main.app.board.destroyCompletedLines();
+                    }
                 }
+            }else{
+                System.out.println("GameOver");
+                Main.app.board.clearBoard();
             }
             ((Piece)spatial).setStartFallTime(System.nanoTime());
         }
