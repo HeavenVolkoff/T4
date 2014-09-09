@@ -9,7 +9,13 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
 
-import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * T4
@@ -135,6 +141,37 @@ public class Piece extends Node {
             setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
         }
     } //Random Piece Constructor
+
+    public Piece(float cubeSize, float posX, float posY, float posZ, String fileName, ColorRGBA color, AssetManager assetManager, Control controler){
+        super("rotationPivot");
+
+        if (controler != null) {
+            addControl(controler);
+        }
+
+        this.PieceIndex = null;
+        this.cubeSize = cubeSize;
+        this.startFallTime = 0;
+        this.pieceFallingTime = 500;
+        this.posX = posX+(cubeSize * 1.25f);
+        this.posY = posY;
+        setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
+        this.falling = true; // Start falling
+
+        this.initialInvert = 0;
+
+        this.initialType = -1;
+
+        numBox = 0;
+
+        String appPath = null;
+        try {
+            appPath = new File(".").getCanonicalPath();
+            constructFromFile(appPath + "/" + fileName, createColoredMaterial(color, assetManager), posZ);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } //Load from file Constructor
 	//==============================================================//
 
     //===================Material Manager===========================//
@@ -163,6 +200,13 @@ public class Piece extends Node {
         return material;
     }
 
+    private Material createColoredMaterial(ColorRGBA color, AssetManager assetManager){
+        material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        setMaterialColor(material, color, 2);
+
+        return material;
+    }
+
     private void setMaterialColor(Material material, ColorRGBA color, float shine){
         material.setColor("Ambient", color);
         material.setColor("Diffuse", color);
@@ -170,7 +214,6 @@ public class Piece extends Node {
         material.setFloat("Shininess", shine);
         material.setBoolean("UseMaterialColors", true);
     }
-
     //==============================================================//
 
 	//================= Constructor Manager=========================//
@@ -356,7 +399,59 @@ public class Piece extends Node {
     }
 	//--------------------------------------------------------------//
 
-	public float getCubeSize() {
+    private void constructFromFile(String fileName, Material mat, float posZ){
+        Path path = Paths.get(fileName);
+        try {
+            List<String> lines = Files.readAllLines(path);
+            List<Geometry> geometries = new ArrayList<Geometry>();
+            int boxNum = 0;
+            float posX = 0;
+            float posY = 0;
+            float pivotPosX = 0;
+            float pivotPosY = 0;
+            for (String line : lines){
+                for (int i = 0; i<line.length(); i++){
+                    if (line.charAt(i) == '|'){
+                        posX += 0.25f*cubeSize;
+                    }else{
+                        if (line.charAt(i) == ' '){
+                            posX += 1f*cubeSize;
+                        }else{
+                            if (line.charAt(i) == '0' && line.charAt(i-1) == '0'){
+                                posX += 1f*cubeSize;
+                                Box box = new Box(cubeSize, cubeSize, cubeSize);
+                                geometries.add(new Geometry("Box"+boxNum,box));
+                                geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, Z));
+                                geometries.get(boxNum).setMaterial(mat);
+                                attachChild(geometries.get(boxNum));
+                                posX += 1f*cubeSize;
+                                boxNum += 1;
+                            }else{
+                                if (line.charAt(i) == 'P' && line.charAt(i-1) == 'P'){
+                                    pivotPosX = posX+1f*cubeSize;
+                                    pivotPosY = posY;
+                                    posX += 2f*cubeSize;
+                                }
+                            }
+                        }
+                    }
+                }
+                posX = 0;
+                posY -= 2.5f*cubeSize;
+            }
+
+            this.numBox = 0;
+            for (int i = 0; i < geometries.size(); i++){
+                geometries.get(i).setLocalTranslation(new Vector3f(geometries.get(i).getWorldBound().getCenter().getX()-pivotPosX, geometries.get(i).getWorldBound().getCenter().getY()-pivotPosY, geometries.get(i).getWorldBound().getCenter().getZ()));
+                this.numBox += 1;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public float getCubeSize() {
 		return cubeSize;
 	}
 

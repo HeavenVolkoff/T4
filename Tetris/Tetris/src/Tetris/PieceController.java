@@ -7,6 +7,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -18,9 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -220,8 +219,10 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
                     }
                 }
             }else{
-                System.out.println("GameOver");
-                Main.app.board.clearBoard();
+                if (!Main.app.board.isGameOver()) {
+                    Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, -3, "GameOver.piece", ColorRGBA.White, assetManager, null));
+                    Main.app.board.setGameOver(true);
+                }
             }
             ((Piece)spatial).setStartFallTime(System.nanoTime());
         }

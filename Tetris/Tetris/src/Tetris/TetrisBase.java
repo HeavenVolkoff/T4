@@ -36,6 +36,7 @@ public class TetrisBase extends SimpleApplication {
         spot.setDirection(cam.getDirection());             // shine forward from camera loc
         rootNode.addLight(spot);
 
+
 		//Material Def
 		mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setColor("Ambient", ColorRGBA.DarkGray);
@@ -92,5 +93,9 @@ public class TetrisBase extends SimpleApplication {
         this.nextPiece = nextPiece;
         this.nextPiece.setPieceIndex(this.rootNode.attachChild(this.nextPiece));
         this.nextPiece.setFalling(false);
+    }
+
+    public PieceController getControl() {
+        return control;
     }
 }

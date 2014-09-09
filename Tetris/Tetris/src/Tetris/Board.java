@@ -21,6 +21,7 @@ public class Board extends Node {
     private float cubeSize;
 	private int col;
 	private int row;
+    private boolean gameOver;
     public Geometry[] frame;
 
     public Board(int col, int row, float cubeSize, Material mat){
@@ -28,6 +29,7 @@ public class Board extends Node {
         this.frame = new Geometry[3];
         this.col = col;
         this.row = row;
+        this.gameOver = false;
         this.geoMap = new Geometry[col][row];
 
         Box bottom = new Box(col*cubeSize*1.25f,cubeSize*0.25f,cubeSize*1.5f);
@@ -212,4 +214,12 @@ public class Board extends Node {
 	public int getRow() {
 		return row;
 	}
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
 }
