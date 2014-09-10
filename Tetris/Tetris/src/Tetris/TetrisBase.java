@@ -19,14 +19,15 @@ import com.jme3.renderer.RenderManager;
 public class TetrisBase extends SimpleApplication {
 
 	private Piece currentPiece; //Current Piece on Screen
-    private Piece nextPiece;
+    private Piece nextPiece; //Next Piece to be on Screen
     private PieceController control;
 	public Material mat;
     Board board;
 
 	@Override
 	public void simpleInitApp(){
-        //light Def
+        //TODO: Create Light function
+        //============================== light Def ================================
         SpotLight spot = new SpotLight();
         spot.setSpotRange(100f);                           // distance
         spot.setSpotInnerAngle(15f * FastMath.DEG_TO_RAD); // inner light cone (central beam)
@@ -35,15 +36,17 @@ public class TetrisBase extends SimpleApplication {
         spot.setPosition(cam.getLocation());               // shine from camera loc
         spot.setDirection(cam.getDirection());             // shine forward from camera loc
         rootNode.addLight(spot);
+        //=========================================================================
 
 
-		//Material Def
+        //============================== Frame Material Def =======================
 		mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setColor("Ambient", ColorRGBA.DarkGray);
         mat.setColor("Diffuse", ColorRGBA.DarkGray);
         mat.setColor("Specular", ColorRGBA.DarkGray);
         mat.setFloat("Shininess", 2);
         mat.setBoolean("UseMaterialColors", true);
+        //=========================================================================
 
         //Create Board
         board = new Board(10,20,0.15f,mat);
@@ -54,10 +57,11 @@ public class TetrisBase extends SimpleApplication {
 
         //Create T4
 		currentPiece = new Piece(0.15f, 5, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, 0, assetManager ,control);
-		currentPiece.setPieceIndex(rootNode.attachChild(currentPiece));
+        currentPiece.setFalling(true);
+        rootNode.attachChild(currentPiece);
 
         nextPiece = new Piece(0.15f, 3.2f, 2.5f, assetManager, null);
-        nextPiece.setPieceIndex(rootNode.attachChild(nextPiece));
+        rootNode.attachChild(nextPiece);
         nextPiece.setFalling(false);
 
 		//Fixed Cam
@@ -75,11 +79,10 @@ public class TetrisBase extends SimpleApplication {
 	}
 
 	public void setCurrentPiece(Piece currentPiece){
-		if(this.currentPiece.getPieceIndex() != null) {
-			this.rootNode.detachChild(this.currentPiece);
-		}
+        this.rootNode.detachChild(this.currentPiece);
+
 		this.currentPiece = currentPiece;
-		this.currentPiece.setPieceIndex(this.rootNode.attachChild(this.currentPiece));
+		this.rootNode.attachChild(this.currentPiece);
 	}
 
     public Piece getNextPiece() {
@@ -87,15 +90,10 @@ public class TetrisBase extends SimpleApplication {
     }
 
     public void setNextPiece(Piece nextPiece){
-        if(this.nextPiece.getPieceIndex() != null) {
-            this.rootNode.detachChild(this.nextPiece);
-        }
-        this.nextPiece = nextPiece;
-        this.nextPiece.setPieceIndex(this.rootNode.attachChild(this.nextPiece));
-        this.nextPiece.setFalling(false);
-    }
+        this.rootNode.detachChild(this.nextPiece);
 
-    public PieceController getControl() {
-        return control;
+        this.nextPiece = nextPiece;
+        this.rootNode.attachChild(this.nextPiece);
+        this.nextPiece.setFalling(false);
     }
 }

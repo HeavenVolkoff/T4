@@ -220,7 +220,7 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
                 }
             }else{
                 if (!Main.app.board.isGameOver()) {
-                    Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, -3, "GameOver.piece", ColorRGBA.White, assetManager, null));
+                    Main.app.setCurrentPiece(new Piece(0.1f, 0, +1.2f, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
                     Main.app.board.setGameOver(true);
                 }
             }

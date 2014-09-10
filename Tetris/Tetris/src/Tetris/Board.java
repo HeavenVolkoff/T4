@@ -16,6 +16,12 @@ import java.util.Arrays;
  * @author BlackPearl & HeavenVolkoff & ykane
  */
 
+/* TODO: Board Modifications:
+    - Modular Board
+    - Board Inventor
+    - Tornado Mode
+    - Pendulum Light
+*/
 public class Board extends Node {
     private Geometry[][] geoMap;
     private float cubeSize;

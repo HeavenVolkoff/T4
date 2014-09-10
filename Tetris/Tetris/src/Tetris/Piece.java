@@ -41,24 +41,23 @@ public class Piece extends Node {
   	/*
 		TODO: (Novos tipos de peças)
 		- peça fantasma:
-			A peça atravessa as outras enquanto em estado fantasma, e se solidifica ao apertar uma tecla. Se a peça
+			- A peça atravessa as outras enquanto em estado fantasma, e se solidifica ao apertar uma tecla. Se a peça
 		    passar o jogo sem ser solidificada, ela empurra tudo para cima e se solidifica.)
-		- board variavel
+		    - Blocos Luminosos
+		    - Bloco Infected
 	*/
 
     //==============================================//
 
-    private Integer PieceIndex; //rootNode Index
 	private float cubeSize;
 	private long startFallTime;
     private int pieceFallingTime;
     private boolean falling;
 	private float posX;
 	private float posY;
-    private Vector3f[] boxAbsolutePoint;
     private int numBox;
+    private Vector3f[] boxAbsolutePoint;
     private Geometry[] boxGeometries;
-    private Box[] boxes;
     private Material material;
     private int initialType;
     private int initialInvert;
@@ -72,7 +71,6 @@ public class Piece extends Node {
 
         addControl(controler);
 
-        this.PieceIndex = null;
         this.cubeSize = cubeSize;
 		this.startFallTime = 0;
         this.pieceFallingTime = 500;
@@ -91,7 +89,9 @@ public class Piece extends Node {
             numBox = 4;
         }
 
-        boxGeometries = constructPiece(pieceType, numBox, this.posX, this.posY, createSpecificMaterial(pieceType, assetManager));
+        boxAbsolutePoint = new Vector3f[numBox];
+
+        boxGeometries = constructPiece(pieceType, numBox, createSpecificMaterial(pieceType, assetManager));
         for(Geometry geoPiece : boxGeometries) {
             attachChild(geoPiece);
         }
@@ -110,7 +110,6 @@ public class Piece extends Node {
             addControl(controler);
         }
 
-        this.PieceIndex = null;
         this.cubeSize = cubeSize;
         this.startFallTime = 0;
         this.pieceFallingTime = 500;
@@ -130,7 +129,9 @@ public class Piece extends Node {
             numBox = 4;
         }
 
-        boxGeometries = constructPiece(this.initialType, numBox, this.posX, this.posY, createSpecificMaterial(this.initialType, assetManager));
+        boxAbsolutePoint = new Vector3f[numBox];
+
+        boxGeometries = constructPiece(this.initialType, numBox, createSpecificMaterial(this.initialType, assetManager));
         for(Geometry geoPiece : boxGeometries) {
             attachChild(geoPiece);
         }
@@ -149,7 +150,6 @@ public class Piece extends Node {
             addControl(controler);
         }
 
-        this.PieceIndex = null;
         this.cubeSize = cubeSize;
         this.startFallTime = 0;
         this.pieceFallingTime = 500;
@@ -164,7 +164,7 @@ public class Piece extends Node {
 
         numBox = 0;
 
-        String appPath = null;
+        String appPath;
         try {
             appPath = new File(".").getCanonicalPath();
             constructFromFile(appPath + "/" + fileName, createColoredMaterial(color, assetManager), posZ);
@@ -217,10 +217,9 @@ public class Piece extends Node {
     //==============================================================//
 
 	//================= Constructor Manager=========================//
-	private Geometry[] constructPiece(int pieceType, int numBox, float posX, float posY, Material mat){
-        boxes = new Box[numBox];
+	private Geometry[] constructPiece(int pieceType, int numBox, Material mat){
+        Box [] boxes = new Box[numBox];
 		Geometry[] geoItens = new Geometry[numBox];
-        boxAbsolutePoint = new Vector3f[numBox];
 
 		int count = 0;
 		for(Box boxObj : boxes){
@@ -409,6 +408,7 @@ public class Piece extends Node {
             float posY = 0;
             float pivotPosX = 0;
             float pivotPosY = 0;
+
             for (String line : lines){
                 for (int i = 0; i<line.length(); i++){
                     if (line.charAt(i) == '|'){
@@ -417,20 +417,36 @@ public class Piece extends Node {
                         if (line.charAt(i) == ' '){
                             posX += 1f*cubeSize;
                         }else{
-                            if (line.charAt(i) == '0' && line.charAt(i-1) == '0'){
+                            if (line.charAt(i) == '0' && line.charAt(i+1) == '0'){
                                 posX += 1f*cubeSize;
                                 Box box = new Box(cubeSize, cubeSize, cubeSize);
                                 geometries.add(new Geometry("Box"+boxNum,box));
-                                geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, Z));
+                                geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
                                 geometries.get(boxNum).setMaterial(mat);
                                 attachChild(geometries.get(boxNum));
                                 posX += 1f*cubeSize;
                                 boxNum += 1;
+                                i += 1;
                             }else{
-                                if (line.charAt(i) == 'P' && line.charAt(i-1) == 'P'){
+                                if (line.charAt(i) == 'P' && line.charAt(i+1) == 'P'){
                                     pivotPosX = posX+1f*cubeSize;
                                     pivotPosY = posY;
                                     posX += 2f*cubeSize;
+                                    i += 1;
+                                }else{
+                                    if (line.charAt(i) == '0' && line.charAt(i+1) == 'P'){
+                                        posX += 1f*cubeSize;
+                                        pivotPosX = posX;
+                                        pivotPosY = posY;
+                                        Box box = new Box(cubeSize, cubeSize, cubeSize);
+                                        geometries.add(new Geometry("Box"+boxNum,box));
+                                        geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
+                                        geometries.get(boxNum).setMaterial(mat);
+                                        attachChild(geometries.get(boxNum));
+                                        posX += 1f*cubeSize;
+                                        boxNum += 1;
+                                        i += 1;
+                                    }
                                 }
                             }
                         }
@@ -440,9 +456,12 @@ public class Piece extends Node {
                 posY -= 2.5f*cubeSize;
             }
 
+            this.boxAbsolutePoint = new Vector3f[boxNum];
+
             this.numBox = 0;
-            for (int i = 0; i < geometries.size(); i++){
-                geometries.get(i).setLocalTranslation(new Vector3f(geometries.get(i).getWorldBound().getCenter().getX()-pivotPosX, geometries.get(i).getWorldBound().getCenter().getY()-pivotPosY, geometries.get(i).getWorldBound().getCenter().getZ()));
+            for (Geometry geometry : geometries) {
+                geometry.setLocalTranslation(geometry.getWorldBound().getCenter().getX() - pivotPosX - 1.25f*cubeSize, geometry.getWorldBound().getCenter().getY() + pivotPosY + 1.75f*cubeSize, geometry.getWorldBound().getCenter().getZ());
+                this.boxAbsolutePoint[numBox] = geometry.getWorldBound().getCenter();
                 this.numBox += 1;
             }
 
@@ -470,14 +489,6 @@ public class Piece extends Node {
     public void setPosY(float posY) {
         this.posY = posY;
     }
-
-    public Integer getPieceIndex() {
-		return PieceIndex;
-	}
-
-	public void setPieceIndex(Integer pieceIndex) {
-		PieceIndex = pieceIndex;
-	}
 
     public boolean isFalling() {
         return falling;
@@ -517,10 +528,6 @@ public class Piece extends Node {
 
     public Geometry[] getBoxGeometries() {
         return boxGeometries;
-    }
-
-    public Box[] getBoxes() {
-        return boxes;
     }
 
     public Material getMat() {
