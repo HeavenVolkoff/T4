@@ -150,9 +150,17 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
                 ((Piece)spatial).setPieceFallingTime(((Piece)spatial).getPieceFallingTime()*4);
             }
 		}else if(name.equals("RotateClockwise") && pressed){
-            rotate(0, 0, 90);
+            Main.app.printGrid((Main.app.board.buildRotationMatrix((Piece) spatial,90)));
+            System.out.println(((Piece) spatial).getInitialInvert());
+            if (Main.app.board.CanRotate((Piece) spatial, 90)){
+                rotate(0, 0, 90);
+            }
 		}else if(name.equals("RotateCounterClockwise") && pressed){
-			rotate(0, 0, -90);
+            Main.app.printGrid((Main.app.board.buildRotationMatrix((Piece) spatial,-90)));
+            System.out.println(((Piece) spatial).getInitialInvert());
+            if (Main.app.board.CanRotate((Piece) spatial,-90)) {
+                rotate(0, 0, -90);
+            }
 		}else if(name.equals("MoveRight") && pressed){
             if (!Main.app.board.hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
                 !Main.app.board.hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){

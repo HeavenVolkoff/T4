@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="linux">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/jmonkeyplatform/lwjgl-2.9.1/native/linux" />
+    </SOURCES>
+  </library>
+</component>

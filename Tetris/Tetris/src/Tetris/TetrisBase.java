@@ -9,6 +9,8 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.post.filters.FadeFilter;
 import com.jme3.renderer.RenderManager;
 
 /**
@@ -23,6 +25,18 @@ public class TetrisBase extends SimpleApplication {
     private PieceController control;
 	public Material mat;
     Board board;
+
+    public void printGrid(int[][] Matrix)//Temp
+    {
+        for(int i = 0; i < Matrix.length; i++)
+        {
+            for(int j = 0; j < Matrix.length; j++)
+            {
+                System.out.print(Matrix[i][j]);
+            }
+            System.out.println();
+        }
+    }
 
 	@Override
 	public void simpleInitApp(){
@@ -63,6 +77,15 @@ public class TetrisBase extends SimpleApplication {
         nextPiece = new Piece(0.15f, 3.2f, 2.5f, assetManager, null);
         rootNode.attachChild(nextPiece);
         nextPiece.setFalling(false);
+
+        //============================== Fade Effect ==============================/*
+        FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
+        FadeFilter fade = new FadeFilter(5);
+        fpp.addFilter(fade);
+        fade.setValue(0);
+        viewPort.addProcessor(fpp);
+        fade.fadeIn();
+        //=========================================================================
 
 		//Fixed Cam
 		flyCam.setEnabled(false);

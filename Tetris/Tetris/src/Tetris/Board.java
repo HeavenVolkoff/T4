@@ -3,12 +3,17 @@ package Tetris;
 //Java
 
 //jMoneyFramework
+import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
+import java.awt.geom.Point2D;
 import java.util.Arrays;
 
 /**
@@ -23,6 +28,7 @@ import java.util.Arrays;
     - Pendulum Light
 */
 public class Board extends Node {
+
     private Geometry[][] geoMap;
     private float cubeSize;
 	private int col;
@@ -66,6 +72,103 @@ public class Board extends Node {
             pos[i].setZ(0);
         }
         return pos;
+    }
+
+    public Vector3f boxPosRelativeToBoard(Vector3f BoxAbsolutePos){
+        Vector3f pos = new Vector3f();
+        pos.setX(Math.round((((BoxAbsolutePos.distance(new Vector3f(frame[1].getWorldTranslation().getX(), BoxAbsolutePos.getY(), 0))) - (cubeSize * 1.25f)) / (cubeSize * 2.5f))));
+        pos.setY(Math.round((((BoxAbsolutePos.distance(new Vector3f(BoxAbsolutePos.getX(), frame[0].getWorldTranslation().getY(), 0))) - (cubeSize * 1.25f)) / (cubeSize * 2.5f))));
+        pos.setZ(0);
+        return pos;
+    }
+
+    public int[][] buildRotationMatrix(Piece piece, int angle){
+        int[][] matrix = new int[2*piece.getNumBox()+1][2*piece.getNumBox()+1];
+        Geometry pivot = null;
+        Vector3f pos;
+        for (Geometry geo : piece.getBoxGeometries()){
+            if (geo.getName().equals("Pivot")){
+                pivot = geo;
+                break;
+            }
+        }
+        if (pivot != null){
+            if (angle == 90) {
+                pos = boxPosRelativeToBoard(pivot.getWorldBound().getCenter());
+                for (Vector3f geo : piecePosRelativeToBoard(piece.getBoxAbsolutePoint(), piece.getNumBox())) {
+                    if ((int) pos.getX() - (int) geo.getX() == 0 && (int) pos.getY() - (int) geo.getY() == 0) {
+                        matrix[piece.getNumBox()][piece.getNumBox()] = 2;
+                    } else {
+                        if (piece.getInitialInvert() == 0) {
+                            matrix[(int) pos.getX() - (int) geo.getX() + piece.getNumBox()][(int) pos.getY() - (int) geo.getY() + piece.getNumBox()] = 1;
+                        } else {
+                            matrix[piece.getNumBox() + ((int) pos.getX() - (int) geo.getX()) * -1][piece.getNumBox() + ((int) pos.getY() - (int) geo.getY()) * -1] = 1;
+                        }
+                    }
+                }
+            }else{
+                pos = boxPosRelativeToBoard(pivot.getWorldBound().getCenter());
+                for (Vector3f geo : piecePosRelativeToBoard(piece.getBoxAbsolutePoint(), piece.getNumBox())) {
+                    if ((int) pos.getX() - (int) geo.getX() == 0 && (int) pos.getY() - (int) geo.getY() == 0) {
+                        matrix[piece.getNumBox()][piece.getNumBox()] = 2;
+                    } else {
+                        if (piece.getInitialInvert() == 0) {
+                            matrix[piece.getNumBox() + ((int) pos.getX() - (int) geo.getX()) * -1][piece.getNumBox() + ((int) pos.getY() - (int) geo.getY()) * -1] = 1;
+                        } else {
+                            matrix[piece.getNumBox() + ((int) pos.getX() - (int) geo.getX()) * +1][piece.getNumBox() + ((int) pos.getY() - (int) geo.getY()) * +1] = 1;
+                        }
+                    }
+                }
+            }
+        }
+        return matrix;
+    }
+
+    public boolean CanRotate(Piece piece, int angle){
+        int [][] matrix = buildRotationMatrix(piece, angle);
+        int boxBoardPosX;
+        int boxBoardPosY;
+        Vector3f pivotMatrixPos = new Vector3f();
+        Vector3f pivotBoardPos = new Vector3f();
+
+        //Get Pivot Matrix Pos
+        for (int i = 0; i<matrix.length; i++){
+            for (int j = 0; j<matrix.length; j++){
+                if (matrix[i][j]==2){
+                    pivotMatrixPos.setX(i);
+                    pivotMatrixPos.setY(j);
+                    break;
+                }
+            }
+        }
+        //Get Pivot Board Pos
+        for (Geometry geo : piece.getBoxGeometries()){
+            if (geo.getName().equals("Pivot")){
+                pivotBoardPos = boxPosRelativeToBoard(geo.getWorldBound().getCenter());
+                System.out.println("pivot = "+pivotBoardPos.getX()+" | "+pivotBoardPos.getY());
+                break;
+            }
+        }
+        //Verify Board & Piece Transposition
+        for (int i = 0; i<matrix.length; i++){
+            for (int j = 0; j<matrix.length; j++){
+                if (matrix[i][j]==1){
+                    boxBoardPosY = (int)pivotBoardPos.getY()+ (i-(int)pivotMatrixPos.getX())*-1;
+                    boxBoardPosX = (int)pivotBoardPos.getX()+ (j-(int)pivotMatrixPos.getY());
+                    System.out.println("Distance From Pivot = "+(((j-(int)pivotMatrixPos.getY()))*-1)+" | "+((i-(int)pivotMatrixPos.getX())));
+                    System.out.println("Box Final Pos = "+boxBoardPosX+" | "+boxBoardPosY);
+                    if (boxBoardPosX < 0 || boxBoardPosX >= col || boxBoardPosY < 0 || boxBoardPosY >= row){
+                        return false;
+                    }
+                    if (boxBoardPosX > 0 && boxBoardPosY > 0 && boxBoardPosX < col && boxBoardPosY < row && geoMap[boxBoardPosX][boxBoardPosY] != null) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        System.out.println("---------------------------------------");
+        return true;
     }
 
     public void clearBoard(){

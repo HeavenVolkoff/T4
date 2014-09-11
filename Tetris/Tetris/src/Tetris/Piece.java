@@ -294,6 +294,7 @@ public class Piece extends Node {
 		geoItens[1].setLocalTranslation(new Vector3f(+(cubeSize * 2.50f), 0 , 0));
         boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
 		geoItens[2].setLocalTranslation(new Vector3f(+(cubeSize * 0.00f), 0 , 0));
+        geoItens[2].setName("Pivot");
         boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
 		geoItens[3].setLocalTranslation(new Vector3f(-(cubeSize * 2.50f), 0 , 0));
         boxAbsolutePoint[3] = geoItens[3].getWorldBound().getCenter();
@@ -309,6 +310,7 @@ public class Piece extends Node {
         geoItens[0].setLocalTranslation(new Vector3f( -(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
         boxAbsolutePoint[0] = geoItens[0].getWorldBound().getCenter();
         geoItens[1].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 0.00f) , 0 ));
+        geoItens[1].setName("Pivot");
         boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
         geoItens[2].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 2.50f) , 0 ));
         boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
@@ -327,6 +329,7 @@ public class Piece extends Node {
         geoItens[0].setLocalTranslation(new Vector3f( -(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
         boxAbsolutePoint[0] = geoItens[0].getWorldBound().getCenter();
         geoItens[1].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 0.00f) , 0 ));
+        geoItens[1].setName("Pivot");
         boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
         geoItens[2].setLocalTranslation(new Vector3f( +(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
         boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
@@ -346,6 +349,7 @@ public class Piece extends Node {
         geoItens[1].setLocalTranslation(new Vector3f( -(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
         boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
         geoItens[2].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 0.00f) , 0 ));
+        geoItens[2].setName("Pivot");
         boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
         geoItens[3].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 2.50f) , 0 ));
         boxAbsolutePoint[3] = geoItens[3].getWorldBound().getCenter();
@@ -378,6 +382,7 @@ public class Piece extends Node {
         geoItens[7].setLocalTranslation( new Vector3f( -(cubeSize * 4.50f) , -(cubeSize * 0.00f) , 0 ));
         boxAbsolutePoint[7] = geoItens[7].getWorldBound().getCenter();
         geoItens[8].setLocalTranslation( new Vector3f( +(cubeSize * 0.00f) , -(cubeSize * 0.00f) , 0 ));
+        geoItens[8].setName("Pivot");
         boxAbsolutePoint[8] = geoItens[8].getWorldBound().getCenter();
         geoItens[9].setLocalTranslation( new Vector3f( +(cubeSize * 4.50f) , -(cubeSize * 0.00f) , 0 ));
         boxAbsolutePoint[9] = geoItens[9].getWorldBound().getCenter();
@@ -439,7 +444,7 @@ public class Piece extends Node {
                                         pivotPosX = posX;
                                         pivotPosY = posY;
                                         Box box = new Box(cubeSize, cubeSize, cubeSize);
-                                        geometries.add(new Geometry("Box"+boxNum,box));
+                                        geometries.add(new Geometry("Pivot",box));
                                         geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
                                         geometries.get(boxNum).setMaterial(mat);
                                         attachChild(geometries.get(boxNum));
