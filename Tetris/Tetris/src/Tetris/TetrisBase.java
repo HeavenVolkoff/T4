@@ -6,6 +6,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
@@ -24,6 +25,7 @@ public class TetrisBase extends SimpleApplication {
     private Piece nextPiece; //Next Piece to be on Screen
     private PieceController control;
 	public Material mat;
+    private FadeFilter fade;
     Board board;
 
     public void printGrid(int[][] Matrix)//Temp
@@ -56,7 +58,12 @@ public class TetrisBase extends SimpleApplication {
         //============================== Frame Material Def =======================
 		mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         mat.setColor("Ambient", ColorRGBA.DarkGray);
-        mat.setColor("Diffuse", ColorRGBA.DarkGray);
+        ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+//        alpha.a = 0.1f;
+        mat.setColor("Diffuse", alpha);
+//        mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+//        mat.getAdditionalRenderState().setAlphaFallOff(0.2f);
+//        mat.setBoolean("UseAlpha",true);
         mat.setColor("Specular", ColorRGBA.DarkGray);
         mat.setFloat("Shininess", 2);
         mat.setBoolean("UseMaterialColors", true);
@@ -80,7 +87,7 @@ public class TetrisBase extends SimpleApplication {
 
         //============================== Fade Effect ==============================/*
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
-        FadeFilter fade = new FadeFilter(5);
+        fade = new FadeFilter(5);
         fpp.addFilter(fade);
         fade.setValue(0);
         viewPort.addProcessor(fpp);
@@ -118,5 +125,9 @@ public class TetrisBase extends SimpleApplication {
         this.nextPiece = nextPiece;
         this.rootNode.attachChild(this.nextPiece);
         this.nextPiece.setFalling(false);
+    }
+
+    public FadeFilter getFade(){
+        return this.fade;
     }
 }

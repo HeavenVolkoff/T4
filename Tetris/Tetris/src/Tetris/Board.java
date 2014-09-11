@@ -35,6 +35,7 @@ public class Board extends Node {
 	private int row;
     private boolean gameOver;
     public Geometry[] frame;
+    public Node InvalidMoves;
 
     public Board(int col, int row, float cubeSize, Material mat){
         this.cubeSize = cubeSize;
@@ -43,6 +44,7 @@ public class Board extends Node {
         this.row = row;
         this.gameOver = false;
         this.geoMap = new Geometry[col][row];
+        this.InvalidMoves = new Node();
 
         Box bottom = new Box(col*cubeSize*1.25f,cubeSize*0.25f,cubeSize*1.5f);
         frame[0] = new Geometry("BottomBoard",bottom);
