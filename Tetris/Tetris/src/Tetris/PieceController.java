@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  * @author BlackPearl & HeavenVolkoff & ykane
  */
 
-public class PieceController extends AbstractControl implements Savable, Cloneable {
+public class PieceController extends AbstractControl implements Cloneable {
 
 	private List<Keys> hotKeys = new ArrayList<Keys>();
 	private ActionListener actionKeyPress;
@@ -150,17 +150,29 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
                 ((Piece)spatial).setPieceFallingTime(((Piece)spatial).getPieceFallingTime()*4);
             }
 		}else if(name.equals("RotateClockwise") && pressed){
-            Main.app.printGrid((Main.app.board.buildRotationMatrix((Piece) spatial,90)));
-            System.out.println(((Piece) spatial).getInitialInvert());
-            if (Main.app.board.CanRotate((Piece) spatial, 90)){
-                rotate(0, 0, 90);
-            }
+            if(((Piece)spatial).getInitialInvert() == 0){
+				Main.app.printGrid(Main.app.board.buildRotationMatrix((Piece) spatial, 90));
+				if (Main.app.board.canRotate((Piece) spatial, 90)){
+					rotate(0, 0, 90);
+				}
+			}else{
+				Main.app.printGrid(Main.app.board.buildRotationMatrix((Piece) spatial, -90));
+				if (Main.app.board.canRotate((Piece) spatial, -90)){
+					rotate(0, 0, -90);
+				}
+			}
 		}else if(name.equals("RotateCounterClockwise") && pressed){
-            Main.app.printGrid((Main.app.board.buildRotationMatrix((Piece) spatial,-90)));
-            System.out.println(((Piece) spatial).getInitialInvert());
-            if (Main.app.board.CanRotate((Piece) spatial,-90)) {
-                rotate(0, 0, -90);
-            }
+			if(((Piece)spatial).getInitialInvert() == 0){
+				Main.app.printGrid(Main.app.board.buildRotationMatrix((Piece) spatial, -90));
+				if (Main.app.board.canRotate((Piece) spatial, -90)){
+					rotate(0, 0, -90);
+				}
+			}else{
+				Main.app.printGrid(Main.app.board.buildRotationMatrix((Piece) spatial, 90));
+				if (Main.app.board.canRotate((Piece) spatial, 90)){
+					rotate(0, 0, 90);
+				}
+			}
 		}else if(name.equals("MoveRight") && pressed){
             if (!Main.app.board.hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
                 !Main.app.board.hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
@@ -214,21 +226,25 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
     public void fall(float heightRelativeToCubeSize) {
         int keyElapsedTime = (int) ((System.nanoTime() - ((Piece)spatial).getStartFallTime()) / 1000000);
         if (keyElapsedTime >= ((Piece)spatial).getPieceFallingTime()) {
-            if (!Main.app.board.gameOver()){
+            if (!Main.app.board.gameOver(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
                 if (((Piece)spatial).isFalling()) {
                     //Not hit Horizontal frame
                     if (!Main.app.board.hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
                             !Main.app.board.hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
                         moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
                     } else {
-                        Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat());
-                        keyActions("ChangePiece", true);
-                        Main.app.board.destroyCompletedLines();
+                        if (Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat(), assetManager)) {
+							keyActions("ChangePiece", true);
+							Main.app.board.destroyCompletedLines();
+						}else{
+							Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
+							Main.app.board.setGameOver(true);
+						}
                     }
                 }
             }else{
                 if (!Main.app.board.isGameOver()) {
-                    Main.app.setCurrentPiece(new Piece(0.1f, 0, +1.2f, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
+                    Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
                     Main.app.board.setGameOver(true);
                 }
             }
@@ -276,16 +292,4 @@ public class PieceController extends AbstractControl implements Savable, Cloneab
 	protected void controlRender(RenderManager rm, ViewPort vp){
      /* Optional: rendering manipulation (for advanced users) */
 	}
-
-	@Override
- 	public void read(JmeImporter im) throws IOException {
-		super.read(im);
-
-	}
-
-	@Override
-	public void write(JmeExporter ex) throws IOException {
-		super.write(ex);
-	}
-
 }

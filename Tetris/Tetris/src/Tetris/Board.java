@@ -26,7 +26,12 @@ import java.util.Arrays;
     - Board Inventor
     - Tornado Mode
     - Pendulum Light
+    - Closing Wall
 */
+/*
+	TODO: Bug-Fix:
+	- buildRotationMatrix bug on first line(overlapping pieces)
+ */
 public class Board extends Node {
 
     private Geometry[][] geoMap;
@@ -126,7 +131,7 @@ public class Board extends Node {
         return matrix;
     }
 
-    public boolean CanRotate(Piece piece, int angle){
+    public boolean canRotate(Piece piece, int angle){
         int [][] matrix = buildRotationMatrix(piece, angle);
         int boxBoardPosX;
         int boxBoardPosY;
@@ -147,7 +152,6 @@ public class Board extends Node {
         for (Geometry geo : piece.getBoxGeometries()){
             if (geo.getName().equals("Pivot")){
                 pivotBoardPos = boxPosRelativeToBoard(geo.getWorldBound().getCenter());
-                System.out.println("pivot = "+pivotBoardPos.getX()+" | "+pivotBoardPos.getY());
                 break;
             }
         }
@@ -157,9 +161,7 @@ public class Board extends Node {
                 if (matrix[i][j]==1){
                     boxBoardPosY = (int)pivotBoardPos.getY()+ (i-(int)pivotMatrixPos.getX())*-1;
                     boxBoardPosX = (int)pivotBoardPos.getX()+ (j-(int)pivotMatrixPos.getY());
-                    System.out.println("Distance From Pivot = "+(((j-(int)pivotMatrixPos.getY()))*-1)+" | "+((i-(int)pivotMatrixPos.getX())));
-                    System.out.println("Box Final Pos = "+boxBoardPosX+" | "+boxBoardPosY);
-                    if (boxBoardPosX < 0 || boxBoardPosX >= col || boxBoardPosY < 0 || boxBoardPosY >= row){
+                    if (boxBoardPosX < 0 || boxBoardPosX >= col || boxBoardPosY < 0){
                         return false;
                     }
                     if (boxBoardPosX > 0 && boxBoardPosY > 0 && boxBoardPosX < col && boxBoardPosY < row && geoMap[boxBoardPosX][boxBoardPosY] != null) {
@@ -168,9 +170,7 @@ public class Board extends Node {
                 }
             }
         }
-
-        System.out.println("---------------------------------------");
-        return true;
+		return true;
     }
 
     public void clearBoard(){
@@ -184,11 +184,13 @@ public class Board extends Node {
         }
     }
 
-    public boolean gameOver(){
+    public boolean gameOver(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
         for (int i = 0; i<col; i++){
-            if (geoMap[i][row-2] != null){
-               return true;
-            }
+			for (Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+				if ((int)boxPos.getY() < row && geoMap[(int)boxPos.getX()][(int)boxPos.getY()] != null){
+					return true;
+				}
+			}
         }
         return false;
     }
@@ -253,16 +255,21 @@ public class Board extends Node {
         return false;
     }
 
-    public void addPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum, Material mat){
+    public boolean addPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum, Material mat, AssetManager assetManager){
         int count = 0;
         for (Vector3f piecePos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
-            Box box = new Box(cubeSize,cubeSize,cubeSize);
-            geoMap[(int)piecePos.getX()][(int)piecePos.getY()] = new Geometry("Box"+String.valueOf((int)piecePos.getX())+String.valueOf((int)piecePos.getY()),box);
-            geoMap[(int)piecePos.getX()][(int)piecePos.getY()].setLocalTranslation(pieceBoxesAbsolutePos[count].getX(),pieceBoxesAbsolutePos[count].getY(),0);
-            geoMap[(int)piecePos.getX()][(int)piecePos.getY()].setMaterial(mat);
-            attachChild(geoMap[(int) piecePos.getX()][(int) piecePos.getY()]);
-            count++;
+            if ((int)piecePos.getY() < row) {
+				Box box = new Box(cubeSize, cubeSize, cubeSize);
+				geoMap[(int) piecePos.getX()][(int) piecePos.getY()] = new Geometry("Box" + String.valueOf((int) piecePos.getX()) + String.valueOf((int) piecePos.getY()), box);
+				geoMap[(int) piecePos.getX()][(int) piecePos.getY()].setLocalTranslation(pieceBoxesAbsolutePos[count].getX(), pieceBoxesAbsolutePos[count].getY(), 0);
+				geoMap[(int) piecePos.getX()][(int) piecePos.getY()].setMaterial(mat);
+				attachChild(geoMap[(int) piecePos.getX()][(int) piecePos.getY()]);
+				count++;
+			}else{
+				return false;
+			}
         }
+		return true;
     }
 
     public void destroyLine(int line){

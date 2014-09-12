@@ -13,10 +13,15 @@ import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
 import com.jme3.renderer.RenderManager;
+import com.jme3.scene.Spatial;
 
 /**
  * T4
  * @author BlackPearl & HeavenVolkoff & ykane
+ */
+
+/*
+TODO:
  */
 
 public class TetrisBase extends SimpleApplication {
@@ -28,17 +33,16 @@ public class TetrisBase extends SimpleApplication {
     private FadeFilter fade;
     Board board;
 
-    public void printGrid(int[][] Matrix)//Temp
-    {
-        for(int i = 0; i < Matrix.length; i++)
-        {
-            for(int j = 0; j < Matrix.length; j++)
-            {
-                System.out.print(Matrix[i][j]);
-            }
-            System.out.println();
-        }
-    }
+	public void printGrid(int[][] Matrix)//Temp
+	{
+		for(int i = 0; i < Matrix.length; i++){
+			for(int j = 0; j < Matrix.length; j++)
+			{
+				System.out.print(Matrix[i][j]);
+			}
+			System.out.println();
+		}
+	}
 
 	@Override
 	public void simpleInitApp(){
@@ -77,8 +81,9 @@ public class TetrisBase extends SimpleApplication {
         control = new PieceController(inputManager, assetManager, 300);
 
         //Create T4
-		currentPiece = new Piece(0.15f, 5, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, 0, assetManager ,control);
-        currentPiece.setFalling(true);
+		//currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, "T4.piece",ColorRGBA.randomColor(), assetManager ,control);
+		currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, "O.piece",ColorRGBA.randomColor(), assetManager ,control);
+		currentPiece.setFalling(true);
         rootNode.attachChild(currentPiece);
 
         nextPiece = new Piece(0.15f, 3.2f, 2.5f, assetManager, null);
