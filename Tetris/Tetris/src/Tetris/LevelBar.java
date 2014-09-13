@@ -8,6 +8,14 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by blackpearl on 12/09/14.
  */
@@ -23,15 +31,24 @@ public class LevelBar extends Node {
     private float posY;
     private float barWidth;
     private float cubeSize;
+    AssetManager assetManager;
+    private List<List<String>> numbers;
+    private float numWidth;
+    private int maxDigits;
+    private Piece[] lvlDigits;
 
 
-    public LevelBar(float cubeSize, float posX, float posY, float barWidth, int max, Material mat, ColorRGBA color, AssetManager assetManager){
+    public LevelBar(float cubeSize, int maxDigits, float posX, float posY, float barWidth, int max, Material mat, ColorRGBA color, AssetManager assetManager){
         this.posX = posX;
         this.posY = posY;
         this.barWidth = barWidth;
         this.max = max;
         this.value = 0;
         this.cubeSize = cubeSize;
+        this.assetManager = assetManager;
+        this.maxDigits = maxDigits;
+
+        lvlDigits = new Piece[maxDigits];
 
         frame = new Geometry[4];
 
@@ -68,6 +85,54 @@ public class LevelBar extends Node {
         percentageGeo.setMaterial(percentageGeoMat);
         correctBarXPos();
         attachChild(percentageGeo);
+
+        Piece piece = new Piece(cubeSize*0.3f, posX - barWidth * 1.5f - 1f * cubeSize - cubeSize*13f, posY, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
+        attachChild(piece);
+
+        this.numbers = new ArrayList<List<String>>();
+
+        for(int i = 0; i<=9; i++){
+            numbers.add(loadFromFile( i+".piece" ));
+        }
+
+        this.numWidth = ((maxDigits*(3*cubeSize*2.5f*0.3f)) - cubeSize*0.5f*0.3f) + ((maxDigits-1f)*cubeSize*0.5f*0.3f);
+
+        showLevel();
+    }
+
+    public void showLevel() { //
+        int levelTemp = Main.app.getScore().getLevel();
+        float piecePosX = -(posX - barWidth * 1.5f - 1.5f * cubeSize - 3*maxDigits*cubeSize*0.8f);
+        int counter = 0;
+        while (true) {
+            if (lvlDigits[counter] != null){
+                detachChild(lvlDigits[counter]);
+            }
+            lvlDigits[counter] = new Piece(this.cubeSize * 0.3f, 0f, 0f, 0, numbers.get((int) levelTemp % 10), ColorRGBA.White, assetManager, null);
+            lvlDigits[counter].move((float) (this.numWidth * 0.5) - (piecePosX), posY, 0f);
+            piecePosX = piecePosX + 2.5f * cubeSize * 0.3f * 3 + 1.5f * cubeSize * 0.3f;
+
+            levelTemp = levelTemp / 10;
+
+            attachChild(lvlDigits[counter]);
+
+            if (levelTemp == 0) {
+                break;
+            }
+
+            counter++;
+        }
+    }
+
+    public List<String> loadFromFile(String fileName) {
+        try {
+            String appPath = new File(".").getCanonicalPath();
+            Path path = Paths.get(appPath + "/resources/customPieces/numbers/" + fileName);
+            return Files.readAllLines(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private Material createColoredMaterial(ColorRGBA color, AssetManager assetManager){

@@ -91,6 +91,7 @@ public class Score extends Node {
 		if(this.score >= jump){
 			level++;
 			jump *= 2.2f;
+            Main.app.getLevelBar().showLevel();;
 		}
 
         detachAllChildren();

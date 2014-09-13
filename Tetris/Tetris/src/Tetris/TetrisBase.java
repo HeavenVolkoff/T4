@@ -86,7 +86,7 @@ public class TetrisBase extends SimpleApplication {
         rootNode.attachChild(score);
 
         //Create LevelBar
-        levelBar = new LevelBar(0.05f,-2.9f, 2f, 1.5f, 1000, mat, ColorRGBA.Cyan, assetManager);
+        levelBar = new LevelBar(0.05f, 2,-2.7f, 2f, 1.1f, 1000, mat, ColorRGBA.Cyan, assetManager);
         rootNode.attachChild(levelBar);
 
         //============================== Fade Effect ==============================/*
