@@ -151,36 +151,32 @@ public class PieceController extends AbstractControl implements Cloneable {
             }
 		}else if(name.equals("RotateClockwise") && pressed){
             if(((Piece)spatial).getInitialInvert() == 0){
-				Main.app.printGrid(Main.app.board.buildRotationMatrix((Piece) spatial, 90));
-				if (Main.app.board.canRotate((Piece) spatial, 90)){
+				if (Main.app.getBoard().canRotate((Piece) spatial, 90)){
 					rotate(0, 0, 90);
 				}
 			}else{
-				Main.app.printGrid(Main.app.board.buildRotationMatrix((Piece) spatial, -90));
-				if (Main.app.board.canRotate((Piece) spatial, -90)){
+				if (Main.app.getBoard().canRotate((Piece) spatial, -90)){
 					rotate(0, 0, -90);
 				}
 			}
 		}else if(name.equals("RotateCounterClockwise") && pressed){
 			if(((Piece)spatial).getInitialInvert() == 0){
-				Main.app.printGrid(Main.app.board.buildRotationMatrix((Piece) spatial, -90));
-				if (Main.app.board.canRotate((Piece) spatial, -90)){
+				if (Main.app.getBoard().canRotate((Piece) spatial, -90)){
 					rotate(0, 0, -90);
 				}
 			}else{
-				Main.app.printGrid(Main.app.board.buildRotationMatrix((Piece) spatial, 90));
-				if (Main.app.board.canRotate((Piece) spatial, 90)){
+				if (Main.app.getBoard().canRotate((Piece) spatial, 90)){
 					rotate(0, 0, 90);
 				}
 			}
 		}else if(name.equals("MoveRight") && pressed){
-            if (!Main.app.board.hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
-                !Main.app.board.hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
+            if (!Main.app.getBoard().hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
+                !Main.app.getBoard().hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
                     moveX(((Piece) spatial).RIGHT, (2.5f * ((Piece) spatial).getCubeSize()));
             }
 		}else if(name.equals("MoveLeft") && pressed){
-            if (!Main.app.board.hitLeftFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
-            !Main.app.board.hitLeftPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
+            if (!Main.app.getBoard().hitLeftFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
+            !Main.app.getBoard().hitLeftPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
                 moveX(((Piece) spatial).LEFT, (2.5f * ((Piece) spatial).getCubeSize()));
             }
 		}
@@ -226,26 +222,26 @@ public class PieceController extends AbstractControl implements Cloneable {
     public void fall(float heightRelativeToCubeSize) {
         int keyElapsedTime = (int) ((System.nanoTime() - ((Piece)spatial).getStartFallTime()) / 1000000);
         if (keyElapsedTime >= ((Piece)spatial).getPieceFallingTime()) {
-            if (!Main.app.board.gameOver(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
+            if (!Main.app.getBoard().gameOver(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
                 if (((Piece)spatial).isFalling()) {
                     //Not hit Horizontal frame
-                    if (!Main.app.board.hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
-                            !Main.app.board.hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
+                    if (!Main.app.getBoard().hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
+                            !Main.app.getBoard().hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
                         moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
                     } else {
-                        if (Main.app.board.addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat(), assetManager)) {
+                        if (Main.app.getBoard().addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat(), assetManager)) {
 							keyActions("ChangePiece", true);
-							Main.app.board.destroyCompletedLines();
+							Main.app.getBoard().destroyCompletedLines();
 						}else{
 							Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
-							Main.app.board.setGameOver(true);
+							Main.app.getBoard().setGameOver(true);
 						}
                     }
                 }
             }else{
-                if (!Main.app.board.isGameOver()) {
+                if (!Main.app.getBoard().isGameOver()) {
                     Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
-                    Main.app.board.setGameOver(true);
+                    Main.app.getBoard().setGameOver(true);
                 }
             }
             ((Piece)spatial).setStartFallTime(System.nanoTime());

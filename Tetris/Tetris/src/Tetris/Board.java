@@ -269,6 +269,7 @@ public class Board extends Node {
 				return false;
 			}
         }
+        Main.app.getScore().updateScore(1,10);
 		return true;
     }
 
@@ -317,11 +318,14 @@ public class Board extends Node {
 
     public void destroyCompletedLines(){
         int line = getCompleteLineNum();
+        int lineCount = 1;
         while (line != -1){
             //Erase Line
             destroyLine(line);
             //Update line num
             line = getCompleteLineNum();
+            Main.app.getScore().updateScore(lineCount,100);
+            lineCount += 1;
         }
     }
 

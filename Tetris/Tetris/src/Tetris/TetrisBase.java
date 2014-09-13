@@ -14,6 +14,7 @@ import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Spatial;
+import javafx.scene.control.ProgressBar;
 
 /**
  * T4
@@ -31,18 +32,9 @@ public class TetrisBase extends SimpleApplication {
     private PieceController control;
 	public Material mat;
     private FadeFilter fade;
-    Board board;
-
-	public void printGrid(int[][] Matrix)//Temp
-	{
-		for(int i = 0; i < Matrix.length; i++){
-			for(int j = 0; j < Matrix.length; j++)
-			{
-				System.out.print(Matrix[i][j]);
-			}
-			System.out.println();
-		}
-	}
+    private Board board;
+    private Score score;
+    private LevelBar levelBar;
 
 	@Override
 	public void simpleInitApp(){
@@ -51,13 +43,12 @@ public class TetrisBase extends SimpleApplication {
         SpotLight spot = new SpotLight();
         spot.setSpotRange(100f);                           // distance
         spot.setSpotInnerAngle(15f * FastMath.DEG_TO_RAD); // inner light cone (central beam)
-        spot.setSpotOuterAngle(35f * FastMath.DEG_TO_RAD); // outer light cone (edge of the light)
+        spot.setSpotOuterAngle(50f * FastMath.DEG_TO_RAD); // outer light cone (edge of the light)
         spot.setColor(ColorRGBA.White.mult(1.3f));         // light color
         spot.setPosition(cam.getLocation());               // shine from camera loc
         spot.setDirection(cam.getDirection());             // shine forward from camera loc
         rootNode.addLight(spot);
         //=========================================================================
-
 
         //============================== Frame Material Def =======================
 		mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
@@ -80,15 +71,23 @@ public class TetrisBase extends SimpleApplication {
         //Create and Defined Current Piece Controller
         control = new PieceController(inputManager, assetManager, 300);
 
-        //Create T4
-		//currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, "T4.piece",ColorRGBA.randomColor(), assetManager ,control);
+        //Create Current Piece
 		currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, "O.piece",ColorRGBA.randomColor(), assetManager ,control);
 		currentPiece.setFalling(true);
         rootNode.attachChild(currentPiece);
 
+        //Create Next Piece
         nextPiece = new Piece(0.15f, 3.2f, 2.5f, assetManager, null);
         rootNode.attachChild(nextPiece);
         nextPiece.setFalling(false);
+
+        //Create Score
+        score = new Score(0.05f,6,-2.7f,3f,assetManager);
+        rootNode.attachChild(score);
+
+        //Create LevelBar
+        levelBar = new LevelBar(0.05f,-2.9f, 2f, 1.5f, 1000, mat, ColorRGBA.Cyan, assetManager);
+        rootNode.attachChild(levelBar);
 
         //============================== Fade Effect ==============================/*
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
@@ -130,6 +129,18 @@ public class TetrisBase extends SimpleApplication {
         this.nextPiece = nextPiece;
         this.rootNode.attachChild(this.nextPiece);
         this.nextPiece.setFalling(false);
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public Score getScore() {
+        return score;
+    }
+
+    public LevelBar getLevelBar() {
+        return levelBar;
     }
 
     public FadeFilter getFade(){
