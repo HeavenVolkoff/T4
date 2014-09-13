@@ -96,7 +96,6 @@ public class LevelBar extends Node {
         percentageGeo= new Geometry("ProgressBar",box);
         percentageGeo.setMaterial(percentageGeoMat);
         percentageGeo.move(0, posY, 0);
-        System.out.println(percentageGeoWidth);
         correctBarXPos();
         attachChild(percentageGeo);
     }

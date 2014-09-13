@@ -49,8 +49,8 @@
       <file leaf-file-name="LevelBar.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tetris/src/Tetris/LevelBar.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1351" max-vertical-offset="1998">
-              <caret line="103" column="31" selection-start-line="103" selection-start-column="31" selection-end-line="103" selection-end-column="31" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1336" max-vertical-offset="1980">
+              <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -58,10 +58,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Score.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Score.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tetris/src/Tetris/Score.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.94520545" vertical-offset="135" max-vertical-offset="1044">
+            <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1044">
               <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
               <folding>
                 <element signature="method#Score#0;class#Score#0" expanded="false" />
@@ -73,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Piece.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Piece.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Tetris/src/Tetris/Piece.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3534" max-vertical-offset="5256">
-              <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="244" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.55403346" vertical-offset="4244" max-vertical-offset="6462">
+              <caret line="395" column="8" selection-start-line="395" selection-start-column="8" selection-end-line="395" selection-end-column="8" />
               <folding>
                 <element signature="method#constructPiece#0;class#Piece#0" expanded="false" />
                 <element signature="method#constructCube#0;class#Piece#0" expanded="false" />
@@ -85,7 +85,6 @@
                 <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
                 <element signature="method#constructT#0;class#Piece#0" expanded="false" />
                 <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-                <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -147,8 +146,8 @@
         <option value="$PROJECT_DIR$/Tetris/src/Tetris/Board.java" />
         <option value="$PROJECT_DIR$/Tetris/src/Tetris/PieceController.java" />
         <option value="$PROJECT_DIR$/Tetris/src/Tetris/TetrisBase.java" />
-        <option value="$PROJECT_DIR$/Tetris/src/Tetris/LevelBar.java" />
         <option value="$PROJECT_DIR$/Tetris/src/Tetris/Score.java" />
+        <option value="$PROJECT_DIR$/Tetris/src/Tetris/LevelBar.java" />
       </list>
     </option>
   </component>
@@ -562,7 +561,6 @@
             <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
             <element signature="method#constructT#0;class#Piece#0" expanded="false" />
             <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -602,7 +600,6 @@
             <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
             <element signature="method#constructT#0;class#Piece#0" expanded="false" />
             <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -626,7 +623,6 @@
             <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
             <element signature="method#constructT#0;class#Piece#0" expanded="false" />
             <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -658,7 +654,6 @@
             <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
             <element signature="method#constructT#0;class#Piece#0" expanded="false" />
             <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -690,7 +685,6 @@
             <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
             <element signature="method#constructT#0;class#Piece#0" expanded="false" />
             <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -722,7 +716,6 @@
             <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
             <element signature="method#constructT#0;class#Piece#0" expanded="false" />
             <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -754,7 +747,6 @@
             <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
             <element signature="method#constructT#0;class#Piece#0" expanded="false" />
             <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -794,7 +786,6 @@
             <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
             <element signature="method#constructT#0;class#Piece#0" expanded="false" />
             <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -960,18 +951,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tetris/src/Tetris/Piece.java">
+    <entry file="file://$PROJECT_DIR$/Tetris/src/Tetris/Score.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3534" max-vertical-offset="5256">
-          <caret line="231" column="0" selection-start-line="231" selection-start-column="0" selection-end-line="244" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1044">
+          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
           <folding>
-            <element signature="method#constructPiece#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructCube#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructLine#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructT#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructL#0;class#Piece#0" expanded="false" />
-            <element signature="method#constructFromString#0;class#Piece#0" expanded="false" />
+            <element signature="method#Score#0;class#Score#0" expanded="false" />
+            <element signature="method#showScore#0;class#Score#0" expanded="false" />
+            <element signature="method#loadFromFile#0;class#Score#0" expanded="false" />
+            <element signature="method#resetScore#0;class#Score#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -989,23 +977,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Tetris/src/Tetris/LevelBar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1081" max-vertical-offset="1998">
-          <caret line="103" column="31" selection-start-line="103" selection-start-column="31" selection-end-line="103" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1336" max-vertical-offset="1980">
+          <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tetris/src/Tetris/Score.java">
+    <entry file="file://$PROJECT_DIR$/Tetris/src/Tetris/Piece.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.94520545" vertical-offset="135" max-vertical-offset="1044">
-          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.55403346" vertical-offset="4244" max-vertical-offset="6462">
+          <caret line="395" column="8" selection-start-line="395" selection-start-column="8" selection-end-line="395" selection-end-column="8" />
           <folding>
-            <element signature="method#Score#0;class#Score#0" expanded="false" />
-            <element signature="method#showScore#0;class#Score#0" expanded="false" />
-            <element signature="method#loadFromFile#0;class#Score#0" expanded="false" />
-            <element signature="method#resetScore#0;class#Score#0" expanded="false" />
+            <element signature="method#constructPiece#0;class#Piece#0" expanded="false" />
+            <element signature="method#constructCube#0;class#Piece#0" expanded="false" />
+            <element signature="method#constructLine#0;class#Piece#0" expanded="false" />
+            <element signature="method#constructZ#0;class#Piece#0" expanded="false" />
+            <element signature="method#constructT#0;class#Piece#0" expanded="false" />
+            <element signature="method#constructL#0;class#Piece#0" expanded="false" />
           </folding>
         </state>
       </provider>
