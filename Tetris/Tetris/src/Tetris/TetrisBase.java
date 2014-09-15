@@ -69,7 +69,7 @@ public class TetrisBase extends SimpleApplication {
         rootNode.attachChild(board);
 
         //Create and Defined Current Piece Controller
-        control = new PieceController(inputManager, assetManager, 300);
+        control = new PieceController(500, inputManager, assetManager, 300);
 
         //Create Current Piece
 		currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, "O.piece",ColorRGBA.randomColor(), assetManager ,control);
@@ -82,7 +82,7 @@ public class TetrisBase extends SimpleApplication {
         nextPiece.setFalling(false);
 
         //Create Score
-        score = new Score(0.05f,6,-2.7f,3f,assetManager);
+        score = new Score(0.05f,6,-2.7f,3f, 0.05f,assetManager);
         rootNode.attachChild(score);
 
         //Create LevelBar
@@ -145,5 +145,9 @@ public class TetrisBase extends SimpleApplication {
 
     public FadeFilter getFade(){
         return this.fade;
+    }
+
+    public PieceController getControl() {
+        return control;
     }
 }

@@ -30,9 +30,10 @@ public class Score extends Node {
     float height;
     float cubeSize;
     int maxDigits;
+    float speedMultiplyer;
     AssetManager assetManager;
 
-	public Score(float cubeSize, int maxDigits ,float posX, float posY, AssetManager assetManager){
+	public Score(float cubeSize, int maxDigits ,float posX, float posY, float speedMultiplyer, AssetManager assetManager){
 		this.score = 0;
 		this.multiplier = 1;
 		this.level = 1;
@@ -42,6 +43,7 @@ public class Score extends Node {
         this.cubeSize = cubeSize;
         this.jump = 1000;
         this.maxDigits = maxDigits;
+        this.speedMultiplyer = speedMultiplyer;
         this.assetManager = assetManager;
 
 		for(int i = 0; i<=9; i++){
@@ -91,7 +93,13 @@ public class Score extends Node {
 		if(this.score >= jump){
 			level++;
 			jump *= 2.2f;
-            Main.app.getLevelBar().showLevel();;
+            Main.app.getLevelBar().showLevel();
+            Main.app.getControl().setFullFallSpeed((int)(Main.app.getControl().getFullFallSpeed()*(1f-speedMultiplyer)));
+            if (Main.app.getControl().isAcelerated()){
+                ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed()/4);
+            }else{
+                ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed());
+            }
 		}
 
         detachAllChildren();

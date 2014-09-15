@@ -34,11 +34,15 @@ public class PieceController extends AbstractControl implements Cloneable {
 	private ActionListener actionKeyPress;
 	private AnalogListener analogKeyPress;
     private AssetManager assetManager;
+    private boolean acelerated;
+    private int fullFallSpeed;
 
 	//=========================== Constructors =====================//
 	public PieceController(){} //empty serialization constructor
 
-	public PieceController(InputManager inputManager, AssetManager assetManager, int timeKeyRepeat) {
+	public PieceController(int fullFallSpeed, InputManager inputManager, AssetManager assetManager, int timeKeyRepeat) {
+        this.fullFallSpeed = fullFallSpeed;
+        this.acelerated = false;
         this.assetManager = assetManager;
         this.actionKeyPress = new ActionListener() {
             public void onAction(String name, boolean pressed, float tpf) {
@@ -138,16 +142,21 @@ public class PieceController extends AbstractControl implements Cloneable {
 
 	public void keyActions(String name, boolean pressed){
 		if (name.equals("ChangePiece") && pressed){
-            int actualPieceFalingTime = ((Piece)spatial).getPieceFallingTime();
             setSpatial(null);
-            Main.app.setCurrentPiece(new Piece(0.15f, Main.app.getNextPiece().getInitialType(), 0f, 0.15f+(0.15f*20*1.5f)-(7.5f*0.15f), 0, Main.app.getNextPiece().getInitialInvert(), this.assetManager, this));//0.15 = cubesize, 20 = rows, 1.15 = espaco entre cubos
-            ((Piece)spatial).setPieceFallingTime(actualPieceFalingTime);
+            Main.app.setCurrentPiece(new Piece(0.15f, Main.app.getNextPiece().getInitialType(), 0f, 0.15f + (0.15f * 20 * 1.5f) - (7.5f * 0.15f), 0, Main.app.getNextPiece().getInitialInvert(), this.assetManager, this));//0.15 = cubesize, 20 = rows, 1.15 = espaco entre cubos
+            if (this.acelerated) {
+                ((Piece) spatial).setPieceFallingTime(fullFallSpeed/4);
+            }else{
+                ((Piece) spatial).setPieceFallingTime(fullFallSpeed);
+            }
             Main.app.setNextPiece(new Piece(0.15f, 3.2f, 2.5f, assetManager, null));
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
-                ((Piece)spatial).setPieceFallingTime(((Piece)spatial).getPieceFallingTime()/4);
+                ((Piece)spatial).setPieceFallingTime(fullFallSpeed/4);
+                this.acelerated = true;
             }else{
-                ((Piece)spatial).setPieceFallingTime(((Piece)spatial).getPieceFallingTime()*4);
+                ((Piece)spatial).setPieceFallingTime(fullFallSpeed);
+                this.acelerated = false;
             }
 		}else if(name.equals("RotateClockwise") && pressed){
             if(((Piece)spatial).getInitialInvert() == 0){
@@ -216,7 +225,7 @@ public class PieceController extends AbstractControl implements Cloneable {
 
     public void moveY(int orientation, float distance){
         spatial.setLocalTranslation(new Vector3f(((Piece)spatial).getPosX() , ((Piece)spatial).getPosY()+(distance*orientation), 0));
-        ((Piece)spatial).setPosY(((Piece)spatial).getPosY()+(distance*orientation));
+        ((Piece)spatial).setPosY(((Piece) spatial).getPosY() + (distance * orientation));
     }
 
     public void fall(float heightRelativeToCubeSize) {
@@ -288,4 +297,16 @@ public class PieceController extends AbstractControl implements Cloneable {
 	protected void controlRender(RenderManager rm, ViewPort vp){
      /* Optional: rendering manipulation (for advanced users) */
 	}
+
+    public int getFullFallSpeed() {
+        return fullFallSpeed;
+    }
+
+    public void setFullFallSpeed(int fullFallSpeed) {
+        this.fullFallSpeed = fullFallSpeed;
+    }
+
+    public boolean isAcelerated() {
+        return acelerated;
+    }
 }
