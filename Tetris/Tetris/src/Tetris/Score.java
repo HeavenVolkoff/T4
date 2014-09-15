@@ -35,7 +35,7 @@ public class Score extends Node {
 
 	public Score(float cubeSize, int maxDigits ,float posX, float posY, float speedMultiplyer, AssetManager assetManager){
 		this.score = 0;
-		this.multiplier = 1;
+		this.multiplier = 0;
 		this.level = 1;
 		this.numbers = new ArrayList<List<String>>();
 		this.posX = posX;
@@ -88,9 +88,17 @@ public class Score extends Node {
 	}
 
 	public void updateScore(int destroyedCubes, int value){
-		this.score += (value * destroyedCubes * this.multiplier);
+        System.out.println("Old Score: "+this.score);
+        System.out.println("Destroyed Cubes: "+destroyedCubes);
+        System.out.println("Multiplier: "+this.multiplier);
+        if (this.multiplier != 0) {
+            this.score += (value * destroyedCubes * this.multiplier);
+        }else{
+            this.score += (value * destroyedCubes);
+        }
+        System.out.println("New Score: "+this.score);
 
-		if(this.score >= jump){
+        if(this.score >= jump){
 			level++;
 			jump *= 2.2f;
             Main.app.getLevelBar().showLevel();
@@ -120,6 +128,10 @@ public class Score extends Node {
 
     public int getMultiplier() {
         return multiplier;
+    }
+
+    public void setMultiplier(int multiplier) {
+        this.multiplier = multiplier;
     }
 
     public int getLevel() {
