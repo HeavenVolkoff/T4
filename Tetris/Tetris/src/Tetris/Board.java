@@ -257,7 +257,6 @@ public class Board extends Node {
 
     public boolean addPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum, Material mat, AssetManager assetManager){
         int count = 0;
-        System.out.println(Main.app.getScore().getMultiplier());
         for (Vector3f piecePos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
             if ((int)piecePos.getY() < row) {
 				Box box = new Box(cubeSize, cubeSize, cubeSize);
@@ -276,8 +275,6 @@ public class Board extends Node {
         }else{
             Main.app.getScore().setMultiplier(0);
         }
-        System.out.println(Main.app.getScore().getMultiplier());
-        System.out.println("----------------------------------------");
 		return true;
     }
 
@@ -332,6 +329,7 @@ public class Board extends Node {
             destroyLine(line);
             //Update line num
             line = getCompleteLineNum();
+            System.out.println("Line Multiplier: "+lineCount);
             Main.app.getScore().updateScore(lineCount,100);
             lineCount += 1;
         }

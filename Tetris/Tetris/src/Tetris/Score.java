@@ -19,7 +19,7 @@ import java.util.List;
 public class Score extends Node {
 
 	private int score;
-
+    private int oldScore;
     private int multiplier; //Streak
 	private int level;
 	private int jump;
@@ -35,6 +35,7 @@ public class Score extends Node {
 
 	public Score(float cubeSize, int maxDigits ,float posX, float posY, float speedMultiplyer, AssetManager assetManager){
 		this.score = 0;
+        this.oldScore = 0;
 		this.multiplier = 0;
 		this.level = 1;
 		this.numbers = new ArrayList<List<String>>();
@@ -88,7 +89,10 @@ public class Score extends Node {
 	}
 
 	public void updateScore(int destroyedCubes, int value){
+        this.oldScore = this.score;
+        System.out.println("Fall Interval: "+Main.app.getControl().getFullFallSpeed());
         System.out.println("Old Score: "+this.score);
+        System.out.println("Max Score: "+this.jump);
         System.out.println("Destroyed Cubes: "+destroyedCubes);
         System.out.println("Multiplier: "+this.multiplier);
         if (this.multiplier != 0) {
@@ -97,8 +101,10 @@ public class Score extends Node {
             this.score += (value * destroyedCubes);
         }
         System.out.println("New Score: "+this.score);
+        System.out.println("Score Awarded: "+(this.score-this.oldScore));
 
         if(this.score >= jump){
+            System.out.println("Old Level: "+this.level);
 			level++;
 			jump *= 2.2f;
             Main.app.getLevelBar().showLevel();
@@ -108,7 +114,10 @@ public class Score extends Node {
             }else{
                 ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed());
             }
+            System.out.println("New Max Score: "+this.jump);
 		}
+        System.out.println("Level: "+this.level);
+        System.out.println("------------------------------------------------");
 
         detachAllChildren();
         showScore();
@@ -119,6 +128,7 @@ public class Score extends Node {
 
 	public void resetScore(){
 		this.score = 0;
+        this.oldScore = 0;
         this.multiplier = 0;
 	}
 
