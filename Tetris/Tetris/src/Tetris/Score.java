@@ -90,21 +90,21 @@ public class Score extends Node {
 
 	public void updateScore(int destroyedCubes, int value){
         this.oldScore = this.score;
-        System.out.println("Fall Interval: "+Main.app.getControl().getFullFallSpeed());
-        System.out.println("Old Score: "+this.score);
-        System.out.println("Max Score: "+this.jump);
-        System.out.println("Destroyed Cubes: "+destroyedCubes);
-        System.out.println("Multiplier: "+this.multiplier);
+        Main.app.getDebugMenu(0).setText("Fall Interval: "+Main.app.getControl().getFullFallSpeed());
+		Main.app.getDebugMenu(1).setText("Old Score: "+this.score);
+		Main.app.getDebugMenu(2).setText("Max Score: "+this.jump);
+		Main.app.getDebugMenu(3).setText("Destroyed Cubes: "+destroyedCubes);
+		Main.app.getDebugMenu(4).setText("Multiplier: "+this.multiplier);
         if (this.multiplier != 0) {
             this.score += (value * destroyedCubes * this.multiplier);
         }else{
             this.score += (value * destroyedCubes);
         }
-        System.out.println("New Score: "+this.score);
-        System.out.println("Score Awarded: "+(this.score-this.oldScore));
+		Main.app.getDebugMenu(5).setText("New Score: "+this.score);
+		Main.app.getDebugMenu(6).setText("Score Awarded: "+(this.score-this.oldScore));
 
         if(this.score >= jump){
-            System.out.println("Old Level: "+this.level);
+			Main.app.getDebugMenu(7).setText("Old Level: "+this.level);
 			level++;
 			jump *= 2.2f;
             Main.app.getLevelBar().showLevel();
@@ -114,10 +114,9 @@ public class Score extends Node {
             }else{
                 ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed());
             }
-            System.out.println("New Max Score: "+this.jump);
+			Main.app.getDebugMenu(8).setText("New Max Score: "+this.jump);
 		}
-        System.out.println("Level: "+this.level);
-        System.out.println("------------------------------------------------");
+		Main.app.getDebugMenu(9).setText("Level: "+this.level);
 
         detachAllChildren();
         showScore();

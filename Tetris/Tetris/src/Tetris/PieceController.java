@@ -1,7 +1,6 @@
 package Tetris;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.export.*;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;

@@ -5,16 +5,10 @@ package Tetris;
 //jMoneyFramework
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
-
-import java.awt.geom.Point2D;
-import java.util.Arrays;
 
 /**
  * T4
@@ -329,7 +323,7 @@ public class Board extends Node {
             destroyLine(line);
             //Update line num
             line = getCompleteLineNum();
-            System.out.println("Line Multiplier: "+lineCount);
+			Main.app.getDebugMenu(10).setText("Line Multiplier: "+lineCount);
             Main.app.getScore().updateScore(lineCount,100);
             lineCount += 1;
         }

@@ -1,28 +1,21 @@
 package Tetris;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.collision.CollisionResults;
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
+import com.jme3.font.BitmapText;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
-import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
 import com.jme3.renderer.RenderManager;
-import com.jme3.scene.Spatial;
-import javafx.scene.control.ProgressBar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * T4
  * @author BlackPearl & HeavenVolkoff & ykane
- */
-
-/*
-TODO:
  */
 
 public class TetrisBase extends SimpleApplication {
@@ -30,11 +23,12 @@ public class TetrisBase extends SimpleApplication {
 	private Piece currentPiece; //Current Piece on Screen
     private Piece nextPiece; //Next Piece to be on Screen
     private PieceController control;
-	public Material mat;
+	public  Material mat;
     private FadeFilter fade;
     private Board board;
     private Score score;
     private LevelBar levelBar;
+	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
 
 	@Override
 	public void simpleInitApp(){
@@ -63,6 +57,18 @@ public class TetrisBase extends SimpleApplication {
         mat.setFloat("Shininess", 2);
         mat.setBoolean("UseMaterialColors", true);
         //=========================================================================
+
+		//Create Debug Menu
+	    float lineSize = 0;
+		for(int i = 0; i < 11; i++){
+			debugMenu.add(new BitmapText(guiFont, false));
+			debugMenu.get(i).setSize(guiFont.getCharSet().getRenderedSize());
+			debugMenu.get(i).setColor(ColorRGBA.White);
+			debugMenu.get(i).setText("Debug Info");
+			debugMenu.get(i).setLocalTranslation(0, lineSize + debugMenu.get(i).getLineHeight() + 200, 0); // position
+			guiNode.attachChild(debugMenu.get(i));
+			lineSize += debugMenu.get(i).getLineHeight();
+		}
 
         //Create Board
         board = new Board(10,20,0.15f,mat);
@@ -150,4 +156,8 @@ public class TetrisBase extends SimpleApplication {
     public PieceController getControl() {
         return control;
     }
+
+	public BitmapText getDebugMenu(int index) {
+		return debugMenu.get(index);
+	}
 }
