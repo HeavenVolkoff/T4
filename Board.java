@@ -1,9 +1,3 @@
-package Tetris;
-
-//Java
-
-//jMoneyFramework
-import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -249,7 +243,7 @@ public class Board extends Node {
         return false;
     }
 
-    public boolean addPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum, Material mat, AssetManager assetManager){
+    public boolean addPiece(Vector3f[] pieceBoxesAbsolutePos, int boxNum, Material mat){
         int count = 0;
         for (Vector3f piecePos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
             if ((int)piecePos.getY() < row) {
@@ -264,11 +258,6 @@ public class Board extends Node {
 			}
         }
         Main.app.getScore().updateScore(1,10);
-        if (getCompleteLineNum() != -1){
-            Main.app.getScore().setMultiplier(Main.app.getScore().getMultiplier()+1);
-        }else{
-            Main.app.getScore().setMultiplier(0);
-        }
 		return true;
     }
 
@@ -300,10 +289,7 @@ public class Board extends Node {
                 boxesInLine++;
             }
         }
-        if (boxesInLine == col){
-            return true;
-        }
-        return false;
+        return boxesInLine == col;
     }
 
     public int getCompleteLineNum(){
@@ -327,6 +313,11 @@ public class Board extends Node {
             Main.app.getScore().updateScore(lineCount,100);
             lineCount += 1;
         }
+		if (lineCount > 1){
+			Main.app.getScore().setMultiplier(Main.app.getScore().getMultiplier()+1);
+		}else{
+			Main.app.getScore().setMultiplier(1);
+		}
     }
 
     public int getCol() {

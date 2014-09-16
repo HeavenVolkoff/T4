@@ -1,5 +1,3 @@
-package Tetris;
-
 /**
  * T4
  * @author BlackPearl & HeavenVolkoff & ykane

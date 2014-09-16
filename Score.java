@@ -1,5 +1,3 @@
-package Tetris;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -23,6 +21,7 @@ public class Score extends Node {
     private int multiplier; //Streak
 	private int level;
 	private int jump;
+	private int jumpLast;
 	private List<List<String>> numbers;
 	float posX;
 	float posY;
@@ -36,13 +35,14 @@ public class Score extends Node {
 	public Score(float cubeSize, int maxDigits ,float posX, float posY, float speedMultiplyer, AssetManager assetManager){
 		this.score = 0;
         this.oldScore = 0;
-		this.multiplier = 0;
+		this.multiplier = 1;
 		this.level = 1;
 		this.numbers = new ArrayList<List<String>>();
 		this.posX = posX;
 		this.posY = posY;
         this.cubeSize = cubeSize;
         this.jump = 1000;
+		this.jumpLast = 0;
         this.maxDigits = maxDigits;
         this.speedMultiplyer = speedMultiplyer;
         this.assetManager = assetManager;
@@ -60,27 +60,22 @@ public class Score extends Node {
 	}
 
     public void showScore(){ //
-        int scoreTemp = score;
+        int score = this.score;
         float piecePosX = 0;
-        while (true){
-           Piece piece = new Piece(this.cubeSize, 0f, 0f, 0, numbers.get((int)scoreTemp%10), ColorRGBA.White, assetManager ,null);
-           piece.move((float)(this.width*0.5)-(piecePosX),0f,0f);
-           piecePosX = piecePosX+2.5f*cubeSize*3+1.5f*cubeSize;
+		do{
+			Piece piece = new Piece(this.cubeSize, 0f, 0f, 0, numbers.get(score%10), ColorRGBA.White, assetManager ,null);
+			piece.move((float)(this.width*0.5)-(piecePosX),0f,0f);
+			piecePosX = piecePosX+2.5f*cubeSize*3+1.5f*cubeSize;
 
-           scoreTemp = scoreTemp/10;
+			score = score/10;
 
-           attachChild(piece);
-
-           if (scoreTemp==0){
-               break;
-           }
-        }
+			attachChild(piece);
+		}while (score != 0);
     }
 
 	public List<String> loadFromFile(String fileName) {
 		try {
-			String appPath = new File(".").getCanonicalPath();
-			Path path = Paths.get(appPath + "/resources/customPieces/numbers/" + fileName);
+			Path path = Paths.get("./resources/customPieces/numbers/" + fileName);
 			return Files.readAllLines(path);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -88,24 +83,23 @@ public class Score extends Node {
 		}
 	}
 
-	public void updateScore(int destroyedCubes, int value){
+	public void updateScore(int valMul, int value){
         this.oldScore = this.score;
         Main.app.getDebugMenu(0).setText("Fall Interval: "+Main.app.getControl().getFullFallSpeed());
 		Main.app.getDebugMenu(1).setText("Old Score: "+this.score);
 		Main.app.getDebugMenu(2).setText("Max Score: "+this.jump);
-		Main.app.getDebugMenu(3).setText("Destroyed Cubes: "+destroyedCubes);
+		Main.app.getDebugMenu(3).setText("Destroyed Cubes: "+valMul);
 		Main.app.getDebugMenu(4).setText("Multiplier: "+this.multiplier);
-        if (this.multiplier != 0) {
-            this.score += (value * destroyedCubes * this.multiplier);
-        }else{
-            this.score += (value * destroyedCubes);
-        }
+
+		this.score += (value * valMul * this.multiplier);
+
 		Main.app.getDebugMenu(5).setText("New Score: "+this.score);
 		Main.app.getDebugMenu(6).setText("Score Awarded: "+(this.score-this.oldScore));
 
         if(this.score >= jump){
 			Main.app.getDebugMenu(7).setText("Old Level: "+this.level);
 			level++;
+			jumpLast = jump;
 			jump *= 2.2f;
             Main.app.getLevelBar().showLevel();
             Main.app.getControl().setFullFallSpeed((int)(Main.app.getControl().getFullFallSpeed()*(1f-speedMultiplyer)));
@@ -115,20 +109,22 @@ public class Score extends Node {
                 ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed());
             }
 			Main.app.getDebugMenu(8).setText("New Max Score: "+this.jump);
+			Main.app.getLevelBar().resetPercentageGeo();
+			Main.app.getLevelBar().setMax(jump - jumpLast);
 		}
 		Main.app.getDebugMenu(9).setText("Level: "+this.level);
 
         detachAllChildren();
         showScore();
 
-        Main.app.getLevelBar().setMax(jump);
-        Main.app.getLevelBar().setValue(this.score);
+		//Main.app.getLevelBar().setMax(jump);
+        Main.app.getLevelBar().setValue(this.score - this.jumpLast);
 	}
 
 	public void resetScore(){
 		this.score = 0;
         this.oldScore = 0;
-        this.multiplier = 0;
+        this.multiplier = 1;
 	}
 
 	public int getScore() {

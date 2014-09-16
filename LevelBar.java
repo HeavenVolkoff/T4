@@ -1,5 +1,3 @@
-package Tetris;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -26,6 +24,7 @@ public class LevelBar extends Node {
     private Material percentageGeoMat;
     private float percentageGeoWidth;
     private int max;
+	private int min;
     private int value;
     private float posX;
     private float posY;
@@ -43,6 +42,7 @@ public class LevelBar extends Node {
         this.posY = posY;
         this.barWidth = barWidth;
         this.max = max;
+		this.min = 0;
         this.value = 0;
         this.cubeSize = cubeSize;
         this.assetManager = assetManager;
@@ -101,33 +101,28 @@ public class LevelBar extends Node {
     }
 
     public void showLevel() { //
-        int levelTemp = Main.app.getScore().getLevel();
+        int level = Main.app.getScore().getLevel();
         float piecePosX = -(posX - barWidth * 1.5f - 1.5f * cubeSize - 3*maxDigits*cubeSize*0.8f);
         int counter = 0;
-        while (true) {
-            if (lvlDigits[counter] != null){
-                detachChild(lvlDigits[counter]);
-            }
-            lvlDigits[counter] = new Piece(this.cubeSize * 0.3f, 0f, 0f, 0, numbers.get((int) levelTemp % 10), ColorRGBA.White, assetManager, null);
-            lvlDigits[counter].move((float) (this.numWidth * 0.5) - (piecePosX), posY, 0f);
-            piecePosX = piecePosX + 2.5f * cubeSize * 0.3f * 3 + 1.5f * cubeSize * 0.3f;
 
-            levelTemp = levelTemp / 10;
+		do{
+			if (lvlDigits[counter] != null){
+				detachChild(lvlDigits[counter]);
+			}
+			lvlDigits[counter] = new Piece(this.cubeSize * 0.3f, 0f, 0f, 0, numbers.get(level % 10), ColorRGBA.White, assetManager, null);
+			lvlDigits[counter].move((float) (this.numWidth * 0.5) - (piecePosX), posY, 0f);
+			piecePosX = piecePosX + 2.5f * cubeSize * 0.3f * 3 + 1.5f * cubeSize * 0.3f;
 
-            attachChild(lvlDigits[counter]);
+			level = level / 10;
 
-            if (levelTemp == 0) {
-                break;
-            }
-
-            counter++;
-        }
+			attachChild(lvlDigits[counter]);
+			counter++;
+		}while (level != 0);
     }
 
     public List<String> loadFromFile(String fileName) {
         try {
-            String appPath = new File(".").getCanonicalPath();
-            Path path = Paths.get(appPath + "/resources/customPieces/numbers/" + fileName);
+            Path path = Paths.get("./resources/customPieces/numbers/" + fileName);
             return Files.readAllLines(path);
         } catch (IOException e) {
             e.printStackTrace();
@@ -155,17 +150,37 @@ public class LevelBar extends Node {
     }
 
     public void setValue(int value){
-        detachChild(percentageGeo);
-        percentageGeoWidth = (value*100/max)*barWidth/100;
-        Box box = new Box(percentageGeoWidth,cubeSize,cubeSize);
-        percentageGeo= new Geometry("ProgressBar",box);
-        percentageGeo.setMaterial(percentageGeoMat);
-        percentageGeo.move(0, posY, 0);
-        correctBarXPos();
-        attachChild(percentageGeo);
+        if (percentageGeoWidth == 0) {//setLocalScale bug-fix for 0 size spatial
+			detachChild(percentageGeo);
+			percentageGeoWidth = 1f;
+			Box box = new Box(percentageGeoWidth, cubeSize, cubeSize);
+			percentageGeo = new Geometry("ProgressBar", box);
+			percentageGeo.setMaterial(percentageGeoMat);
+			percentageGeo.move(0, posY, 0);
+			correctBarXPos();
+			attachChild(percentageGeo);
+		}
+		percentageGeoWidth = (value*100/max)*barWidth/100;
+		this.percentageGeo.setLocalScale(percentageGeoWidth,1,1);
+		correctBarXPos();
     }
 
     public void setMax(int max) {
         this.max = max;
     }
+
+	public void setMin(int min) {
+		this.min = min;
+	}
+
+	public void resetPercentageGeo(){
+		detachChild(percentageGeo);
+		percentageGeoWidth = 0f;
+		Box box = new Box(percentageGeoWidth, cubeSize, cubeSize);
+		percentageGeo = new Geometry("ProgressBar", box);
+		percentageGeo.setMaterial(percentageGeoMat);
+		percentageGeo.move(0, posY, 0);
+		correctBarXPos();
+		attachChild(percentageGeo);
+	}
 }

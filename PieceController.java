@@ -1,5 +1,3 @@
-package Tetris;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -237,7 +235,7 @@ public class PieceController extends AbstractControl implements Cloneable {
                             !Main.app.getBoard().hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
                         moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
                     } else {
-                        if (Main.app.getBoard().addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat(), assetManager)) {
+                        if (Main.app.getBoard().addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat())) {
 							keyActions("ChangePiece", true);
 							Main.app.getBoard().destroyCompletedLines();
 						}else{

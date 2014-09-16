@@ -1,5 +1,3 @@
-package Tetris;
-
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -170,8 +168,7 @@ public class Piece extends Node implements Cloneable{
         numBox = 0;
 
 		try {
-			String appPath = new File(".").getCanonicalPath();
-			Path path = Paths.get(appPath+"/resources/customPieces/"+fileName);
+			Path path = Paths.get("./resources/customPieces/"+fileName);
 			constructFromString(Files.readAllLines(path), createColoredMaterial(color, assetManager), posZ);
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -1,5 +1,3 @@
-package Tetris;
-
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.light.SpotLight;
@@ -9,6 +7,8 @@ import com.jme3.math.FastMath;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
 import com.jme3.renderer.RenderManager;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Box;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +106,7 @@ public class TetrisBase extends SimpleApplication {
 
 		//Fixed Cam
 		flyCam.setEnabled(false);
+
 	}
 
 	@Override
