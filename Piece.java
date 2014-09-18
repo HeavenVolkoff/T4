@@ -72,10 +72,12 @@ public class Piece extends Node implements Cloneable{
 	public Piece(float cubeSize, int pieceType, float posX, float posY, float rotate, int invert, AssetManager assetManager, Control controler){
         super("rotationPivot");
 
-        addControl(controler);
+		if (controler != null) {
+			addControl(controler);
+		}
 
         this.cubeSize = cubeSize;
-		this.startFallTime = 0;
+		this.startFallTime = System.nanoTime();
         this.pieceFallingTime = 500;
         this.initialType = pieceType;
         this.initialInvert = invert;
@@ -114,7 +116,7 @@ public class Piece extends Node implements Cloneable{
         }
 
         this.cubeSize = cubeSize;
-        this.startFallTime = 0;
+        this.startFallTime = System.nanoTime();
         this.pieceFallingTime = 500;
         this.posX = posX+(cubeSize * 1.25f);
         this.posY = posY;
@@ -154,7 +156,7 @@ public class Piece extends Node implements Cloneable{
         }
 
         this.cubeSize = cubeSize;
-        this.startFallTime = 0;
+        this.startFallTime = System.nanoTime();
         this.pieceFallingTime = 500;
         this.posX = posX+(cubeSize * 1.25f);
         this.posY = posY - 0.5f * cubeSize;
@@ -183,7 +185,7 @@ public class Piece extends Node implements Cloneable{
 		}
 
 		this.cubeSize = cubeSize;
-		this.startFallTime = 0;
+		this.startFallTime = System.nanoTime();
 		this.pieceFallingTime = 500;
 		this.posX = posX+(cubeSize * 1.25f);
 		this.posY = posY - 0.5f * cubeSize;

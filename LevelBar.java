@@ -19,17 +19,16 @@ import java.util.List;
  */
 public class LevelBar extends Node {
 
-    private Geometry[] frame;
-    private Geometry percentageGeo;
+    protected Geometry[] frame;
+    protected Geometry percentageGeo;
     private Material percentageGeoMat;
-    private float percentageGeoWidth;
+    protected float percentageGeoWidth;
     private int max;
-	private int min;
-    private int value;
+	private int score;
     private float posX;
     private float posY;
     private float barWidth;
-    private float cubeSize;
+    protected float cubeSize;
     AssetManager assetManager;
     private List<List<String>> numbers;
     private float numWidth;
@@ -37,16 +36,18 @@ public class LevelBar extends Node {
     private Piece[] lvlDigits;
 
 
-    public LevelBar(float cubeSize, int maxDigits, float posX, float posY, float barWidth, int max, Material mat, ColorRGBA color, AssetManager assetManager){
+    public LevelBar(float cubeSize, int maxDigits, float posX, float posY, float barWidth, int max, Material mat, ColorRGBA color, AssetManager assetManager, EffectController effectController){
         this.posX = posX;
         this.posY = posY;
         this.barWidth = barWidth;
         this.max = max;
-		this.min = 0;
-        this.value = 0;
         this.cubeSize = cubeSize;
         this.assetManager = assetManager;
         this.maxDigits = maxDigits;
+
+		if (effectController != null) {
+			addControl(effectController);
+		}
 
         lvlDigits = new Piece[maxDigits];
 
@@ -169,8 +170,8 @@ public class LevelBar extends Node {
         this.max = max;
     }
 
-	public void setMin(int min) {
-		this.min = min;
+	public Geometry getPercentageGeo() {
+		return percentageGeo;
 	}
 
 	public void resetPercentageGeo(){
@@ -182,5 +183,13 @@ public class LevelBar extends Node {
 		percentageGeo.move(0, posY, 0);
 		correctBarXPos();
 		attachChild(percentageGeo);
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 }

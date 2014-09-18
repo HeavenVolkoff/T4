@@ -28,6 +28,7 @@ public class TetrisBase extends SimpleApplication {
     private Board board;
     private Score score;
     private LevelBar levelBar;
+	private EffectController effectController;
 	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
 
 	@Override
@@ -60,7 +61,7 @@ public class TetrisBase extends SimpleApplication {
 
 		//Create Debug Menu
 	    float lineSize = 0;
-		for(int i = 0; i < 11; i++){
+		for(int i = 0; i < 14; i++){
 			debugMenu.add(new BitmapText(guiFont, false));
 			debugMenu.get(i).setSize(guiFont.getCharSet().getRenderedSize());
 			debugMenu.get(i).setColor(ColorRGBA.White);
@@ -92,7 +93,8 @@ public class TetrisBase extends SimpleApplication {
         rootNode.attachChild(score);
 
         //Create LevelBar
-        levelBar = new LevelBar(0.05f, 2,-2.7f, 2f, 1.1f, 1000, mat, ColorRGBA.Cyan, assetManager);
+		effectController = new EffectController();
+        levelBar = new LevelBar(0.05f, 2,-2.7f, 2f, 1.1f, 1000, mat, ColorRGBA.Cyan, assetManager, effectController);
         rootNode.attachChild(levelBar);
 
         //============================== Fade Effect ==============================/*
@@ -111,7 +113,8 @@ public class TetrisBase extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(float tpf){
-        control.controlUpdate(tpf);
+		control.controlUpdate(tpf);
+		effectController.controlUpdate(tpf);
 	}
 
 	@Override
