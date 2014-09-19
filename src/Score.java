@@ -101,7 +101,6 @@ public class Score extends Node {
 			level++;
 			jumpLast = jump;
 			jump *= 2.2f;
-            Main.app.getLevelBar().showLevel();
 			Main.app.getControl().setFullFallSpeed((int)(Main.app.getControl().getFullFallSpeed()*(1f-speedMultiplyer)));
             if (Main.app.getControl().isAcelerated()){
                 ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed()/4);
@@ -109,8 +108,6 @@ public class Score extends Node {
                 ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed());
             }
 			Main.app.getDebugMenu(8).setText("New Max Score: "+this.jump);
-			Main.app.getLevelBar().resetPercentageGeo();
-			Main.app.getLevelBar().setMax(jump - jumpLast);
 		}
 		Main.app.getDebugMenu(9).setText("Level: "+this.level);
 
@@ -143,4 +140,8 @@ public class Score extends Node {
 	public int getJumpLast() {
 		return jumpLast;
 	}
+
+    public int getJump() {
+        return jump;
+    }
 }

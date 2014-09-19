@@ -9,15 +9,22 @@ import com.jme3.scene.control.AbstractControl;
  */
 public class EffectController extends AbstractControl{
 
-	private int callTimes = 0;
-	private int Barjump;
+	private int callTimes;
+    private int actualJumpScore;
+    private int oldJumpScore;
 
-	public void resizeBar() {
-		if (((LevelBar) spatial).getScore() < (Main.app.getScore().getScore() - Main.app.getScore().getJumpLast())) {
+    public EffectController(){
+        this.callTimes = 0;
+        this.actualJumpScore = Main.app.getScore().getJump();
+        this.oldJumpScore = Main.app.getScore().getJumpLast();
+    }
+
+	public void resizeBar(float tpf) {
+		if (((LevelBar) spatial).getScore() < (Main.app.getScore().getScore() - this.oldJumpScore)) {
 			callTimes += 1;
-			if ((int) (((LevelBar) spatial).getScore() * 0.1f) > 1 && ((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f) <= Main.app.getScore().getScore() - Main.app.getScore().getJumpLast()) {
-				((LevelBar) spatial).setValue(((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f));
-				((LevelBar) spatial).setScore(((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f));
+			if ((int) (((LevelBar) spatial).getScore() * 0.1f * tpf) > 1 && ((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf) <= Main.app.getScore().getScore() - Main.app.getScore().getJumpLast()) {
+				((LevelBar) spatial).setValue(((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf));
+				((LevelBar) spatial).setScore(((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf));
 			} else {
 				((LevelBar) spatial).setValue(((LevelBar) spatial).getScore() + 1);
 				((LevelBar) spatial).setScore(((LevelBar) spatial).getScore() + 1);
@@ -26,11 +33,20 @@ public class EffectController extends AbstractControl{
 			Main.app.getDebugMenu(12).setText("Score Score: " + (Main.app.getScore().getScore() - Main.app.getScore().getJumpLast()));
 			Main.app.getDebugMenu(13).setText("Call Times: " + callTimes);
 		}
+        if (((LevelBar) spatial).getScore() == this.actualJumpScore){
+            System.out.println("foi");
+            Main.app.getLevelBar().setMax(Main.app.getScore().getJump() - Main.app.getScore().getJumpLast());
+            ((LevelBar) spatial).resetPercentageGeo();
+            Main.app.getLevelBar().showLevel();
+            ((LevelBar) spatial).setScore(0);
+            this.actualJumpScore = Main.app.getScore().getJump();
+            this.oldJumpScore = Main.app.getScore().getJumpLast();
+        }
 	}
 
 	@Override
 	public void controlUpdate(float tpf){
-		resizeBar();
+		resizeBar(tpf*10);
 	}
 
 	@Override
