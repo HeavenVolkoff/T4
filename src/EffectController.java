@@ -33,8 +33,7 @@ public class EffectController extends AbstractControl{
 			Main.app.getDebugMenu(12).setText("Score Score: " + (Main.app.getScore().getScore() - Main.app.getScore().getJumpLast()));
 			Main.app.getDebugMenu(13).setText("Call Times: " + callTimes);
 		}
-        if (((LevelBar) spatial).getScore() == this.actualJumpScore){
-            System.out.println("foi");
+        if (((LevelBar) spatial).getScore() + this.oldJumpScore == this.actualJumpScore){
             Main.app.getLevelBar().setMax(Main.app.getScore().getJump() - Main.app.getScore().getJumpLast());
             ((LevelBar) spatial).resetPercentageGeo();
             Main.app.getLevelBar().showLevel();
