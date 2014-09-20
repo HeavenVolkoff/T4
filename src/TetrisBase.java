@@ -27,7 +27,8 @@ public class TetrisBase extends SimpleApplication {
     private Board board;
     private Score score;
     private LevelBar levelBar;
-	private EffectController effectController;
+	private EffectController lvlBarController;
+    private EffectController scoreController;
 	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
 
 	@Override
@@ -75,11 +76,13 @@ public class TetrisBase extends SimpleApplication {
 
         //Create Score
         score = new Score(0.05f,6,-2.7f,3f, 0.1f,assetManager);
+        scoreController = new EffectController();
+        score.addControl(scoreController);
         rootNode.attachChild(score);
 
         //Create LevelBar
-		effectController = new EffectController();
-        levelBar = new LevelBar(0.05f, 2,-2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, effectController);
+		lvlBarController = new EffectController();
+        levelBar = new LevelBar(0.05f, 2,-2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, lvlBarController);
         rootNode.attachChild(levelBar);
 
         //============================== Fade Effect ==============================/*
@@ -99,7 +102,8 @@ public class TetrisBase extends SimpleApplication {
 	@Override
 	public void simpleUpdate(float tpf){
 		control.controlUpdate(tpf);
-		effectController.controlUpdate(tpf);
+        lvlBarController.controlUpdate(tpf);
+        //scoreController.controlUpdate(tpf);
 	}
 
 	@Override

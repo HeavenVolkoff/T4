@@ -9,19 +9,21 @@ import com.jme3.scene.control.AbstractControl;
  */
 public class EffectController extends AbstractControl{
 
-	private int callTimes;
-    private int actualJumpScore;
-    private int oldJumpScore;
+	private int lvlBarCallTimes;
+    private int lvlBarActualJumpScore;
+    private int lvlBarOldJumpScore;
+    private int scoreValue;
 
     public EffectController(){
-        this.callTimes = 0;
-        this.actualJumpScore = Main.app.getScore().getJump();
-        this.oldJumpScore = Main.app.getScore().getJumpLast();
+        this.lvlBarCallTimes = 0;
+        this.scoreValue = 0;
+        this.lvlBarActualJumpScore = Main.app.getScore().getJump();
+        this.lvlBarOldJumpScore = Main.app.getScore().getJumpLast();
     }
 
 	public void resizeBar(float tpf) {
-		if (((LevelBar) spatial).getScore() < (Main.app.getScore().getScore() - this.oldJumpScore)) {
-			callTimes += 1;
+		if (((LevelBar) spatial).getScore() < (Main.app.getScore().getScore() - this.lvlBarOldJumpScore)) {
+            lvlBarCallTimes += 1;
 			if ((int) (((LevelBar) spatial).getScore() * 0.1f * tpf) > 1 && ((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf) <= Main.app.getScore().getScore() - Main.app.getScore().getJumpLast()) {
 				((LevelBar) spatial).setValue(((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf));
 				((LevelBar) spatial).setScore(((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf));
@@ -34,23 +36,41 @@ public class EffectController extends AbstractControl{
             ((LevelBar) spatial).attachChild(((LevelBar) spatial).getParticlesLvlBar());
 			Main.app.getDebugMenu(11).setText("Bar Score: " + ((LevelBar) spatial).getScore());
 			Main.app.getDebugMenu(12).setText("Score Score: " + (Main.app.getScore().getScore() - Main.app.getScore().getJumpLast()));
-			Main.app.getDebugMenu(13).setText("Call Times: " + callTimes);
+			Main.app.getDebugMenu(13).setText("Call Times: " + lvlBarCallTimes);
 		}else{
             ((LevelBar) spatial).getParticlesLvlBar().setParticlesPerSec(0);
         }
-        if (((LevelBar) spatial).getScore() + this.oldJumpScore >= this.actualJumpScore){
+        if (((LevelBar) spatial).getScore() + this.lvlBarOldJumpScore >= this.lvlBarActualJumpScore){
             Main.app.getLevelBar().setMax(Main.app.getScore().getJump() - Main.app.getScore().getJumpLast());
             ((LevelBar) spatial).resetPercentageGeo();
             Main.app.getLevelBar().showLevel();
             ((LevelBar) spatial).setScore(0);
-            this.actualJumpScore = Main.app.getScore().getJump();
-            this.oldJumpScore = Main.app.getScore().getJumpLast();
+            this.lvlBarActualJumpScore = Main.app.getScore().getJump();
+            this.lvlBarOldJumpScore = Main.app.getScore().getJumpLast();
         }
+        ((EffectController)Main.app.getScore().getControl(0)).updateScore(tpf);
 	}
 
-	@Override
+    public void updateScore(float tpf){
+        if (scoreValue < Main.app.getLevelBar().getScore()+((EffectController)Main.app.getLevelBar().getControl(0)).getLvlBarOldJumpScore()) {
+            if ((int)(scoreValue * 0.1f * tpf) > 1 && (scoreValue + (int)(scoreValue * 0.1f * tpf)) < ((Score) spatial).getScore()) {
+                scoreValue += (int)(scoreValue * 0.1f * tpf);
+            } else {
+                scoreValue += 1;
+            }
+            ((Score) spatial).showScore(scoreValue);
+        }
+    }
+
+    public int getLvlBarOldJumpScore() {
+        return lvlBarOldJumpScore;
+    }
+
+    @Override
 	public void controlUpdate(float tpf){
-		resizeBar(tpf*10);
+        if (spatial.getClass().getName().equals("LevelBar")){
+            resizeBar(tpf);
+        }
 	}
 
 	@Override

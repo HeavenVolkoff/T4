@@ -54,14 +54,17 @@ public class Score extends Node {
         this.width = ((maxDigits*(3*cubeSize*2.5f)) - cubeSize*0.5f) + ((maxDigits-1f)*cubeSize*0.5f);
         this.height = 5f*2.5f*cubeSize - 0.5f*cubeSize;
 
-        showScore();
+        showScore(0);
 
         setLocalTranslation(new Vector3f(posX-this.width*0.5f,posY-this.height*0.5f,0));
 	}
 
-    public void showScore(){ //
-        int score = this.score;
+    public void showScore(int scoreValue){ //
+        int score = scoreValue;
         float piecePosX = 0;
+
+        detachAllChildren();
+
 		do{
 			Piece piece = new Piece(this.cubeSize, 0f, 0f, 0, numbers.get(score%10), ColorRGBA.White, assetManager ,null);
 			piece.move((float)(this.width*0.5)-(piecePosX),0f,0f);
@@ -110,9 +113,6 @@ public class Score extends Node {
 			Main.app.getDebugMenu(8).setText("New Max Score: "+this.jump);
 		}
 		Main.app.getDebugMenu(9).setText("Level: "+this.level);
-
-        detachAllChildren();
-        showScore();
 	}
 
     public void setAlpha(float alphaVal){
