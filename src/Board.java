@@ -340,33 +340,44 @@ public class Board extends Node {
 		return row;
 	}
 
-    public boolean isGameOver() {
-        return gameOver;
+    public void setFrameAlpha(float alphaVal){
+        for (int i = 0; i < frame.length; i++){
+            if (frame[i] != null){
+                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+                alpha.a = alphaVal;
+                frame[i].getMaterial().setColor("Diffuse", alpha);
+                frame[i].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+                frame[i].getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+                frame[i].getMaterial().setBoolean("UseAlpha",true);
+            }
+        }
     }
 
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
+    public void setBoxesAlpha(float alphaVal) {
         for (int i = 0; i < geoMap.length; i++){
             for (int j = 0; j < geoMap[i].length; j++){
                 if (geoMap[i][j] != null){
                     ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
-                    alpha.a = 0.1f;
+                    alpha.a = alphaVal;
                     geoMap[i][j].getMaterial().setColor("Diffuse", alpha);
                     geoMap[i][j].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                    geoMap[i][j].getMaterial().getAdditionalRenderState().setAlphaFallOff(0.1f);
+                    geoMap[i][j].getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
                     geoMap[i][j].getMaterial().setBoolean("UseAlpha",true);
                 }
             }
         }
-        for (int i = 0; i < frame.length; i++){
-            if (frame[i] != null){
-                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
-                alpha.a = 0.1f;
-                frame[i].getMaterial().setColor("Diffuse", alpha);
-                frame[i].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                frame[i].getMaterial().getAdditionalRenderState().setAlphaFallOff(0.1f);
-                frame[i].getMaterial().setBoolean("UseAlpha",true);
-            }
-        }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver, float alphaVal) {
+        this.gameOver = gameOver;
+        setBoxesAlpha(alphaVal);
+        setFrameAlpha(alphaVal);
+        Main.app.getNextPiece().setAlpha(alphaVal);
+        Main.app.getLevelBar().setAlpha(alphaVal);
+        Main.app.getScore().setAlpha(alphaVal);
     }
 }

@@ -240,14 +240,14 @@ public class PieceController extends AbstractControl implements Cloneable {
 							Main.app.getBoard().destroyCompletedLines();
 						}else{
 							Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
-							Main.app.getBoard().setGameOver(true);
+							Main.app.getBoard().setGameOver(true, 0.1f);
 						}
                     }
                 }
             }else{
                 if (!Main.app.getBoard().isGameOver()) {
                     Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
-                    Main.app.getBoard().setGameOver(true);
+                    Main.app.getBoard().setGameOver(true, 0.1f);
                 }
             }
             ((Piece)spatial).setStartFallTime(System.nanoTime());

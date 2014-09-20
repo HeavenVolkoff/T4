@@ -2,6 +2,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -37,6 +38,7 @@ public class LevelBar extends Node {
     private int maxDigits;
     private Piece[] lvlDigits;
     private ParticleEmitter particlesLvlBar;
+    private Piece lvlPiece;
 
 
     public LevelBar(float cubeSize, int maxDigits, float posX, float posY, float barWidth, int max, ColorRGBA color, AssetManager assetManager, EffectController effectController){
@@ -68,8 +70,8 @@ public class LevelBar extends Node {
         correctBarXPos();
         attachChild(percentageGeo);
 
-        Piece piece = new Piece(cubeSize*0.3f, posX - barWidth * 1.5f - 1f * cubeSize - cubeSize*13f, posY, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
-        attachChild(piece);
+        lvlPiece = new Piece(cubeSize*0.3f, posX - barWidth * 1.5f - 1f * cubeSize - cubeSize*13f, posY, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
+        attachChild(lvlPiece);
 
         this.numbers = new ArrayList<List<String>>();
 
@@ -221,6 +223,45 @@ public class LevelBar extends Node {
 		correctBarXPos();
 		attachChild(percentageGeo);
 	}
+
+    public void setFrameAlpha(float alphaVal){
+        for (int i = 0; i < frame.length; i++){
+            if (frame[i] != null){
+                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+                alpha.a = alphaVal;
+                frame[i].getMaterial().setColor("Diffuse", alpha);
+                frame[i].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+                frame[i].getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+                frame[i].getMaterial().setBoolean("UseAlpha",true);
+            }
+        }
+    }
+
+    public void setBarAlpha(float alphaVal) {
+        ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+        alpha.a = alphaVal;
+        percentageGeo.getMaterial().setColor("Diffuse", alpha);
+        percentageGeo.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        percentageGeo.getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+        percentageGeo.getMaterial().setBoolean("UseAlpha", true);
+    }
+
+    public void setLvlAlpha(float alphaVal){
+        for (int i = 0; i < lvlDigits.length; i++){
+            if (lvlDigits[i] != null){
+                lvlDigits[i].setAlpha(alphaVal);
+            }
+        }
+    }
+
+    public void setAlpha(float alphaVal){
+        setFrameAlpha(alphaVal);
+        setBarAlpha(alphaVal);
+        setLvlAlpha(alphaVal);
+        if (lvlPiece != null) {
+            lvlPiece.setAlpha(alphaVal);
+        }
+    }
 
 	public int getScore() {
 		return score;

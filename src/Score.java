@@ -115,6 +115,14 @@ public class Score extends Node {
         showScore();
 	}
 
+    public void setAlpha(float alphaVal){
+        for (int i = 0; i < children.size(); i++){
+            if (getChild(i) != null){
+                ((Piece)getChild(i)).setAlpha(alphaVal);
+            }
+        }
+    }
+
 	public int getScore() {
 		return score;
 	}
