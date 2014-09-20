@@ -100,7 +100,7 @@ public class Score extends Node {
 			Main.app.getDebugMenu(7).setText("Old Level: "+this.level);
 			level++;
 			jumpLast = jump;
-			jump *= 2.2f;
+			jump *= 2.1f;
 			Main.app.getControl().setFullFallSpeed((int)(Main.app.getControl().getFullFallSpeed()*(1f-speedMultiplyer)));
             if (Main.app.getControl().isAcelerated()){
                 ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed()/4);
@@ -113,12 +113,6 @@ public class Score extends Node {
 
         detachAllChildren();
         showScore();
-	}
-
-	public void resetScore(){
-		this.score = 0;
-        this.oldScore = 0;
-        this.multiplier = 1;
 	}
 
 	public int getScore() {

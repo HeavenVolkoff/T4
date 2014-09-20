@@ -89,7 +89,7 @@ public class TetrisBase extends SimpleApplication {
         nextPiece.setFalling(false);
 
         //Create Score
-        score = new Score(0.05f,6,-2.7f,3f, 0.05f,assetManager);
+        score = new Score(0.05f,6,-2.7f,3f, 0.1f,assetManager);
         rootNode.attachChild(score);
 
         //Create LevelBar

@@ -51,6 +51,33 @@ public class LevelBar extends Node {
 
         lvlDigits = new Piece[maxDigits];
 
+        generateLevelBarFrame(mat);
+
+        createColoredMaterial(color, assetManager);
+
+        this.percentageGeoWidth = 0f;
+        Box box = new Box(percentageGeoWidth,cubeSize,cubeSize);
+        percentageGeo= new Geometry("ProgressBar",box);
+        percentageGeo.setLocalTranslation(new Vector3f(posX - barWidth * 1.5f, posY, 0));
+        percentageGeo.setMaterial(percentageGeoMat);
+        correctBarXPos();
+        attachChild(percentageGeo);
+
+        Piece piece = new Piece(cubeSize*0.3f, posX - barWidth * 1.5f - 1f * cubeSize - cubeSize*13f, posY, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
+        attachChild(piece);
+
+        this.numbers = new ArrayList<List<String>>();
+
+        for(int i = 0; i<=9; i++){
+            numbers.add(loadFromFile( i+".piece" ));
+        }
+
+        this.numWidth = ((maxDigits*(3*cubeSize*2.5f*0.3f)) - cubeSize*0.5f*0.3f) + ((maxDigits-1f)*cubeSize*0.5f*0.3f);
+
+        showLevel();
+    }
+
+    private void generateLevelBarFrame(Material mat){
         frame = new Geometry[4];
 
         Box box = new Box(barWidth,0.25f*cubeSize,cubeSize);
@@ -76,29 +103,6 @@ public class LevelBar extends Node {
         frame[3].setLocalTranslation(new Vector3f(posX + barWidth * 0.5f + 0.25f * cubeSize, posY, 0));
         frame[3].setMaterial(mat);
         attachChild(frame[3]);
-
-        createColoredMaterial(color, assetManager);
-
-        this.percentageGeoWidth = 0f;
-        box = new Box(percentageGeoWidth,cubeSize,cubeSize);
-        percentageGeo= new Geometry("ProgressBar",box);
-        percentageGeo.setLocalTranslation(new Vector3f(posX - barWidth * 1.5f, posY, 0));
-        percentageGeo.setMaterial(percentageGeoMat);
-        correctBarXPos();
-        attachChild(percentageGeo);
-
-        Piece piece = new Piece(cubeSize*0.3f, posX - barWidth * 1.5f - 1f * cubeSize - cubeSize*13f, posY, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
-        attachChild(piece);
-
-        this.numbers = new ArrayList<List<String>>();
-
-        for(int i = 0; i<=9; i++){
-            numbers.add(loadFromFile( i+".piece" ));
-        }
-
-        this.numWidth = ((maxDigits*(3*cubeSize*2.5f*0.3f)) - cubeSize*0.5f*0.3f) + ((maxDigits-1f)*cubeSize*0.5f*0.3f);
-
-        showLevel();
     }
 
     public void showLevel() { //
@@ -169,10 +173,6 @@ public class LevelBar extends Node {
     public void setMax(int max) {
         this.max = max;
     }
-
-	public Geometry getPercentageGeo() {
-		return percentageGeo;
-	}
 
 	public void resetPercentageGeo(){
 		detachChild(percentageGeo);
