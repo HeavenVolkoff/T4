@@ -23,7 +23,6 @@ public class TetrisBase extends SimpleApplication {
 	private Piece currentPiece; //Current Piece on Screen
     private Piece nextPiece; //Next Piece to be on Screen
     private PieceController control;
-	public  Material mat;
     private FadeFilter fade;
     private Board board;
     private Score score;
@@ -45,20 +44,6 @@ public class TetrisBase extends SimpleApplication {
         rootNode.addLight(spot);
         //=========================================================================
 
-        //============================== Frame Material Def =======================
-		mat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        mat.setColor("Ambient", ColorRGBA.DarkGray);
-        ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
-//        alpha.a = 0.1f;
-        mat.setColor("Diffuse", alpha);
-//        mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-//        mat.getAdditionalRenderState().setAlphaFallOff(0.2f);
-//        mat.setBoolean("UseAlpha",true);
-        mat.setColor("Specular", ColorRGBA.DarkGray);
-        mat.setFloat("Shininess", 2);
-        mat.setBoolean("UseMaterialColors", true);
-        //=========================================================================
-
 		//Create Debug Menu
 	    float lineSize = 0;
 		for(int i = 0; i < 14; i++){
@@ -72,7 +57,7 @@ public class TetrisBase extends SimpleApplication {
 		}
 
         //Create Board
-        board = new Board(10,20,0.15f,mat);
+        board = new Board(10, 20, 0.15f, assetManager);
         rootNode.attachChild(board);
 
         //Create and Defined Current Piece Controller
@@ -94,7 +79,7 @@ public class TetrisBase extends SimpleApplication {
 
         //Create LevelBar
 		effectController = new EffectController();
-        levelBar = new LevelBar(0.05f, 2,-2.7f, 2f, 1.1f, 1000, mat, ColorRGBA.Cyan, assetManager, effectController);
+        levelBar = new LevelBar(0.05f, 2,-2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, effectController);
         rootNode.attachChild(levelBar);
 
         //============================== Fade Effect ==============================/*

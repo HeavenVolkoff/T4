@@ -1,4 +1,7 @@
+import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -30,7 +33,7 @@ public class Board extends Node {
     public Geometry[] frame;
     public Node InvalidMoves;
 
-    public Board(int col, int row, float cubeSize, Material mat){
+    public Board(int col, int row, float cubeSize, AssetManager assetManager){
         this.cubeSize = cubeSize;
         this.frame = new Geometry[3];
         this.col = col;
@@ -39,22 +42,31 @@ public class Board extends Node {
         this.geoMap = new Geometry[col][row];
         this.InvalidMoves = new Node();
 
+        //============================== Frame Material Def =======================
+        Material frameMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        frameMaterial.setColor("Ambient", ColorRGBA.DarkGray);
+        frameMaterial.setColor("Diffuse", ColorRGBA.DarkGray);
+        frameMaterial.setColor("Specular", ColorRGBA.DarkGray);
+        frameMaterial.setFloat("Shininess", 2);
+        frameMaterial.setBoolean("UseMaterialColors", true);
+        //=========================================================================
+
         Box bottom = new Box(col*cubeSize*1.25f,cubeSize*0.25f,cubeSize*1.5f);
         frame[0] = new Geometry("BottomBoard",bottom);
         frame[0].setLocalTranslation(new Vector3f(0, -row * cubeSize * 1.25f, 0));
-        frame[0].setMaterial(mat);
+        frame[0].setMaterial(frameMaterial);
         attachChild(frame[0]);
 
         Box Left = new Box(cubeSize*0.25f,row*cubeSize*1.25f,cubeSize*1.5f);
         frame[1] = new Geometry("LeftBoard",Left);
         frame[1].setLocalTranslation(new Vector3f(-(col * cubeSize * 1.25f), 0, 0));
-        frame[1].setMaterial(mat);
+        frame[1].setMaterial(frameMaterial);
         attachChild(frame[1]);
 
         Box Right = new Box(cubeSize*0.25f,row*cubeSize*1.25f,cubeSize*1.5f);
         frame[2] = new Geometry("RightBoard",Right);
         frame[2].setLocalTranslation(new Vector3f(+(col * cubeSize * 1.25f), 0, 0));
-        frame[2].setMaterial(mat);
+        frame[2].setMaterial(frameMaterial);
         attachChild(frame[2]);
     }
 
@@ -334,5 +346,27 @@ public class Board extends Node {
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+        for (int i = 0; i < geoMap.length; i++){
+            for (int j = 0; j < geoMap[i].length; j++){
+                if (geoMap[i][j] != null){
+                    ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+                    alpha.a = 0.1f;
+                    geoMap[i][j].getMaterial().setColor("Diffuse", alpha);
+                    geoMap[i][j].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+                    geoMap[i][j].getMaterial().getAdditionalRenderState().setAlphaFallOff(0.1f);
+                    geoMap[i][j].getMaterial().setBoolean("UseAlpha",true);
+                }
+            }
+        }
+        for (int i = 0; i < frame.length; i++){
+            if (frame[i] != null){
+                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+                alpha.a = 0.1f;
+                frame[i].getMaterial().setColor("Diffuse", alpha);
+                frame[i].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+                frame[i].getMaterial().getAdditionalRenderState().setAlphaFallOff(0.1f);
+                frame[i].getMaterial().setBoolean("UseAlpha",true);
+            }
+        }
     }
 }

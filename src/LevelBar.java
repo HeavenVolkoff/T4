@@ -39,7 +39,7 @@ public class LevelBar extends Node {
     private ParticleEmitter particlesLvlBar;
 
 
-    public LevelBar(float cubeSize, int maxDigits, float posX, float posY, float barWidth, int max, Material mat, ColorRGBA color, AssetManager assetManager, EffectController effectController){
+    public LevelBar(float cubeSize, int maxDigits, float posX, float posY, float barWidth, int max, ColorRGBA color, AssetManager assetManager, EffectController effectController){
         this.posX = posX;
         this.posY = posY;
         this.barWidth = barWidth;
@@ -56,7 +56,7 @@ public class LevelBar extends Node {
 
         lvlDigits = new Piece[maxDigits];
 
-        generateLevelBarFrame(mat);
+        generateLevelBarFrame(generateFrameMaterial(assetManager));
 
         createColoredMaterial(color, assetManager);
 
@@ -100,7 +100,7 @@ public class LevelBar extends Node {
         particlesLvlBar.setHighLife(3f);
         particlesLvlBar.getParticleInfluencer().setVelocityVariation(cubeSize*2f);
     }
-    
+
     private void generateLevelBarFrame(Material mat){
         frame = new Geometry[4];
 
@@ -127,6 +127,18 @@ public class LevelBar extends Node {
         frame[3].setLocalTranslation(new Vector3f(posX + barWidth * 0.5f + 0.25f * cubeSize, posY, 0));
         frame[3].setMaterial(mat);
         attachChild(frame[3]);
+    }
+
+    private Material generateFrameMaterial(AssetManager assetManager){
+        //============================== Frame Material Def =======================
+        Material frameMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        frameMaterial.setColor("Ambient", ColorRGBA.DarkGray);
+        frameMaterial.setColor("Diffuse", ColorRGBA.DarkGray);
+        frameMaterial.setColor("Specular", ColorRGBA.DarkGray);
+        frameMaterial.setFloat("Shininess", 2);
+        frameMaterial.setBoolean("UseMaterialColors", true);
+        return frameMaterial;
+        //=========================================================================
     }
 
     public void showLevel() { //
