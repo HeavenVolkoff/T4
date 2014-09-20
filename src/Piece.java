@@ -442,8 +442,6 @@ public class Piece extends Node implements Cloneable{
 
         this.boxAbsolutePoint = new Vector3f[boxNum];
 
-
-
 		this.boxGeometries = new Geometry[boxNum];
         this.numBox = 0;
 		for (Geometry geometry : geometries) {

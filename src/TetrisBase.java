@@ -65,7 +65,7 @@ public class TetrisBase extends SimpleApplication {
         control = new PieceController(500, inputManager, assetManager, 300);
 
         //Create Current Piece
-		currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, "O.piece",ColorRGBA.randomColor(), assetManager ,control);
+		currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, "Cage.piece",ColorRGBA.randomColor(), assetManager ,control);
 		currentPiece.setFalling(true);
         rootNode.attachChild(currentPiece);
 

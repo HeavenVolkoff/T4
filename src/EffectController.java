@@ -24,6 +24,7 @@ public class EffectController extends AbstractControl{
 	public void resizeBar(float tpf) {
 		if (((LevelBar) spatial).getScore() < (Main.app.getScore().getScore() - this.lvlBarOldJumpScore)) {
             lvlBarCallTimes += 1;
+
 			if ((int) (((LevelBar) spatial).getScore() * 0.1f * tpf) > 1 && ((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf) <= Main.app.getScore().getScore() - Main.app.getScore().getJumpLast()) {
 				((LevelBar) spatial).setValue(((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf));
 				((LevelBar) spatial).setScore(((LevelBar) spatial).getScore() + (int) (((LevelBar) spatial).getScore() * 0.1f * tpf));
