@@ -1,4 +1,6 @@
 import com.jme3.asset.AssetManager;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -34,6 +36,7 @@ public class LevelBar extends Node {
     private float numWidth;
     private int maxDigits;
     private Piece[] lvlDigits;
+    private ParticleEmitter particlesLvlBar;
 
 
     public LevelBar(float cubeSize, int maxDigits, float posX, float posY, float barWidth, int max, Material mat, ColorRGBA color, AssetManager assetManager, EffectController effectController){
@@ -48,6 +51,8 @@ public class LevelBar extends Node {
 		if (effectController != null) {
 			addControl(effectController);
 		}
+
+        generateParticles();
 
         lvlDigits = new Piece[maxDigits];
 
@@ -77,6 +82,25 @@ public class LevelBar extends Node {
         showLevel();
     }
 
+    private void generateParticles(){
+        Material particleMat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        particleMat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
+        particlesLvlBar = new ParticleEmitter("LvlBarParticles", ParticleMesh.Type.Triangle, 30);
+        particlesLvlBar.setMaterial(particleMat);
+        particlesLvlBar.setImagesX(2);
+        particlesLvlBar.setImagesY(2); // 2x2 texture animation
+        particlesLvlBar.setEndColor(  new ColorRGBA(1f, 0f, 0f, 0.4f));   // red
+        particlesLvlBar.setStartColor(new ColorRGBA(1f, 0.6f, 0f, 0.4f)); // yellow
+        particlesLvlBar.getParticleInfluencer().setInitialVelocity(new Vector3f(-cubeSize*0.1f,cubeSize*1,0));
+        particlesLvlBar.setNumParticles(40);
+        particlesLvlBar.setStartSize(cubeSize*5f);
+        particlesLvlBar.setEndSize(cubeSize);
+        particlesLvlBar.setGravity(0,0,0);
+        particlesLvlBar.setLowLife(0.5f);
+        particlesLvlBar.setHighLife(3f);
+        particlesLvlBar.getParticleInfluencer().setVelocityVariation(cubeSize*2f);
+    }
+    
     private void generateLevelBarFrame(Material mat){
         frame = new Geometry[4];
 
@@ -152,6 +176,7 @@ public class LevelBar extends Node {
 
     private void correctBarXPos(){
         percentageGeo.setLocalTranslation(frame[2].getWorldBound().getCenter().getX()+0.25f*cubeSize+percentageGeoWidth,percentageGeo.getWorldBound().getCenter().getY(),percentageGeo.getWorldBound().getCenter().getZ());
+        particlesLvlBar.setLocalTranslation(percentageGeo.getWorldBound().getCenter().getX()+percentageGeoWidth,percentageGeo.getWorldBound().getCenter().getY(),percentageGeo.getWorldBound().getCenter().getZ()+cubeSize*1.2f);
     }
 
     public void setValue(int value){
@@ -192,4 +217,8 @@ public class LevelBar extends Node {
 	public void setScore(int score) {
 		this.score = score;
 	}
+
+    public ParticleEmitter getParticlesLvlBar() {
+        return particlesLvlBar;
+    }
 }

@@ -29,11 +29,16 @@ public class EffectController extends AbstractControl{
 				((LevelBar) spatial).setValue(((LevelBar) spatial).getScore() + 1);
 				((LevelBar) spatial).setScore(((LevelBar) spatial).getScore() + 1);
 			}
+            ((LevelBar) spatial).getParticlesLvlBar().setParticlesPerSec(8);
+            ((LevelBar) spatial).getParticlesLvlBar().emitAllParticles();
+            ((LevelBar) spatial).attachChild(((LevelBar) spatial).getParticlesLvlBar());
 			Main.app.getDebugMenu(11).setText("Bar Score: " + ((LevelBar) spatial).getScore());
 			Main.app.getDebugMenu(12).setText("Score Score: " + (Main.app.getScore().getScore() - Main.app.getScore().getJumpLast()));
 			Main.app.getDebugMenu(13).setText("Call Times: " + callTimes);
-		}
-        if (((LevelBar) spatial).getScore() + this.oldJumpScore == this.actualJumpScore){
+		}else{
+            ((LevelBar) spatial).getParticlesLvlBar().setParticlesPerSec(0);
+        }
+        if (((LevelBar) spatial).getScore() + this.oldJumpScore >= this.actualJumpScore){
             Main.app.getLevelBar().setMax(Main.app.getScore().getJump() - Main.app.getScore().getJumpLast());
             ((LevelBar) spatial).resetPercentageGeo();
             Main.app.getLevelBar().showLevel();
