@@ -6,6 +6,10 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,17 +46,28 @@ public class DisplayNumbers extends Node {
 
         boxGeometries = new ArrayList<Geometry>();
 
+		buildNumbers(this.maxDigits);
     }
     //=============================================================//
 
     public void buildNumbers(int maxDigits){ //
+		try {
+			Path path = Paths.get("./resources/customPieces/numbers/8.piece");
+			float piecePosX = 0;
 
-    }
+			for (int i = 0; i < maxDigits; i++) {
+				System.out.println(maxDigits);
+				constructFromString(Files.readAllLines(path), 0, 0, material, 0);
+				piecePosX = piecePosX+2.5f*cubeSize*3+1.5f*cubeSize;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    private void constructFromString(List<String> lines, Material mat, float posZ){
+	}
+
+    private void constructFromString(List<String> lines, float posX, float posY, Material mat, float posZ){
         int boxNum = 0;
-        float posX = 0;
-        float posY = 0;
         List<Float> pivotPosX = new ArrayList<Float>();
         List<Float> pivotPosY = new ArrayList<Float>();
         float absolutePivotPosX;
@@ -115,7 +130,7 @@ public class DisplayNumbers extends Node {
         }else{
             this.posY -= minFromFloatList(pivotPosY);
         }
-        setLocalTranslation(this.getPosX(), this.getPosY(), this.getWorldBound().getCenter().getZ());
+        //setLocalTranslation(this.getPosX(), this.getPosY(), this.getWorldBound().getCenter().getZ());
 
         this.numBox = 0;
         for (Geometry geometry : boxGeometries) {

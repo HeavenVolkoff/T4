@@ -41,13 +41,17 @@ public class TetrisBase extends SimpleApplication {
 
         setupDebugMenu(14);
 
+		//DisplayDigits Test
+		DisplayNumbers disp = new DisplayNumbers(0.15f,0,0,6,0,ColorRGBA.randomColor(),assetManager);
+		rootNode.attachChild(disp);
+
         //Create Board
         board = new Board(10, 20, 0.15f, assetManager);
         rootNode.attachChild(board);
 
         //Define Valid Pieces
         validPices = new ArrayList<List<String>>();
-        defineValidPieces(Arrays.asList(("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece")/*, ("Cage.piece")*/));
+        defineValidPieces(Arrays.asList(("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Cage.piece")));
 
         //Create Current Piece
         control = new PieceController(500, inputManager, assetManager, 300);
