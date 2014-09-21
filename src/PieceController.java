@@ -31,15 +31,15 @@ public class PieceController extends AbstractControl implements Cloneable {
 	private ActionListener actionKeyPress;
 	private AnalogListener analogKeyPress;
     private AssetManager assetManager;
-    private boolean acelerated;
+    private boolean acellerated;
     private int fullFallSpeed;
 
 	//=========================== Constructors =====================//
-	public PieceController(){} //empty serialization constructor
+    public PieceController() {}
 
-	public PieceController(int fullFallSpeed, InputManager inputManager, AssetManager assetManager, int timeKeyRepeat) {
+    public PieceController(int fullFallSpeed, InputManager inputManager, AssetManager assetManager, int timeKeyRepeat) {
         this.fullFallSpeed = fullFallSpeed;
-        this.acelerated = false;
+        this.acellerated = false;
         this.assetManager = assetManager;
         this.actionKeyPress = new ActionListener() {
             public void onAction(String name, boolean pressed, float tpf) {
@@ -62,13 +62,7 @@ public class PieceController extends AbstractControl implements Cloneable {
             if (file.exists() && !file.isDirectory()) {
                 loadHotKeys(appPath + "/PieceControls.ini");
             }else{
-                hotKeys.add(new Keys("ChangePiece", KeyInput.KEY_RETURN));
-                hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_SPACE));
-                //==================Set Default Analog Keys=====================//
-                hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_DOWN, 400));
-                hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_UP, 400));
-                hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, 150));
-                hotKeys.add(new Keys("MoveLeft", KeyInput.KEY_LEFT, 150));
+                setupDefaultKeys();
                 createHotKeysFile(appPath + "/PieceControls.ini");
                 saveHotKeys(appPath + "/PieceControls.ini");
             }
@@ -87,6 +81,16 @@ public class PieceController extends AbstractControl implements Cloneable {
         }
     }
 	//==============================================================//
+
+    private void setupDefaultKeys(){
+        hotKeys.add(new Keys("ChangePiece", KeyInput.KEY_RETURN));
+        hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_SPACE));
+        //==================Set Default Analog Keys=====================//
+        hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_DOWN, 400));
+        hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_UP, 400));
+        hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, 150));
+        hotKeys.add(new Keys("MoveLeft", KeyInput.KEY_LEFT, 150));
+    }
 
     //===================Handle HotKeys Save File===================//
     public void saveHotKeys(String file){
@@ -140,33 +144,24 @@ public class PieceController extends AbstractControl implements Cloneable {
 	public void keyActions(String name, boolean pressed){
 		if (name.equals("ChangePiece") && pressed){
             setSpatial(null);
-            Main.app.setCurrentPiece(new Piece(0.15f, Main.app.getNextPiece().getInitialType(), 0f, 0.15f + (0.15f * 20 * 1.5f) - (7.5f * 0.15f), 0, Main.app.getNextPiece().getInitialInvert(), this.assetManager, this));//0.15 = cubesize, 20 = rows, 1.15 = espaco entre cubos
-            if (this.acelerated) {
+            Main.app.setCurrentPiece(new Piece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, Main.app.getValidPices().get(Main.app.getNextPiece().getType()), Main.app.getNextPiece().getType(), ColorRGBA.randomColor(),  assetManager, this));
+            if (this.acellerated) {
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed/4);
             }else{
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed);
             }
-            Main.app.setNextPiece(new Piece(0.15f, 3.2f, 2.5f, assetManager, null));
+            int randomPieceIndex = (int)(Math.random()*(Main.app.getValidPices().size()));
+            Main.app.setNextPiece(new Piece(0.15f, 2f, 2.5f, 0, Main.app.getValidPices().get(randomPieceIndex), randomPieceIndex, ColorRGBA.randomColor(),  assetManager, null));
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed/4);
-                this.acelerated = true;
+                this.acellerated = true;
             }else{
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed);
-                this.acelerated = false;
+                this.acellerated = false;
             }
 		}else if(name.equals("RotateClockwise") && pressed){
-            if(((Piece)spatial).getInitialInvert() == 0){
-				if (Main.app.getBoard().canRotate((Piece) spatial, 90)){
-					rotate(0, 0, 90);
-				}
-			}else{
-				if (Main.app.getBoard().canRotate((Piece) spatial, -90)){
-					rotate(0, 0, -90);
-				}
-			}
-		}else if(name.equals("RotateCounterClockwise") && pressed){
-			if(((Piece)spatial).getInitialInvert() == 0){
+			if(((Piece)spatial).getInvert() == 0){
 				if (Main.app.getBoard().canRotate((Piece) spatial, -90)){
 					rotate(0, 0, -90);
 				}
@@ -175,6 +170,16 @@ public class PieceController extends AbstractControl implements Cloneable {
 					rotate(0, 0, 90);
 				}
 			}
+        }else if(name.equals("RotateCounterClockwise") && pressed){
+            if(((Piece)spatial).getInvert() == 0){
+                if (Main.app.getBoard().canRotate((Piece) spatial, 90)){
+                    rotate(0, 0, 90);
+                }
+            }else{
+                if (Main.app.getBoard().canRotate((Piece) spatial, -90)){
+                    rotate(0, 0, -90);
+                }
+            }
 		}else if(name.equals("MoveRight") && pressed){
             if (!Main.app.getBoard().hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
                 !Main.app.getBoard().hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
@@ -239,14 +244,14 @@ public class PieceController extends AbstractControl implements Cloneable {
 							keyActions("ChangePiece", true);
 							Main.app.getBoard().destroyCompletedLines();
 						}else{
-							Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
+							Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
 							Main.app.getBoard().setGameOver(true, 0.1f);
 						}
                     }
                 }
             }else{
                 if (!Main.app.getBoard().isGameOver()) {
-                    Main.app.setCurrentPiece(new Piece(0.1f, 0, 0, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
+                    Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
                     Main.app.getBoard().setGameOver(true, 0.1f);
                 }
             }
@@ -304,6 +309,6 @@ public class PieceController extends AbstractControl implements Cloneable {
     }
 
     public boolean isAcelerated() {
-        return acelerated;
+        return acellerated;
     }
 }

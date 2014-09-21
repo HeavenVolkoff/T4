@@ -29,14 +29,8 @@ public class Piece extends Node implements Cloneable{
 	public final int RIGHT = 1;
     public final int TOP = 1;
     public final int DOWN = -1;
+    //==============================================//
 
-    //Piece Type
-	public final int CUBE = 0;
-	public final int LINE = 1;
-	public final int Z = 2;
-	public final int T = 3;
-	public final int L = 4;
-    public final int T4 = 5;
   	/*
 		TODO: (Novos tipos de peças)
 		- peça fantasma:
@@ -46,7 +40,6 @@ public class Piece extends Node implements Cloneable{
 		    - Bloco Infected
 	*/
 
-    //==============================================//
 
 	private float cubeSize;
 	private long startFallTime;
@@ -58,8 +51,8 @@ public class Piece extends Node implements Cloneable{
     private Vector3f[] boxAbsolutePoint;
     private Geometry[] boxGeometries;
     private Material material;
-    private int initialType;
-    private int initialInvert;
+    private int Type;
+    private int Invert;
 
 
 	//================ Class Constructors==========================//
@@ -68,87 +61,6 @@ public class Piece extends Node implements Cloneable{
 			-add read piece color from file
 			-add char-color index to .piece file
 	 */
-    public Piece() {} //empty serialization constructor
-
-	public Piece(float cubeSize, int pieceType, float posX, float posY, float rotate, int invert, AssetManager assetManager, Control controler){
-        super("rotationPivot");
-
-		if (controler != null) {
-			addControl(controler);
-		}
-
-        this.cubeSize = cubeSize;
-		this.startFallTime = System.nanoTime();
-        this.pieceFallingTime = 500;
-        this.initialType = pieceType;
-        this.initialInvert = invert;
-        this.posX = posX+(cubeSize * 1.25f);
-		this.posY = posY;
-		setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
-        this.falling = true; // Start falling
-
-        rotate(0, (float) (invert * Math.PI), rotate);
-
-        if (pieceType == T4){
-            numBox = 17;
-        }else{
-            numBox = 4;
-        }
-
-        boxAbsolutePoint = new Vector3f[numBox];
-
-        boxGeometries = constructPiece(pieceType, numBox, createSpecificMaterial(pieceType, assetManager));
-        for(Geometry geoPiece : boxGeometries) {
-            attachChild(geoPiece);
-        }
-
-        if (pieceType == CUBE){
-            this.posX = posX+(cubeSize * 2.50f);
-            this.posY = posY+(cubeSize * 1.25f);
-            setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
-        }
-	} //Specific Piece Constructor
-
-    public Piece(float cubeSize, float posX, float posY, AssetManager assetManager, Control controler){
-        super("rotationPivot");
-
-        if (controler != null) {
-            addControl(controler);
-        }
-
-        this.cubeSize = cubeSize;
-        this.startFallTime = System.nanoTime();
-        this.pieceFallingTime = 500;
-        this.posX = posX+(cubeSize * 1.25f);
-        this.posY = posY;
-        setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
-        this.falling = true; // Start falling
-
-		this.initialInvert = ((int)(Math.random()*10)%2);
-		rotate(0, (float) (this.initialInvert * Math.PI), 0);
-
-        this.initialType = ((int)(Math.random()*10)%5);
-
-        if (this.initialType == T4){
-            numBox = 17;
-        }else {
-            numBox = 4;
-        }
-
-        boxAbsolutePoint = new Vector3f[numBox];
-
-        boxGeometries = constructPiece(this.initialType, numBox, createSpecificMaterial(this.initialType, assetManager));
-        for(Geometry geoPiece : boxGeometries) {
-            attachChild(geoPiece);
-        }
-
-        if (this.initialType == CUBE){
-            this.posX = posX+(cubeSize * 2.50f);
-            this.posY = posY+(cubeSize * 1.25f);
-            setLocalTranslation(new Vector3f(this.posX , this.posY , 0));
-        }
-    } //Random Piece Constructor
-
     public Piece(float cubeSize, float posX, float posY, float posZ, String fileName, ColorRGBA color, AssetManager assetManager, Control controler){
         super("rotationPivot");
 
@@ -164,9 +76,9 @@ public class Piece extends Node implements Cloneable{
         setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
         this.falling = true; // Start falling
 
-        this.initialInvert = 0;
+        this.Invert = 0;
 
-        this.initialType = -1;
+        this.Type = -1;
 
         numBox = 0;
 
@@ -178,7 +90,7 @@ public class Piece extends Node implements Cloneable{
 		}
     } //Load from file Constructor
 
-	public Piece(float cubeSize, float posX, float posY, float posZ, List<String> lines, ColorRGBA color, AssetManager assetManager, Control controler){
+	public Piece(float cubeSize, float posX, float posY, float posZ, List<String> lines, int initialType, ColorRGBA color, AssetManager assetManager, Control controler){
 		super("rotationPivot");
 
 		if (controler != null) {
@@ -193,9 +105,9 @@ public class Piece extends Node implements Cloneable{
 		setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
 		this.falling = true; // Start falling
 
-		this.initialInvert = 0;
+		this.Invert = 0;
 
-		this.initialType = -1;
+		this.Type = initialType;
 
 		numBox = 0;
 
@@ -204,31 +116,6 @@ public class Piece extends Node implements Cloneable{
 	// ==============================================================//
 
     //===================Material Manager===========================//
-    private Material createSpecificMaterial(int pieceType, AssetManager assetManager){
-        material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
-        switch(pieceType) {
-            case CUBE:
-                setMaterialColor(material, ColorRGBA.Red, 2);
-                break;
-            case LINE:
-                setMaterialColor(material, ColorRGBA.Blue, 2);
-                break;
-            case Z:
-                setMaterialColor(material, ColorRGBA.Yellow, 2);
-                break;
-            case T:
-                setMaterialColor(material, ColorRGBA.Green, 2);
-                break;
-            case L:
-                setMaterialColor(material, ColorRGBA.Brown, 2);
-                break;
-            default:
-                setMaterialColor(material, ColorRGBA.randomColor(), 2);
-                break;
-        }
-        return material;
-    }
-
     private Material createColoredMaterial(ColorRGBA color, AssetManager assetManager){
         material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         setMaterialColor(material, color, 2);
@@ -245,211 +132,141 @@ public class Piece extends Node implements Cloneable{
     }
     //==============================================================//
 
-	//================= Constructor Manager=========================//
-	private Geometry[] constructPiece(int pieceType, int numBox, Material mat){
-        Box [] boxes = new Box[numBox];
-		Geometry[] geoItens = new Geometry[numBox];
-
-		int count = 0;
-		for(Box boxObj : boxes){
-			boxObj = new Box(cubeSize, cubeSize, cubeSize);
-			geoItens[count] = new Geometry("Box"+count, boxObj);
-			geoItens[count].setMaterial(mat);
-			count++;
-		}
-
-		switch(pieceType){
-			case 0:
-				constructCube(geoItens,boxAbsolutePoint);
-				break;
-
-			case 1:
-				constructLine(geoItens,boxAbsolutePoint);
-				break;
-
-			case 2:
-				constructZ(geoItens,boxAbsolutePoint);
-				break;
-
-			case 3:
-				constructT(geoItens,boxAbsolutePoint);
-				break;
-
-			case 4:
-				constructL(geoItens,boxAbsolutePoint);
-				break;
-
-            case 5:
-                //constructT4(geoItens,boxAbsolutePoint);
-                break;
-			default:
-
-				break;
-		}
-
-		return geoItens;
-	}
-	//==============================================================//
-
-	//----------------- Specific Pieces Constructors ----------------//
-	private void constructCube(Geometry[] geoItens, Vector3f[] boxAbsolutePoint){
-		//Cube
-		/*          ***Center Pivot***
-			|0||1|
-			|2||3|
-		 */
-
-		geoItens[0].setLocalTranslation(new Vector3f( -(cubeSize * 1.25f) , -(cubeSize * 1.25f) , 0 ));
-        boxAbsolutePoint[0] = geoItens[0].getWorldBound().getCenter();
-
-		geoItens[1].setLocalTranslation(new Vector3f( +(cubeSize * 1.25f) , -(cubeSize * 1.25f) , 0 ));
-        boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
-
-		geoItens[2].setLocalTranslation(new Vector3f( -(cubeSize * 1.25f) , +(cubeSize * 1.25f) , 0 ));
-        boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
-
-		geoItens[3].setLocalTranslation(new Vector3f(+(cubeSize * 1.25f), +(cubeSize * 1.25f), 0));
-        boxAbsolutePoint[3] = geoItens[3].getWorldBound().getCenter();
-	}
-
-	private void constructLine(Geometry[] geoItens, Vector3f[] boxAbsolutePoint){
-		//Line
-			/*          ***|2| Pivot***
-				|0||1||2||3|
-			 */
-
-		geoItens[0].setLocalTranslation(new Vector3f(+(cubeSize * 5.00f), 0 , 0));
-        boxAbsolutePoint[0] = geoItens[0].getWorldBound().getCenter();
-		geoItens[1].setLocalTranslation(new Vector3f(+(cubeSize * 2.50f), 0 , 0));
-        boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
-		geoItens[2].setLocalTranslation(new Vector3f(+(cubeSize * 0.00f), 0 , 0));
-        geoItens[2].setName("Pivot");
-        boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
-		geoItens[3].setLocalTranslation(new Vector3f(-(cubeSize * 2.50f), 0 , 0));
-        boxAbsolutePoint[3] = geoItens[3].getWorldBound().getCenter();
-	}
-
-	private void constructZ(Geometry[] geoItens, Vector3f[] boxAbsolutePoint){
-		//Z
-			/*          ***|1| Pivot***
-			  	   |2||3|
-				|0||1|
-			 */
-
-        geoItens[0].setLocalTranslation(new Vector3f( -(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
-        boxAbsolutePoint[0] = geoItens[0].getWorldBound().getCenter();
-        geoItens[1].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 0.00f) , 0 ));
-        geoItens[1].setName("Pivot");
-        boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
-        geoItens[2].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 2.50f) , 0 ));
-        boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
-        geoItens[3].setLocalTranslation(new Vector3f( +(cubeSize * 2.50f) , +(cubeSize * 2.50f) , 0 ));
-        boxAbsolutePoint[3] = geoItens[3].getWorldBound().getCenter();
-
-	}
-
-	private void constructT(Geometry[] geoItens, Vector3f[] boxAbsolutePoint){
-		//T
-			/*          ***|1| Pivot***
-				   |3|
-				|0||1||2|
-			 */
-
-        geoItens[0].setLocalTranslation(new Vector3f( -(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
-        boxAbsolutePoint[0] = geoItens[0].getWorldBound().getCenter();
-        geoItens[1].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 0.00f) , 0 ));
-        geoItens[1].setName("Pivot");
-        boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
-        geoItens[2].setLocalTranslation(new Vector3f( +(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
-        boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
-        geoItens[3].setLocalTranslation(new Vector3f( +(cubeSize * 0.00f) , +(cubeSize * 2.50f) , 0 ));
-        boxAbsolutePoint[3] = geoItens[3].getWorldBound().getCenter();
-	}
-
-	private void constructL(Geometry[] geoItens, Vector3f[] boxAbsolutePoint){
-		//L
-			/*          ***|1| Pivot***
-				      |3|
-				|0||1||2|
-			 */
-
-        geoItens[0].setLocalTranslation(new Vector3f( -(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
-        boxAbsolutePoint[0] = geoItens[0].getWorldBound().getCenter();
-        geoItens[1].setLocalTranslation(new Vector3f( -(cubeSize * 0.00f) , +(cubeSize * 0.00f) , 0 ));
-        boxAbsolutePoint[1] = geoItens[1].getWorldBound().getCenter();
-		geoItens[1].setName("Pivot");
-        geoItens[2].setLocalTranslation(new Vector3f( +(cubeSize * 2.50f) , +(cubeSize * 0.00f) , 0 ));
-        boxAbsolutePoint[2] = geoItens[2].getWorldBound().getCenter();
-        geoItens[3].setLocalTranslation(new Vector3f( +(cubeSize * 2.50f) , +(cubeSize * 2.50f) , 0 ));
-        boxAbsolutePoint[3] = geoItens[3].getWorldBound().getCenter();
-	}
-	//--------------------------------------------------------------//
-
 	private void constructFromString(List<String> lines, Material mat, float posZ){
     	List<Geometry> geometries = new ArrayList<Geometry>();
         int boxNum = 0;
         float posX = 0;
 		float posY = 0;
-        float pivotPosX = 0;
-        float pivotPosY = 0;
+        List<Float> pivotPosX = new ArrayList<Float>();
+        List<Float> pivotPosY = new ArrayList<Float>();
+        float absolutePivotPosX;
+        float absolutePivotPosY;
 
-        for (String line : lines){
-            for (int i = 0; i<line.length(); i++){
-                if (line.charAt(i) == '|'){
+        for (int lineNum = 0;lineNum < lines.size(); lineNum++){
+            for (int i = 0; i<lines.get(lineNum).length(); i++){
+                if (lines.get(lineNum).equals("//INFO//")) {
+                    setPieceFileProp(lines, lineNum);
+                    lineNum = lines.size()-1;
+                }else if (lines.get(lineNum).charAt(i) == '|'){
                     posX += 0.25f*cubeSize;
-                }else{
-					if (line.charAt(i) == ' '){
-                        posX += 1f*cubeSize;
-                    }else{
-                        if (line.charAt(i) == '0' && line.charAt(i+1) == '0'){
-                            posX += 1f*cubeSize;
-                            Box box = new Box(cubeSize, cubeSize, cubeSize);
-                            geometries.add(new Geometry("Box"+boxNum,box));
-                            geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
-                            geometries.get(boxNum).setMaterial(mat);
-                            attachChild(geometries.get(boxNum));
-                            posX += 1f*cubeSize;
-                            boxNum += 1;
-                            i += 1;
-                        }else{
-                            if (line.charAt(i) == 'P' && line.charAt(i+1) == 'P'){
-                                pivotPosX = posX+1f*cubeSize;
-                                pivotPosY = posY;
-                                posX += 2f*cubeSize;
-                                i += 1;
-                            }else{
-                                if (line.charAt(i) == '0' && line.charAt(i+1) == 'P'){
-                                    posX += 1f*cubeSize;
-                                    pivotPosX = posX;
-                                    pivotPosY = posY;
-                                    Box box = new Box(cubeSize, cubeSize, cubeSize);
-                                    geometries.add(new Geometry("Pivot",box));
-                                    geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
-                                    geometries.get(boxNum).setMaterial(mat);
-                                    attachChild(geometries.get(boxNum));
-                                    posX += 1f*cubeSize;
-                                    boxNum += 1;
-                                    i += 1;
-                                }
-                            }
-                        }
-                    }
+                }else if (lines.get(lineNum).charAt(i) == ' '){
+                    posX += 1f*cubeSize;
+                }else if (lines.get(lineNum).charAt(i) == '0' && lines.get(lineNum).charAt(i+1) == '0'){
+                    posX += 1f*cubeSize;
+                    Box box = new Box(cubeSize, cubeSize, cubeSize);
+                    geometries.add(new Geometry("Box"+boxNum,box));
+                    geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
+                    geometries.get(boxNum).setMaterial(mat);
+                    attachChild(geometries.get(boxNum));
+                    posX += 1f*cubeSize;
+                    boxNum += 1;
+                    i += 1;
+                }else if (lines.get(lineNum).charAt(i) == 'P' && lines.get(lineNum).charAt(i+1) == 'P'){
+                    pivotPosX.add(posX+1f*cubeSize);
+                    pivotPosY.add(posY);
+                    posX += 2f*cubeSize;
+                    i += 1;
+                }else if (lines.get(lineNum).charAt(i) == '0' && lines.get(lineNum).charAt(i+1) == 'P') {
+                    posX += 1f * cubeSize;
+                    pivotPosX.add(posX);
+                    pivotPosY.add(posY);
+                    Box box = new Box(cubeSize, cubeSize, cubeSize);
+                    geometries.add(new Geometry("Pivot", box));
+                    geometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
+                    geometries.get(boxNum).setMaterial(mat);
+                    attachChild(geometries.get(boxNum));
+                    posX += 1f * cubeSize;
+                    boxNum += 1;
+                    i += 1;
                 }
             }
             posX = 0;
 			posY -= 2.5f*cubeSize;
         }
 
-        this.boxAbsolutePoint = new Vector3f[boxNum];
+        this.posX += -(5f*cubeSize + (minFromFloatList(pivotPosX)-minFromGeoListX(geometries)));
+        this.posY += -(2.5f*cubeSize);
 
+        absolutePivotPosX = getPivotPosFromMultiplePoints(pivotPosX);
+        absolutePivotPosY = getPivotPosFromMultiplePoints(pivotPosY);
+        if (existListVariation(pivotPosX)) {
+            this.posX += cubeSize * 1.25f + minFromFloatList(pivotPosX);
+        }else {
+            this.posX += minFromFloatList(pivotPosX);
+        }
+        if (existListVariation(pivotPosY)) {
+            this.posY -= cubeSize * 1.25f + minFromFloatList(pivotPosY);
+        }else{
+            this.posY -= minFromFloatList(pivotPosY);
+        }
+        setLocalTranslation(this.getPosX(), this.getPosY(), this.getWorldBound().getCenter().getZ());
+
+        this.boxAbsolutePoint = new Vector3f[boxNum];
 		this.boxGeometries = new Geometry[boxNum];
         this.numBox = 0;
 		for (Geometry geometry : geometries) {
 			this.boxGeometries[this.numBox] = geometry;
-			geometry.move(-pivotPosX, -1 * (pivotPosY), 0);
+			geometry.move(-absolutePivotPosX, -1 * (absolutePivotPosY), 0);
 			this.boxAbsolutePoint[numBox] = geometry.getWorldBound().getCenter();
 			this.numBox += 1;
 		}
+    }
+
+    private void setPieceFileProp(List<String> lines, int lineNum){
+        if (lines.get(lineNum+2).equals("0")){
+            this.Invert = 0;
+        }else{
+            this.Invert = 1;
+        }
+        float red = Float.parseFloat(lines.get(lineNum+4));
+        float green = Float.parseFloat(lines.get(lineNum+6));
+        float blue = Float.parseFloat(lines.get(lineNum+8));
+        float alpha = Float.parseFloat(lines.get(lineNum+10));
+        if (red != -1 && green != -1 && blue != -1 && alpha != -1) {
+            setMaterialColor(getMat(), new ColorRGBA(red, green, blue, alpha), 3);
+        }
+    }
+
+    private float minFromGeoListX(List<Geometry> geo){
+        float min = geo.get(0).getWorldBound().getCenter().getX();
+        for (Geometry item : geo){
+            if (item.getWorldBound().getCenter().getX() < min){
+                min = item.getWorldBound().getCenter().getX();
+            }
+        }
+        return min;
+    }
+
+    private float minFromFloatList(List<Float> nums){
+        float min = nums.get(0);
+        for (float item : nums){
+            if (item < min){
+                min = item;
+            }
+        }
+        return min;
+    }
+
+    private boolean existListVariation(List<Float> nums){
+        float standard = nums.get(0);
+        for (float item : nums){
+            if (item != standard){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public float getPivotPosFromMultiplePoints(List<Float> pivotPos){
+        float sum = 0;
+        float count = 0;
+        float min = minFromFloatList(pivotPos);
+
+        for (float pos : pivotPos) {
+            sum += pos-min;
+            count++;
+        }
+        return min+(sum/count);
     }
 
     public void setAlpha(float alphaVal){
@@ -513,10 +330,6 @@ public class Piece extends Node implements Cloneable{
         return boxAbsolutePoint;
     }
 
-    public void setBoxAbsolutePoint(Vector3f[] boxAbsolutePoint) {
-        this.boxAbsolutePoint = boxAbsolutePoint;
-    }
-
     public int getNumBox() {
         return numBox;
     }
@@ -529,11 +342,11 @@ public class Piece extends Node implements Cloneable{
         return material;
     }
 
-    public int getInitialType() {
-        return initialType;
+    public int getType() {
+        return Type;
     }
 
-    public int getInitialInvert() {
-        return initialInvert;
+    public int getInvert() {
+        return Invert;
     }
 }

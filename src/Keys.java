@@ -11,8 +11,6 @@ public class Keys {
 	private int repeatTime; //Long-Press Repeat Time
 
     //=========================== Constructors =====================//
-    public Keys(){} //empty serialization constructor
-
 	public Keys(String actionName, int id, int repeatTime){
 		this.onAction = false;
 		this.actionName = actionName;
@@ -56,9 +54,5 @@ public class Keys {
 
 	public int getRepeatTime() {
 		return repeatTime;
-	}
-
-	public void setRepeatTime(int repeatTime) {
-		this.repeatTime = repeatTime;
 	}
 }

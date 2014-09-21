@@ -18,7 +18,7 @@ public class Score extends Node {
 
 	private int score;
     private int oldScore;
-    private int multiplier; //Streak
+    private int streakMultiplier; //Streak
 	private int level;
 	private int jump;
 	private int jumpLast;
@@ -29,13 +29,13 @@ public class Score extends Node {
     float height;
     float cubeSize;
     int maxDigits;
-    float speedMultiplyer;
+    float speedMultiplier;
     AssetManager assetManager;
 
 	public Score(float cubeSize, int maxDigits ,float posX, float posY, float speedMultiplyer, AssetManager assetManager){
 		this.score = 0;
         this.oldScore = 0;
-		this.multiplier = 1;
+		this.streakMultiplier = 1;
 		this.level = 1;
 		this.numbers = new ArrayList<List<String>>();
 		this.posX = posX;
@@ -44,7 +44,7 @@ public class Score extends Node {
         this.jump = 1000;
 		this.jumpLast = 0;
         this.maxDigits = maxDigits;
-        this.speedMultiplyer = speedMultiplyer;
+        this.speedMultiplier = speedMultiplyer;
         this.assetManager = assetManager;
 
 		for(int i = 0; i<=9; i++){
@@ -66,7 +66,7 @@ public class Score extends Node {
         detachAllChildren();
 
 		do{
-			Piece piece = new Piece(this.cubeSize, 0f, 0f, 0, numbers.get(score%10), ColorRGBA.White, assetManager ,null);
+			Piece piece = new Piece(this.cubeSize, 0f, 0f, 0, numbers.get(score%10), -1, ColorRGBA.White, assetManager ,null);
 			piece.move((float)(this.width*0.5)-(piecePosX),0f,0f);
 			piecePosX = piecePosX+2.5f*cubeSize*3+1.5f*cubeSize;
 
@@ -92,9 +92,9 @@ public class Score extends Node {
 		Main.app.getDebugMenu(1).setText("Old Score: "+this.score);
 		Main.app.getDebugMenu(2).setText("Max Score: "+this.jump);
 		Main.app.getDebugMenu(3).setText("Destroyed Cubes: "+valMul);
-		Main.app.getDebugMenu(4).setText("Multiplier: "+this.multiplier);
+		Main.app.getDebugMenu(4).setText("Multiplier: "+this.streakMultiplier);
 
-		this.score += (value * valMul * this.multiplier);
+		this.score += (value * valMul * this.streakMultiplier);
 
 		Main.app.getDebugMenu(5).setText("New Score: "+this.score);
 		Main.app.getDebugMenu(6).setText("Score Awarded: "+(this.score-this.oldScore));
@@ -104,7 +104,7 @@ public class Score extends Node {
 			level++;
 			jumpLast = jump;
 			jump *= 2.1f;
-			Main.app.getControl().setFullFallSpeed((int)(Main.app.getControl().getFullFallSpeed()*(1f-speedMultiplyer)));
+			Main.app.getControl().setFullFallSpeed((int)(Main.app.getControl().getFullFallSpeed()*(1f-speedMultiplier)));
             if (Main.app.getControl().isAcelerated()){
                 ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed()/4);
             }else{
@@ -127,12 +127,12 @@ public class Score extends Node {
 		return score;
 	}
 
-    public int getMultiplier() {
-        return multiplier;
+    public int getStreakMultiplier() {
+        return streakMultiplier;
     }
 
-    public void setMultiplier(int multiplier) {
-        this.multiplier = multiplier;
+    public void setStreakMultiplier(int multiplier) {
+        this.streakMultiplier = multiplier;
     }
 
     public int getLevel() {

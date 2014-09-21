@@ -51,20 +51,25 @@ public class Board extends Node {
         frameMaterial.setBoolean("UseMaterialColors", true);
         //=========================================================================
 
-        Box bottom = new Box(col*cubeSize*1.25f,cubeSize*0.25f,cubeSize*1.5f);
-        frame[0] = new Geometry("BottomBoard",bottom);
+        buildFrames(frameMaterial);
+    }
+
+    private void buildFrames(Material frameMaterial)
+    {
+        Box bottom = new Box(col * cubeSize * 1.25f, cubeSize * 0.25f, cubeSize * 1.5f);
+        frame[0] = new Geometry("BottomBoard", bottom);
         frame[0].setLocalTranslation(new Vector3f(0, -row * cubeSize * 1.25f, 0));
         frame[0].setMaterial(frameMaterial);
         attachChild(frame[0]);
 
-        Box Left = new Box(cubeSize*0.25f,row*cubeSize*1.25f,cubeSize*1.5f);
-        frame[1] = new Geometry("LeftBoard",Left);
+        Box Left = new Box(cubeSize * 0.25f, row * cubeSize * 1.25f, cubeSize * 1.5f);
+        frame[1] = new Geometry("LeftBoard", Left);
         frame[1].setLocalTranslation(new Vector3f(-(col * cubeSize * 1.25f), 0, 0));
         frame[1].setMaterial(frameMaterial);
         attachChild(frame[1]);
 
-        Box Right = new Box(cubeSize*0.25f,row*cubeSize*1.25f,cubeSize*1.5f);
-        frame[2] = new Geometry("RightBoard",Right);
+        Box Right = new Box(cubeSize * 0.25f, row * cubeSize * 1.25f, cubeSize * 1.5f);
+        frame[2] = new Geometry("RightBoard", Right);
         frame[2].setLocalTranslation(new Vector3f(+(col * cubeSize * 1.25f), 0, 0));
         frame[2].setMaterial(frameMaterial);
         attachChild(frame[2]);
@@ -106,7 +111,7 @@ public class Board extends Node {
                     if ((int) pos.getX() - (int) geo.getX() == 0 && (int) pos.getY() - (int) geo.getY() == 0) {
                         matrix[piece.getNumBox()][piece.getNumBox()] = 2;
                     } else {
-                        if (piece.getInitialInvert() == 0) {
+                        if (piece.getInvert() == 0) {
                             matrix[(int) pos.getX() - (int) geo.getX() + piece.getNumBox()][(int) pos.getY() - (int) geo.getY() + piece.getNumBox()] = 1;
                         } else {
                             matrix[piece.getNumBox() + ((int) pos.getX() - (int) geo.getX()) * -1][piece.getNumBox() + ((int) pos.getY() - (int) geo.getY()) * -1] = 1;
@@ -119,7 +124,7 @@ public class Board extends Node {
                     if ((int) pos.getX() - (int) geo.getX() == 0 && (int) pos.getY() - (int) geo.getY() == 0) {
                         matrix[piece.getNumBox()][piece.getNumBox()] = 2;
                     } else {
-                        if (piece.getInitialInvert() == 0) {
+                        if (piece.getInvert() == 0) {
                             matrix[piece.getNumBox() + ((int) pos.getX() - (int) geo.getX()) * -1][piece.getNumBox() + ((int) pos.getY() - (int) geo.getY()) * -1] = 1;
                         } else {
                             matrix[piece.getNumBox() + ((int) pos.getX() - (int) geo.getX()) * +1][piece.getNumBox() + ((int) pos.getY() - (int) geo.getY()) * +1] = 1;
@@ -171,17 +176,6 @@ public class Board extends Node {
             }
         }
 		return true;
-    }
-
-    public void clearBoard(){
-        for (int i = 0; i<col; i++) {
-            for (int j = 0; j < row; j++) {
-                if (geoMap[i][j] != null) {
-                    detachChild(geoMap[i][j]);
-                    geoMap[i][j] = null;
-                }
-            }
-        }
     }
 
     public boolean gameOver(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
@@ -326,19 +320,11 @@ public class Board extends Node {
             lineCount += 1;
         }
 		if (lineCount > 1){
-			Main.app.getScore().setMultiplier(Main.app.getScore().getMultiplier()+1);
+			Main.app.getScore().setStreakMultiplier(Main.app.getScore().getStreakMultiplier()+1);
 		}else{
-			Main.app.getScore().setMultiplier(1);
+			Main.app.getScore().setStreakMultiplier(1);
 		}
     }
-
-    public int getCol() {
-		return col;
-	}
-
-	public int getRow() {
-		return row;
-	}
 
     public void setFrameAlpha(float alphaVal){
         for (int i = 0; i < frame.length; i++){

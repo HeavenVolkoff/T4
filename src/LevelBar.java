@@ -70,7 +70,7 @@ public class LevelBar extends Node {
         correctBarXPos();
         attachChild(percentageGeo);
 
-        lvlPiece = new Piece(cubeSize*0.3f, posX - barWidth * 1.5f - 1f * cubeSize - cubeSize*13f, posY, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
+        lvlPiece = new Piece(cubeSize*0.3f, posX + barWidth * 0.10f, posY - 0.25f * cubeSize, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
         attachChild(lvlPiece);
 
         this.numbers = new ArrayList<List<String>>();
@@ -152,8 +152,8 @@ public class LevelBar extends Node {
 			if (lvlDigits[counter] != null){
 				detachChild(lvlDigits[counter]);
 			}
-			lvlDigits[counter] = new Piece(this.cubeSize * 0.3f, 0f, 0f, 0, numbers.get(level % 10), ColorRGBA.White, assetManager, null);
-			lvlDigits[counter].move((float) (this.numWidth * 0.5) - (piecePosX), posY, 0f);
+			lvlDigits[counter] = new Piece(this.cubeSize * 0.3f, 0f, 0f, 0, numbers.get(level % 10), -1, ColorRGBA.White, assetManager, null);
+			lvlDigits[counter].move((float) (this.numWidth * 0.5) - (piecePosX), posY - 0.25f * cubeSize, 0f);
 			piecePosX = piecePosX + 2.5f * cubeSize * 0.3f * 3 + 1.5f * cubeSize * 0.3f;
 
 			level = level / 10;
