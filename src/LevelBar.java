@@ -18,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by blackpearl on 12/09/14.
+ * T4
+ * @author BlackPearl & HeavenVolkoff & ykane
  */
+
 public class LevelBar extends Node {
 
     protected Geometry[] frame;

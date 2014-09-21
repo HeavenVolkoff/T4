@@ -11,9 +11,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * Created by HeavenVolkoff on 12/09/14.
+/**
+ * T4
+ * @author BlackPearl & HeavenVolkoff & ykane
  */
+
 public class Score extends Node {
 
 	private int score;

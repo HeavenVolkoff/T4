@@ -5,8 +5,10 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
 /**
- * Created by HeavenVolkoff on 17/09/14.
+ * T4
+ * @author BlackPearl & HeavenVolkoff & ykane
  */
+
 public class EffectController extends AbstractControl{
 
 	private int lvlBarCallTimes;
