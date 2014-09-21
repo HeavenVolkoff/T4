@@ -34,16 +34,13 @@ public class TetrisBase extends SimpleApplication {
 	private EffectController lvlBarController;
 	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
     private List<List<String>> validPices;
+    DisplayNumbers displayScore;
 
 	@Override
 	public void simpleInitApp(){
         setupLights();
 
         setupDebugMenu(14);
-
-		//DisplayDigits Test
-		DisplayNumbers disp = new DisplayNumbers(0.15f,0,0,6,0,ColorRGBA.randomColor(),assetManager);
-		rootNode.attachChild(disp);
 
         //Create Board
         board = new Board(10, 20, 0.15f, assetManager);
@@ -67,6 +64,8 @@ public class TetrisBase extends SimpleApplication {
 
         //Create Score
         score = new Score(0.05f,6,-2.25f,3f, 0.1f,assetManager);
+        displayScore = new DisplayNumbers(0.05f,-3.45f,2.5f, 6, 0, ColorRGBA.White, assetManager);
+        rootNode.attachChild(displayScore);
         EffectController scoreController = new EffectController();
         score.addControl(scoreController);
         rootNode.attachChild(score);
@@ -187,5 +186,9 @@ public class TetrisBase extends SimpleApplication {
 
     public List<List<String>> getValidPices() {
         return validPices;
+    }
+
+    public DisplayNumbers getDisplayScore() {
+        return displayScore;
     }
 }

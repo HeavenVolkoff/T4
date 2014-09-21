@@ -47,18 +47,22 @@ public class DisplayNumbers extends Node {
         boxGeometries = new ArrayList<Geometry>();
 
 		buildNumbers(this.maxDigits);
+
+        move(-this.width*0.75f+posX, +this.height*0.75f+posY, 0);
+
+        write(initialValue);
     }
     //=============================================================//
 
     public void buildNumbers(int maxDigits){ //
 		try {
-			Path path = Paths.get("./resources/customPieces/numbers/8.piece");
-			float piecePosX = 0;
+			Path path = Paths.get("./resources/customPieces/numbers/NumBase.piece");
 
 			for (int i = 0; i < maxDigits; i++) {
-				System.out.println(maxDigits);
-				constructFromString(Files.readAllLines(path), 0, 0, material, 0);
-				piecePosX = piecePosX+2.5f*cubeSize*3+1.5f*cubeSize;
+				constructFromString(Files.readAllLines(path), String.valueOf(i), material, 0);
+                for (Geometry geo : boxGeometries){
+                    geo.move(2.5f*cubeSize*3+1.5f*cubeSize,0,0);
+                }
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -66,12 +70,92 @@ public class DisplayNumbers extends Node {
 
 	}
 
-    private void constructFromString(List<String> lines, float posX, float posY, Material mat, float posZ){
-        int boxNum = 0;
-        List<Float> pivotPosX = new ArrayList<Float>();
-        List<Float> pivotPosY = new ArrayList<Float>();
-        float absolutePivotPosX;
-        float absolutePivotPosY;
+    public void write(int val){
+        int[] visibleGeo = new int[maxDigits*15];
+        for (int i = 0; i < maxDigits*15; i+=15){
+            if (val == 0 && i != 0){
+                break;
+            }
+
+            if (val%10 == 0){
+                visibleGeo[i]=1;   visibleGeo[i+1]=1; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=1; visibleGeo[i+4]=0; visibleGeo[i+5]=1;
+                visibleGeo[i+6]=1; visibleGeo[i+7]=0; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=1; visibleGeo[i+10]=0;visibleGeo[i+11]=1;
+                visibleGeo[i+12]=1;visibleGeo[i+13]=1;visibleGeo[i+14]=1;
+            }else if (val%10 == 1){
+                visibleGeo[i]=0;   visibleGeo[i+1]=0; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=0; visibleGeo[i+4]=1; visibleGeo[i+5]=1;
+                visibleGeo[i+6]=0; visibleGeo[i+7]=0; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=0; visibleGeo[i+10]=0;visibleGeo[i+11]=1;
+                visibleGeo[i+12]=0;visibleGeo[i+13]=0;visibleGeo[i+14]=1;
+            }else if (val%10 == 2){
+                visibleGeo[i]=1;   visibleGeo[i+1]=1; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=0; visibleGeo[i+4]=0; visibleGeo[i+5]=1;
+                visibleGeo[i+6]=1; visibleGeo[i+7]=1; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=1; visibleGeo[i+10]=0;visibleGeo[i+11]=0;
+                visibleGeo[i+12]=1;visibleGeo[i+13]=1;visibleGeo[i+14]=1;
+            }else if (val%10 == 3){
+                visibleGeo[i]=1;   visibleGeo[i+1]=1; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=0; visibleGeo[i+4]=0; visibleGeo[i+5]=1;
+                visibleGeo[i+6]=1; visibleGeo[i+7]=1; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=0; visibleGeo[i+10]=0;visibleGeo[i+11]=1;
+                visibleGeo[i+12]=1;visibleGeo[i+13]=1;visibleGeo[i+14]=1;
+            }else if (val%10 == 4){
+                visibleGeo[i]=1;   visibleGeo[i+1]=0; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=1; visibleGeo[i+4]=0; visibleGeo[i+5]=1;
+                visibleGeo[i+6]=1; visibleGeo[i+7]=1; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=0; visibleGeo[i+10]=0;visibleGeo[i+11]=1;
+                visibleGeo[i+12]=0;visibleGeo[i+13]=0;visibleGeo[i+14]=1;
+            }else if (val%10 == 5){
+                visibleGeo[i]=1;   visibleGeo[i+1]=1; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=1; visibleGeo[i+4]=0; visibleGeo[i+5]=0;
+                visibleGeo[i+6]=1; visibleGeo[i+7]=1; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=0; visibleGeo[i+10]=0;visibleGeo[i+11]=1;
+                visibleGeo[i+12]=1;visibleGeo[i+13]=1;visibleGeo[i+14]=1;
+          }else if (val%10 == 6){
+                visibleGeo[i]=1;   visibleGeo[i+1]=1; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=1; visibleGeo[i+4]=0; visibleGeo[i+5]=0;
+                visibleGeo[i+6]=1; visibleGeo[i+7]=1; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=1; visibleGeo[i+10]=0;visibleGeo[i+11]=1;
+                visibleGeo[i+12]=1;visibleGeo[i+13]=1;visibleGeo[i+14]=1;
+            }else if (val%10 == 7){
+                visibleGeo[i]=1;   visibleGeo[i+1]=1; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=0; visibleGeo[i+4]=0; visibleGeo[i+5]=1;
+                visibleGeo[i+6]=0; visibleGeo[i+7]=1; visibleGeo[i+8]=0;
+                visibleGeo[i+9]=1; visibleGeo[i+10]=0;visibleGeo[i+11]=0;
+                visibleGeo[i+12]=1;visibleGeo[i+13]=0;visibleGeo[i+14]=0;
+            }else if (val%10 == 8){
+                visibleGeo[i]=1;   visibleGeo[i+1]=1; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=1; visibleGeo[i+4]=0; visibleGeo[i+5]=1;
+                visibleGeo[i+6]=1; visibleGeo[i+7]=1; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=1; visibleGeo[i+10]=0;visibleGeo[i+11]=1;
+                visibleGeo[i+12]=1;visibleGeo[i+13]=1;visibleGeo[i+14]=1;
+            }else if (val%10 == 9){
+                visibleGeo[i]=1;   visibleGeo[i+1]=1; visibleGeo[i+2]=1;
+                visibleGeo[i+3]=1; visibleGeo[i+4]=0; visibleGeo[i+5]=1;
+                visibleGeo[i+6]=1; visibleGeo[i+7]=1; visibleGeo[i+8]=1;
+                visibleGeo[i+9]=0; visibleGeo[i+10]=0;visibleGeo[i+11]=1;
+                visibleGeo[i+12]=1;visibleGeo[i+13]=1;visibleGeo[i+14]=1;
+            }
+
+            if (val == 0){
+                break;
+            }
+            val = val/10;
+        }
+        for (int i = 0; i < maxDigits*15; i++){
+            if (visibleGeo[i] == 1){
+                attachChild(boxGeometries.get(i));
+            }else{
+                detachChild(boxGeometries.get(i));
+            }
+        }
+    }
+
+    private void constructFromString(List<String> lines, String digtName, Material mat, float posZ){
+        float posX = 0;
+        float posY = 0;
 
         for (int lineNum = 0;lineNum < lines.size(); lineNum++){
             for (int i = 0; i<lines.get(lineNum).length(); i++){
@@ -85,100 +169,31 @@ public class DisplayNumbers extends Node {
                 }else if (lines.get(lineNum).charAt(i) == '0' && lines.get(lineNum).charAt(i+1) == '0'){
                     posX += 1f*cubeSize;
                     Box box = new Box(cubeSize, cubeSize, cubeSize);
-                    boxGeometries.add(new Geometry("Box"+boxNum,box));
-                    boxGeometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
-                    boxGeometries.get(boxNum).setMaterial(mat);
-                    attachChild(boxGeometries.get(boxNum));
+                    boxGeometries.add(new Geometry(digtName+numBox,box));
+                    boxGeometries.get(numBox).setLocalTranslation(new Vector3f(posX, posY, posZ));
+                    boxGeometries.get(numBox).setMaterial(mat);
+                    attachChild(boxGeometries.get(numBox));
                     posX += 1f*cubeSize;
-                    boxNum += 1;
+                    numBox += 1;
                     i += 1;
                 }else if (lines.get(lineNum).charAt(i) == 'P' && lines.get(lineNum).charAt(i+1) == 'P'){
-                    pivotPosX.add(posX+1f*cubeSize);
-                    pivotPosY.add(posY);
                     posX += 2f*cubeSize;
                     i += 1;
                 }else if (lines.get(lineNum).charAt(i) == '0' && lines.get(lineNum).charAt(i+1) == 'P') {
                     posX += 1f * cubeSize;
-                    pivotPosX.add(posX);
-                    pivotPosY.add(posY);
                     Box box = new Box(cubeSize, cubeSize, cubeSize);
-                    boxGeometries.add(new Geometry("Pivot", box));
-                    boxGeometries.get(boxNum).setLocalTranslation(new Vector3f(posX, posY, posZ));
-                    boxGeometries.get(boxNum).setMaterial(mat);
-                    attachChild(boxGeometries.get(boxNum));
+                    boxGeometries.add(new Geometry(digtName+numBox, box));
+                    boxGeometries.get(numBox).setLocalTranslation(new Vector3f(posX, posY, posZ));
+                    boxGeometries.get(numBox).setMaterial(mat);
+                    attachChild(boxGeometries.get(numBox));
                     posX += 1f * cubeSize;
-                    boxNum += 1;
+                    numBox += 1;
                     i += 1;
                 }
             }
             posX = 0;
             posY -= 2.5f*cubeSize;
         }
-
-        this.posX += -(5f*cubeSize + (minFromFloatList(pivotPosX)-minFromGeoListX(boxGeometries)));
-        this.posY += -(2.5f*cubeSize);
-
-        absolutePivotPosX = getPivotPosFromMultiplePoints(pivotPosX);
-        absolutePivotPosY = getPivotPosFromMultiplePoints(pivotPosY);
-        if (existListVariation(pivotPosX)) {
-            this.posX += cubeSize * 1.25f + minFromFloatList(pivotPosX);
-        }else {
-            this.posX += minFromFloatList(pivotPosX);
-        }
-        if (existListVariation(pivotPosY)) {
-            this.posY -= cubeSize * 1.25f + minFromFloatList(pivotPosY);
-        }else{
-            this.posY -= minFromFloatList(pivotPosY);
-        }
-        //setLocalTranslation(this.getPosX(), this.getPosY(), this.getWorldBound().getCenter().getZ());
-
-        this.numBox = 0;
-        for (Geometry geometry : boxGeometries) {
-            geometry.move(-absolutePivotPosX, -1 * (absolutePivotPosY), 0);
-            this.numBox += 1;
-        }
-    }
-
-    private float minFromGeoListX(List<Geometry> geo){
-        float min = geo.get(0).getWorldBound().getCenter().getX();
-        for (Geometry item : geo){
-            if (item.getWorldBound().getCenter().getX() < min){
-                min = item.getWorldBound().getCenter().getX();
-            }
-        }
-        return min;
-    }
-
-    private float minFromFloatList(List<Float> nums){
-        float min = nums.get(0);
-        for (float item : nums){
-            if (item < min){
-                min = item;
-            }
-        }
-        return min;
-    }
-
-    private boolean existListVariation(List<Float> nums){
-        float standard = nums.get(0);
-        for (float item : nums){
-            if (item != standard){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public float getPivotPosFromMultiplePoints(List<Float> pivotPos){
-        float sum = 0;
-        float count = 0;
-        float min = minFromFloatList(pivotPos);
-
-        for (float pos : pivotPos) {
-            sum += pos-min;
-            count++;
-        }
-        return min+(sum/count);
     }
 
     private void setPieceFileProp(List<String> lines, int lineNum){

@@ -61,7 +61,7 @@ public class EffectController extends AbstractControl{
             } else {
                 scoreValue += 1;
             }
-            ((Score) spatial).showScore(scoreValue);
+            Main.app.getDisplayScore().write(scoreValue);
         }
     }
 
