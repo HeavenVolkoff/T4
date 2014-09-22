@@ -1,5 +1,6 @@
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -223,23 +224,17 @@ public class DisplayNumbers extends Node {
     }
     //==============================================================//
 
-    public Material getMaterial() {
-        return material;
+    public void setAlpha(float alphaVal){
+        for (int i = 0; i < boxGeometries.size(); i++){
+            if (boxGeometries.get(i) != null){
+                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+                alpha.a = alphaVal;
+                boxGeometries.get(i).getMaterial().setColor("Diffuse", alpha);
+                boxGeometries.get(i).getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+                boxGeometries.get(i).getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+                boxGeometries.get(i).getMaterial().setBoolean("UseAlpha",true);
+            }
+        }
     }
 
-    public float getPosY() {
-        return posY;
-    }
-
-    public float getPosX() {
-        return posX;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
 }

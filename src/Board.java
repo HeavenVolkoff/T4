@@ -360,10 +360,13 @@ public class Board extends Node {
 
     public void setGameOver(boolean gameOver, float alphaVal) {
         this.gameOver = gameOver;
-        setBoxesAlpha(alphaVal);
-        setFrameAlpha(alphaVal);
-        Main.app.getNextPiece().setAlpha(alphaVal);
-        Main.app.getLevelBar().setAlpha(alphaVal);
-        Main.app.getScore().setAlpha(alphaVal);
+        if (gameOver) {
+            setBoxesAlpha(alphaVal);
+            setFrameAlpha(alphaVal);
+            Main.app.getNextPiece().setAlpha(alphaVal);
+            Main.app.getLevelBar().setAlpha(alphaVal);
+            Main.app.getScore().setAlpha(alphaVal);
+            Main.app.getDisplayScore().setAlpha(alphaVal);
+        }
     }
 }

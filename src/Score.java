@@ -29,7 +29,6 @@ public class Score extends Node {
     float cubeSize;
     int maxDigits;
     float speedMultiplier;
-    DisplayNumbers display;
     AssetManager assetManager;
 
 	public Score(float cubeSize, int maxDigits ,float posX, float posY, float speedMultiplyer, AssetManager assetManager){
