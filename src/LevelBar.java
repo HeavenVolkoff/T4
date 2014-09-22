@@ -35,7 +35,6 @@ public class LevelBar extends Node {
     private float barWidth;
     protected float cubeSize;
     AssetManager assetManager;
-    private Piece[] lvlDigits;
     private ParticleEmitter particlesLvlBar;
     private Piece lvlPiece;
 
@@ -214,18 +213,9 @@ public class LevelBar extends Node {
         percentageGeo.getMaterial().setBoolean("UseAlpha", true);
     }
 
-    public void setLvlAlpha(float alphaVal){
-        for (int i = 0; i < lvlDigits.length; i++){
-            if (lvlDigits[i] != null){
-                lvlDigits[i].setAlpha(alphaVal);
-            }
-        }
-    }
-
     public void setAlpha(float alphaVal){
         setFrameAlpha(alphaVal);
         setBarAlpha(alphaVal);
-        setLvlAlpha(alphaVal);
         if (lvlPiece != null) {
             lvlPiece.setAlpha(alphaVal);
         }

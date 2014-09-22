@@ -367,6 +367,7 @@ public class Board extends Node {
             Main.app.getLevelBar().setAlpha(alphaVal);
             Main.app.getScore().setAlpha(alphaVal);
             Main.app.getDisplayScore().setAlpha(alphaVal);
+            Main.app.getDisplayLvl().setAlpha(alphaVal);
         }
     }
 }
