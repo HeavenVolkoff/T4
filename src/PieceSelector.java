@@ -49,7 +49,7 @@ public class PieceSelector extends Node {
             for (int lineNum = 0; lineNum < pieceList.size(); lineNum++) {
                 for (int j = 0; j < pieceList.get(i).get(lineNum).length(); j++) {
                     if (pieceList.get(i).get(lineNum).equals("//INFO//")) {
-                        avaliateUnlockProp(pieceList.get(i), lineNum, nameList.get(i), lvl);
+                        verifyUnlockProp(pieceList.get(i), lineNum, nameList.get(i), lvl);
                         lineNum = pieceList.get(i).size() - 1;
                     }
                 }
@@ -57,7 +57,7 @@ public class PieceSelector extends Node {
         }
     }
 
-    private void avaliateUnlockProp(List<String> lines, int lineNum, String fileName, int lvl){
+    private void verifyUnlockProp(List<String> lines, int lineNum, String fileName, int lvl){
         float lvlMin = -1;
         float chance = -1;
         if (lines.size()-1>=lineNum+12){
@@ -85,14 +85,14 @@ public class PieceSelector extends Node {
         for (int lineNum = 0;lineNum < lines.size(); lineNum++){
             for (int i = 0; i<lines.get(lineNum).length(); i++){
                 if (lines.get(lineNum).equals("//INFO//")) {
-                    avaliateStringProp(lines, lineNum, fileName);
+                    verifyStringProp(lines, lineNum, fileName);
                     lineNum = lines.size()-1;
                 }
             }
         }
     }
 
-    private void avaliateStringProp(List<String> lines, int lineNum, String fileName){
+    private void verifyStringProp(List<String> lines, int lineNum, String fileName){
         float lvlMin = -1;
         float chance = -1;
         if (lines.size()-1>=lineNum+12){

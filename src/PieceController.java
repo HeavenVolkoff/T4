@@ -31,7 +31,7 @@ public class PieceController extends AbstractControl implements Cloneable {
 	private ActionListener actionKeyPress;
 	private AnalogListener analogKeyPress;
     private AssetManager assetManager;
-    private boolean acellerated;
+    private boolean acelerated;
     private int fullFallSpeed;
 
 	//=========================== Constructors =====================//
@@ -39,7 +39,7 @@ public class PieceController extends AbstractControl implements Cloneable {
 
     public PieceController(int fullFallSpeed, InputManager inputManager, AssetManager assetManager, int timeKeyRepeat) {
         this.fullFallSpeed = fullFallSpeed;
-        this.acellerated = false;
+        this.acelerated = false;
         this.assetManager = assetManager;
         this.actionKeyPress = new ActionListener() {
             public void onAction(String name, boolean pressed, float tpf) {
@@ -145,7 +145,7 @@ public class PieceController extends AbstractControl implements Cloneable {
 		if (name.equals("ChangePiece") && pressed){
             setSpatial(null);
             Main.app.setCurrentPiece(new Piece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, Main.app.getNextPiece().getFileName(), ColorRGBA.randomColor(),  assetManager, this));
-            if (this.acellerated) {
+            if (this.acelerated) {
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed/4);
             }else{
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed);
@@ -154,10 +154,10 @@ public class PieceController extends AbstractControl implements Cloneable {
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed/4);
-                this.acellerated = true;
+                this.acelerated = true;
             }else{
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed);
-                this.acellerated = false;
+                this.acelerated = false;
             }
 		}else if(name.equals("RotateClockwise") && pressed){
 			if(((Piece)spatial).getInvert() == 0){
@@ -308,6 +308,6 @@ public class PieceController extends AbstractControl implements Cloneable {
     }
 
     public boolean isAcelerated() {
-        return acellerated;
+        return acelerated;
     }
 }

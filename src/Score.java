@@ -1,15 +1,5 @@
 import com.jme3.asset.AssetManager;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * T4
@@ -20,7 +10,7 @@ public class Score extends Node {
 
 	private int score;
     private int oldScore;
-    private int streakMultiplier; //Streak
+    private int streakMultiplier;
 	private int level;
 	private int jump;
 	private int jumpLast;

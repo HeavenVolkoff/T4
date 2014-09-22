@@ -8,7 +8,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

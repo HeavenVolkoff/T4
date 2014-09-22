@@ -22,26 +22,18 @@ import java.util.List;
 public class DisplayNumbers extends Node {
 
     private float cubeSize;
-    private float posX;
-    private float posY;
-    private int value;
     private List<Geometry> boxGeometries;
     private int numBox;
     private Material material;
     private int maxDigits;
-    private float width;
-    private float height;
 
     //================ Class Constructors==========================//
     public DisplayNumbers(float cubeSize, float posX, float posY, int maxDigits, int initialValue, ColorRGBA color, AssetManager assetManager){
         this.cubeSize = cubeSize;
-        this.posX = posX;
-        this.posY = posY;
-        this.value = initialValue;
         this.maxDigits = maxDigits;
 
-        this.width = ((maxDigits*(3*cubeSize*2.5f)) - cubeSize*0.5f) + ((maxDigits-1f)*cubeSize*0.5f);
-        this.height = 5f*2.5f*cubeSize - 0.5f*cubeSize;
+        float width = ((maxDigits * (3 * cubeSize * 2.5f)) - cubeSize * 0.5f) + ((maxDigits - 1f) * cubeSize * 0.5f);
+        float height = 5f * 2.5f * cubeSize - 0.5f * cubeSize;
 
         createColoredMaterial(color, assetManager);
 
@@ -49,7 +41,7 @@ public class DisplayNumbers extends Node {
 
 		buildNumbers(this.maxDigits);
 
-        move(-this.width*0.75f+posX, +this.height*0.75f+posY, 0);
+        move(-width *0.75f+posX, +height *0.75f+posY, 0);
 
         write(initialValue);
     }

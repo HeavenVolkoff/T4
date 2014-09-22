@@ -9,14 +9,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * T4
  * @author BlackPearl & HeavenVolkoff & ykane
@@ -128,16 +120,6 @@ public class LevelBar extends Node {
         frameMaterial.setBoolean("UseMaterialColors", true);
         return frameMaterial;
         //=========================================================================
-    }
-
-    public List<String> loadFromFile(String fileName) {
-        try {
-            Path path = Paths.get("./resources/customPieces/numbers/" + fileName);
-            return Files.readAllLines(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private Material createColoredMaterial(ColorRGBA color, AssetManager assetManager){
