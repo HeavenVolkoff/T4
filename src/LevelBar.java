@@ -35,30 +35,24 @@ public class LevelBar extends Node {
     private float barWidth;
     protected float cubeSize;
     AssetManager assetManager;
-    private List<List<String>> numbers;
-    private float numWidth;
-    private int maxDigits;
     private Piece[] lvlDigits;
     private ParticleEmitter particlesLvlBar;
     private Piece lvlPiece;
 
 
-    public LevelBar(float cubeSize, int maxDigits, float posX, float posY, float barWidth, int max, ColorRGBA color, AssetManager assetManager, EffectController effectController){
+    public LevelBar(float cubeSize, float posX, float posY, float barWidth, int max, ColorRGBA color, AssetManager assetManager, EffectController effectController){
         this.posX = posX;
         this.posY = posY;
         this.barWidth = barWidth;
         this.max = max;
         this.cubeSize = cubeSize;
         this.assetManager = assetManager;
-        this.maxDigits = maxDigits;
 
 		if (effectController != null) {
 			addControl(effectController);
 		}
 
         generateParticles();
-
-        lvlDigits = new Piece[maxDigits];
 
         generateLevelBarFrame(generateFrameMaterial(assetManager));
 
@@ -75,15 +69,7 @@ public class LevelBar extends Node {
         lvlPiece = new Piece(cubeSize*0.3f, posX + barWidth * 0.10f, posY - 0.25f * cubeSize, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
         attachChild(lvlPiece);
 
-        this.numbers = new ArrayList<List<String>>();
-
-        for(int i = 0; i<=9; i++){
-            numbers.add(loadFromFile( i+".piece" ));
-        }
-
-        this.numWidth = ((maxDigits*(3*cubeSize*2.5f*0.3f)) - cubeSize*0.5f*0.3f) + ((maxDigits-1f)*cubeSize*0.5f*0.3f);
-
-        showLevel();
+        Main.app.getDisplayLvl().write(Main.app.getScore().getLevel());
     }
 
     private void generateParticles(){
@@ -143,26 +129,6 @@ public class LevelBar extends Node {
         frameMaterial.setBoolean("UseMaterialColors", true);
         return frameMaterial;
         //=========================================================================
-    }
-
-    public void showLevel() { //
-        int level = Main.app.getScore().getLevel();
-        float piecePosX = -(posX - barWidth * 1.5f - 1.5f * cubeSize - 3*maxDigits*cubeSize*0.8f);
-        int counter = 0;
-
-		do{
-			if (lvlDigits[counter] != null){
-				detachChild(lvlDigits[counter]);
-			}
-			lvlDigits[counter] = new Piece(this.cubeSize * 0.3f, 0f, 0f, 0, numbers.get(level % 10), -1, ColorRGBA.White, assetManager, null);
-			lvlDigits[counter].move((float) (this.numWidth * 0.5) - (piecePosX), posY - 0.25f * cubeSize, 0f);
-			piecePosX = piecePosX + 2.5f * cubeSize * 0.3f * 3 + 1.5f * cubeSize * 0.3f;
-
-			level = level / 10;
-
-			attachChild(lvlDigits[counter]);
-			counter++;
-		}while (level != 0);
     }
 
     public List<String> loadFromFile(String fileName) {

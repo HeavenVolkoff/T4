@@ -46,7 +46,7 @@ public class EffectController extends AbstractControl{
         if (((LevelBar) spatial).getScore() + this.lvlBarOldJumpScore >= this.lvlBarActualJumpScore){
             Main.app.getLevelBar().setMax(Main.app.getScore().getJump() - Main.app.getScore().getJumpLast());
             ((LevelBar) spatial).resetPercentageGeo();
-            Main.app.getLevelBar().showLevel();
+            Main.app.getDisplayLvl().write(Main.app.getScore().getLevel());
             ((LevelBar) spatial).setScore(0);
             this.lvlBarActualJumpScore = Main.app.getScore().getJump();
             this.lvlBarOldJumpScore = Main.app.getScore().getJumpLast();
@@ -62,6 +62,26 @@ public class EffectController extends AbstractControl{
                 scoreValue += 1;
             }
             Main.app.getDisplayScore().write(scoreValue);
+        }
+        if (Main.app.getPieceSelector() != null){
+            if (Main.app.getPieceSelector().isUnlock()){
+                if (Main.app.getPieceSelector().getUnlockPiece().getAlpha()+0.01f <= 1) {
+                    Main.app.getPieceSelector().getUnlockPiece().setAlpha(Main.app.getPieceSelector().getUnlockPiece().getAlpha() + 0.01f);
+                }else{
+                    Main.app.getPieceSelector().getUnlockPiece().setAlpha(1);
+                }
+            }else{
+                if (Main.app.getPieceSelector().getUnlockPiece().getAlpha()-0.008f > 0) {
+                    Main.app.getPieceSelector().getUnlockPiece().setAlpha(Main.app.getPieceSelector().getUnlockPiece().getAlpha() - 0.008f);
+                }else{
+                    if (Main.app.getPieceSelector().getUnlockPiece().getAlpha()-0.008f != 0) {
+                        Main.app.getPieceSelector().getUnlockPiece().setAlpha(0);
+                    }
+                    if (Main.app.getPieceSelector().getQuantity() > 0){
+                        Main.app.getPieceSelector().detachChild(Main.app.getPieceSelector().getUnlockPiece());
+                    }
+                }
+            }
         }
     }
 

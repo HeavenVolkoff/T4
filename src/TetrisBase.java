@@ -33,8 +33,9 @@ public class TetrisBase extends SimpleApplication {
     private LevelBar levelBar;
 	private EffectController lvlBarController;
 	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
-    private List<List<String>> validPices;
-    DisplayNumbers displayScore;
+    private DisplayNumbers displayScore;
+    private DisplayNumbers displayLvl;
+    private PieceSelector pieceSelector;
 
 	@Override
 	public void simpleInitApp(){
@@ -46,22 +47,6 @@ public class TetrisBase extends SimpleApplication {
         board = new Board(10, 20, 0.15f, assetManager);
         rootNode.attachChild(board);
 
-        //Define Valid Pieces
-        validPices = new ArrayList<List<String>>();
-        defineValidPieces(Arrays.asList(("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Cage.piece")));
-
-        //Create Current Piece
-        control = new PieceController(500, inputManager, assetManager, 300);
-		currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, "O.piece",ColorRGBA.randomColor(), assetManager ,control);
-		currentPiece.setFalling(true);
-        rootNode.attachChild(currentPiece);
-
-        //Create Next Piece
-        int randomPieceIndex = (int)(Math.random()*(validPices.size()));
-        nextPiece = new Piece(0.15f, 2f, 2.5f, 0, validPices.get(randomPieceIndex), randomPieceIndex, ColorRGBA.randomColor(),  assetManager, null);
-        rootNode.attachChild(nextPiece);
-        nextPiece.setFalling(false);
-
         //Create Score
         score = new Score(0.05f,6,-2.25f,3f, 0.1f,assetManager);
         displayScore = new DisplayNumbers(0.05f,-3.45f,2.5f, 6, 0, ColorRGBA.White, assetManager);
@@ -70,10 +55,27 @@ public class TetrisBase extends SimpleApplication {
         score.addControl(scoreController);
         rootNode.attachChild(score);
 
+        //Piece Selector Test
+        pieceSelector = new PieceSelector(Arrays.asList(("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Star.piece"), ("Cage.piece")), assetManager);
+        rootNode.attachChild(pieceSelector);
+
         //Create LevelBar
 		lvlBarController = new EffectController();
-        levelBar = new LevelBar(0.05f, 2,-2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, lvlBarController);
+        displayLvl = new DisplayNumbers(0.05f*0.3f,-4.7f, 1.95f, 2, 1, ColorRGBA.White, assetManager);
+        rootNode.attachChild(displayLvl);
+        levelBar = new LevelBar(0.05f, -2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, lvlBarController);
         rootNode.attachChild(levelBar);
+
+        //Create Current Piece
+        control = new PieceController(500, inputManager, assetManager, 300);
+        currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, pieceSelector.randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,control);
+        currentPiece.setFalling(true);
+        rootNode.attachChild(currentPiece);
+
+        //Create Next Piece
+        nextPiece = new Piece(0.15f, 2f, 2.5f, 0, pieceSelector.randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,null);
+        rootNode.attachChild(nextPiece);
+        nextPiece.setFalling(false);
 
         setupFadeFilter(5);
 
@@ -116,22 +118,6 @@ public class TetrisBase extends SimpleApplication {
         fade.setValue(0);
         viewPort.addProcessor(fpp);
         fade.fadeIn();
-    }
-
-    public void defineValidPieces(List<String> files){
-        for (String fileName : files){
-            validPices.add(loadFromFile(fileName));
-        }
-    }
-
-    public List<String> loadFromFile(String fileName) {
-        try {
-            Path path = Paths.get("./resources/customPieces/" + fileName);
-            return Files.readAllLines(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
 	@Override
@@ -184,11 +170,15 @@ public class TetrisBase extends SimpleApplication {
 		return debugMenu.get(index);
 	}
 
-    public List<List<String>> getValidPices() {
-        return validPices;
-    }
-
     public DisplayNumbers getDisplayScore() {
         return displayScore;
+    }
+
+    public PieceSelector getPieceSelector() {
+        return pieceSelector;
+    }
+
+    public DisplayNumbers getDisplayLvl() {
+        return displayLvl;
     }
 }

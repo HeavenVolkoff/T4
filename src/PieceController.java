@@ -144,14 +144,13 @@ public class PieceController extends AbstractControl implements Cloneable {
 	public void keyActions(String name, boolean pressed){
 		if (name.equals("ChangePiece") && pressed){
             setSpatial(null);
-            Main.app.setCurrentPiece(new Piece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, Main.app.getValidPices().get(Main.app.getNextPiece().getType()), Main.app.getNextPiece().getType(), ColorRGBA.randomColor(),  assetManager, this));
+            Main.app.setCurrentPiece(new Piece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, Main.app.getNextPiece().getFileName(), ColorRGBA.randomColor(),  assetManager, this));
             if (this.acellerated) {
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed/4);
             }else{
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed);
             }
-            int randomPieceIndex = (int)(Math.random()*(Main.app.getValidPices().size()));
-            Main.app.setNextPiece(new Piece(0.15f, 2f, 2.5f, 0, Main.app.getValidPices().get(randomPieceIndex), randomPieceIndex, ColorRGBA.randomColor(),  assetManager, null));
+            Main.app.setNextPiece(new Piece(0.15f, 2f, 2.5f, 0, Main.app.getPieceSelector().randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,null));
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed/4);

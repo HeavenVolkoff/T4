@@ -51,8 +51,9 @@ public class Piece extends Node implements Cloneable{
     private Vector3f[] boxAbsolutePoint;
     private Geometry[] boxGeometries;
     private Material material;
-    private int Type;
+    private String fileName;
     private int Invert;
+    private float alpha;
 
 
 	//================ Class Constructors==========================//
@@ -75,10 +76,11 @@ public class Piece extends Node implements Cloneable{
         this.posY = posY - 0.5f * cubeSize;
         setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
         this.falling = true; // Start falling
+        this.alpha = color.a;
 
         this.Invert = 0;
 
-        this.Type = -1;
+        this.fileName = fileName;
 
         numBox = 0;
 
@@ -89,30 +91,6 @@ public class Piece extends Node implements Cloneable{
 			e.printStackTrace();
 		}
     } //Load from file Constructor
-
-	public Piece(float cubeSize, float posX, float posY, float posZ, List<String> lines, int initialType, ColorRGBA color, AssetManager assetManager, Control controler){
-		super("rotationPivot");
-
-		if (controler != null) {
-			addControl(controler);
-		}
-
-		this.cubeSize = cubeSize;
-		this.startFallTime = System.nanoTime();
-		this.pieceFallingTime = 500;
-		this.posX = posX+(cubeSize * 1.25f);
-		this.posY = posY - 0.5f * cubeSize;
-		setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
-		this.falling = true; // Start falling
-
-		this.Invert = 0;
-
-		this.Type = initialType;
-
-		numBox = 0;
-
-		constructFromString(lines, createColoredMaterial(color, assetManager), posZ);
-	} //Load from string Constructor
 	// ==============================================================//
 
     //===================Material Manager===========================//
@@ -280,6 +258,11 @@ public class Piece extends Node implements Cloneable{
                 boxGeometries[i].getMaterial().setBoolean("UseAlpha",true);
             }
         }
+        alpha = alphaVal;
+    }
+
+    public float getAlpha(){
+        return alpha;
     }
 
     public float getCubeSize() {
@@ -342,8 +325,8 @@ public class Piece extends Node implements Cloneable{
         return material;
     }
 
-    public int getType() {
-        return Type;
+    public String getFileName() {
+        return fileName;
     }
 
     public int getInvert() {

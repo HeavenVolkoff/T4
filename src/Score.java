@@ -62,6 +62,7 @@ public class Score extends Node {
         if(this.score >= jump){
 			Main.app.getDebugMenu(7).setText("Old Level: "+this.level);
 			level++;
+            Main.app.getPieceSelector().verifyUnlockedPieces(level);
 			jumpLast = jump;
 			jump *= 2.1f;
 			Main.app.getControl().setFullFallSpeed((int)(Main.app.getControl().getFullFallSpeed()*(1f-speedMultiplier)));
