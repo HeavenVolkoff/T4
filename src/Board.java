@@ -169,7 +169,7 @@ public class Board extends Node {
                     if (boxBoardPosX < 0 || boxBoardPosX >= col || boxBoardPosY < 0){
                         return false;
                     }
-                    if (boxBoardPosX > 0 && boxBoardPosY > 0 && boxBoardPosX < col && boxBoardPosY < row && geoMap[boxBoardPosX][boxBoardPosY] != null) {
+                    if (boxBoardPosX >= 0 && boxBoardPosY >= 0 && boxBoardPosX < col && boxBoardPosY < row && geoMap[boxBoardPosX][boxBoardPosY] != null) {
                         return false;
                     }
                 }
