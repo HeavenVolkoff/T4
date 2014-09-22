@@ -161,32 +161,38 @@ public class PieceController extends AbstractControl implements Cloneable {
             }
 		}else if(name.equals("RotateClockwise") && pressed){
 			if(((Piece)spatial).getInvert() == 0){
+                ((Piece)spatial).setRotating(true);
 				if (Main.app.getBoard().canRotate((Piece) spatial, -90)){
 					rotate(0, 0, -90);
 				}
 			}else{
+                ((Piece)spatial).setRotating(true);
 				if (Main.app.getBoard().canRotate((Piece) spatial, 90)){
 					rotate(0, 0, 90);
 				}
 			}
         }else if(name.equals("RotateCounterClockwise") && pressed){
             if(((Piece)spatial).getInvert() == 0){
+                ((Piece)spatial).setRotating(true);
                 if (Main.app.getBoard().canRotate((Piece) spatial, 90)){
                     rotate(0, 0, 90);
                 }
             }else{
+                ((Piece)spatial).setRotating(true);
                 if (Main.app.getBoard().canRotate((Piece) spatial, -90)){
                     rotate(0, 0, -90);
                 }
             }
 		}else if(name.equals("MoveRight") && pressed){
             if (!Main.app.getBoard().hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
-                !Main.app.getBoard().hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
+                !Main.app.getBoard().hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
+                ((Piece) spatial).isRotating() == false){
                     moveX(((Piece) spatial).RIGHT, (2.5f * ((Piece) spatial).getCubeSize()));
             }
 		}else if(name.equals("MoveLeft") && pressed){
             if (!Main.app.getBoard().hitLeftFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
-            !Main.app.getBoard().hitLeftPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
+            !Main.app.getBoard().hitLeftPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
+            ((Piece) spatial).isRotating() == false){
                 moveX(((Piece) spatial).LEFT, (2.5f * ((Piece) spatial).getCubeSize()));
             }
 		}
@@ -282,7 +288,8 @@ public class PieceController extends AbstractControl implements Cloneable {
 	protected void controlUpdate(float tpf){
 		if(spatial != null) {
             fall(2.5f);
-		}
+            ((Piece)spatial).setRotating(false);
+        }
 	}
 
 	@Override

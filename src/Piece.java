@@ -53,6 +53,7 @@ public class Piece extends Node implements Cloneable{
     private String fileName;
     private int Invert;
     private float alpha;
+    private boolean rotating;
 
 
 	//================ Class Constructors==========================//
@@ -68,6 +69,7 @@ public class Piece extends Node implements Cloneable{
             addControl(controler);
         }
 
+        this.rotating = false;
         this.cubeSize = cubeSize;
         this.startFallTime = System.nanoTime();
         this.pieceFallingTime = 500;
@@ -330,5 +332,13 @@ public class Piece extends Node implements Cloneable{
 
     public int getInvert() {
         return Invert;
+    }
+
+    public boolean isRotating() {
+        return rotating;
+    }
+
+    public void setRotating(boolean rotating) {
+        this.rotating = rotating;
     }
 }
