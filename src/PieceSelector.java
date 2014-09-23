@@ -45,13 +45,13 @@ public class PieceSelector extends Node {
      }
 
     public void verifyUnlockedPieces(int lvl) {
-        for(int i = 0; i < pieceList.size(); i++){
-            for (int lineNum = 0; lineNum < pieceList.size(); lineNum++) {
-                for (int j = 0; j < pieceList.get(i).get(lineNum).length(); j++) {
-                    if (pieceList.get(i).get(lineNum).equals("//INFO//")) {
-                        verifyUnlockProp(pieceList.get(i), lineNum, nameList.get(i), lvl);
-                        lineNum = pieceList.get(i).size() - 1;
-                    }
+		System.out.println("Piece List: "+pieceList);
+		for(int i = 0; i < pieceList.size(); i++){
+            for (int lineNum = 0; lineNum < pieceList.get(i).size(); lineNum++) {
+				System.out.println("Line Num: "+lineNum);
+				if (pieceList.get(i).get(lineNum).equals("//INFO//")) {
+                    verifyUnlockProp(pieceList.get(i), lineNum, nameList.get(i), lvl);
+                    lineNum = pieceList.get(i).size() - 1;
                 }
             }
         }
@@ -60,6 +60,8 @@ public class PieceSelector extends Node {
     private void verifyUnlockProp(List<String> lines, int lineNum, String fileName, int lvl){
         float lvlMin = -1;
         float chance = -1;
+		System.out.println("Piece List Size: "+pieceList.size());
+		System.out.println("File Name: "+fileName);
         if (lines.size()-1>=lineNum+12){
             lvlMin = Float.parseFloat(lines.get(lineNum + 12));
         }

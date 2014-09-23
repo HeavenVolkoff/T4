@@ -43,7 +43,7 @@ public class T4Base extends SimpleApplication {
         rootNode.attachChild(score.getDisplayScore());
 
         //Piece Selector Test
-        pieceSelector = new PieceSelector(Arrays.asList(("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Star.piece"), ("Cage.piece")), assetManager);
+        pieceSelector = new PieceSelector(Arrays.asList(("Beast.piece"),("Q.piece"),("FemaleSeaHorse.piece"),("M.piece"),("Stick.piece"),("Y.piece"),("SeaHorse.piece"),("Snake.piece"),("Corner.piece"),("U.piece"),("X.piece"),("W.piece"), ("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Plus.piece"), ("Cage.piece")), assetManager);
         rootNode.attachChild(pieceSelector);
 
         //Create LevelBar

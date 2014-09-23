@@ -35,8 +35,12 @@ public class Piece extends Node implements Cloneable{
 		- peça fantasma:
 			- A peça atravessa as outras enquanto em estado fantasma, e se solidifica ao apertar uma tecla. Se a peça
 		    passar o jogo sem ser solidificada, ela empurra tudo para cima e se solidifica.)
-		    - Blocos Luminosos
-		    - Bloco Infected
+		- Blocos Luminosos
+		- Bloco Infected
+		- Bloco que se multiplica (aumenta em 1 unidade o contorno do jogo até a original ser destruida)
+		- Bloco explosivo (radius 3x3)
+		- Bloco drill
+		- Fusao de propriedades
 	*/
 
 
@@ -197,9 +201,9 @@ public class Piece extends Node implements Cloneable{
         }else{
             this.Invert = 1;
         }
-        float red = Float.parseFloat(lines.get(lineNum+4));
-        float green = Float.parseFloat(lines.get(lineNum+6));
-        float blue = Float.parseFloat(lines.get(lineNum+8));
+        float red = Float.parseFloat(lines.get(lineNum+4))/255;
+        float green = Float.parseFloat(lines.get(lineNum+6))/255;
+        float blue = Float.parseFloat(lines.get(lineNum+8))/255;
         float alpha = Float.parseFloat(lines.get(lineNum+10));
         if (red != -1 && green != -1 && blue != -1 && alpha != -1) {
             setMaterialColor(getMat(), new ColorRGBA(red, green, blue, alpha), 3);
