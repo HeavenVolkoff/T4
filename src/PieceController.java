@@ -31,7 +31,7 @@ public class PieceController extends AbstractControl implements Cloneable {
 	private ActionListener actionKeyPress;
 	private AnalogListener analogKeyPress;
     private AssetManager assetManager;
-    private boolean acelerated;
+    private boolean accelerated;
     private int fullFallSpeed;
 
 	//=========================== Constructors =====================//
@@ -39,7 +39,7 @@ public class PieceController extends AbstractControl implements Cloneable {
 
     public PieceController(int fullFallSpeed, InputManager inputManager, AssetManager assetManager, int timeKeyRepeat) {
         this.fullFallSpeed = fullFallSpeed;
-        this.acelerated = false;
+        this.accelerated = false;
         this.assetManager = assetManager;
         this.actionKeyPress = new ActionListener() {
             public void onAction(String name, boolean pressed, float tpf) {
@@ -93,7 +93,7 @@ public class PieceController extends AbstractControl implements Cloneable {
     }
 
     //===================Handle HotKeys Save File===================//
-    public void saveHotKeys(String file){
+    private void saveHotKeys(String file){
         Properties INIFile = new Properties();
         try {
             INIFile.load(new FileInputStream(file));
@@ -106,16 +106,17 @@ public class PieceController extends AbstractControl implements Cloneable {
         }
     }
 
-    public void createHotKeysFile(String file){
-        Properties INIFile = new Properties();
-        try {
+    private void createHotKeysFile(String file){
+        Properties INIFile;
+		INIFile = new Properties();
+		try {
             INIFile.store(new FileOutputStream(file), null);
         } catch (IOException e) {
             System.out.println("Configuration error: " + e.getMessage());
         }
     }
 
-    public void loadHotKeys(String file){
+    private void loadHotKeys(String file){
         Properties INIFile = new Properties();
         try {
             INIFile.load(new FileInputStream(file));
@@ -141,11 +142,11 @@ public class PieceController extends AbstractControl implements Cloneable {
         return null;
     }
 
-	public void keyActions(String name, boolean pressed){
+	private void keyActions(String name, boolean pressed){
 		if (name.equals("ChangePiece") && pressed){
             setSpatial(null);
             Main.app.setCurrentPiece(new Piece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, Main.app.getNextPiece().getFileName(), ColorRGBA.randomColor(),  assetManager, this));
-            if (this.acelerated) {
+            if (this.accelerated) {
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed/4);
             }else{
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed);
@@ -154,10 +155,10 @@ public class PieceController extends AbstractControl implements Cloneable {
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed/4);
-                this.acelerated = true;
+                this.accelerated = true;
             }else{
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed);
-                this.acelerated = false;
+                this.accelerated = false;
             }
 		}else if(name.equals("RotateClockwise") && pressed){
 			if(((Piece)spatial).getInvert() == 0){
@@ -186,13 +187,13 @@ public class PieceController extends AbstractControl implements Cloneable {
 		}else if(name.equals("MoveRight") && pressed){
             if (!Main.app.getBoard().hitRightFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
                 !Main.app.getBoard().hitRightPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
-                ((Piece) spatial).isRotating() == false){
+				!((Piece) spatial).isRotating()){
                     moveX(((Piece) spatial).RIGHT, (2.5f * ((Piece) spatial).getCubeSize()));
             }
 		}else if(name.equals("MoveLeft") && pressed){
             if (!Main.app.getBoard().hitLeftFrame(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
-            !Main.app.getBoard().hitLeftPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
-            ((Piece) spatial).isRotating() == false){
+            	!Main.app.getBoard().hitLeftPiece(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&
+				!((Piece) spatial).isRotating()){
                 moveX(((Piece) spatial).LEFT, (2.5f * ((Piece) spatial).getCubeSize()));
             }
 		}
@@ -221,21 +222,21 @@ public class PieceController extends AbstractControl implements Cloneable {
 	}
 
     //==========================Movement============================//
-    public Spatial rotate(float degreesX, float degreesY, float degreesZ){
-        return spatial.rotate((float) Math.toRadians(degreesX), (float) Math.toRadians(degreesY), (float) Math.toRadians(degreesZ));
+    private void rotate(float degreesX, float degreesY, float degreesZ){
+        spatial.rotate((float) Math.toRadians(degreesX), (float) Math.toRadians(degreesY), (float) Math.toRadians(degreesZ));
     }
 
-    public void moveX(int orientation, float distance){
+    private void moveX(int orientation, float distance){
         spatial.setLocalTranslation(new Vector3f(((Piece) spatial).getPosX() + (distance * orientation), ((Piece) spatial).getPosY(), 0));
         ((Piece) spatial).setPosX(((Piece) spatial).getPosX() + (distance * orientation));
     }
 
-    public void moveY(int orientation, float distance){
+    private void moveY(int orientation, float distance){
         spatial.setLocalTranslation(new Vector3f(((Piece)spatial).getPosX() , ((Piece)spatial).getPosY()+(distance*orientation), 0));
         ((Piece)spatial).setPosY(((Piece) spatial).getPosY() + (distance * orientation));
     }
 
-    public void fall(float heightRelativeToCubeSize) {
+    private void fall(float heightRelativeToCubeSize) {
         int keyElapsedTime = (int) ((System.nanoTime() - ((Piece)spatial).getStartFallTime()) / 1000000);
         if (keyElapsedTime >= ((Piece)spatial).getPieceFallingTime()) {
             if (!Main.app.getBoard().gameOver(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
@@ -314,7 +315,7 @@ public class PieceController extends AbstractControl implements Cloneable {
         this.fullFallSpeed = fullFallSpeed;
     }
 
-    public boolean isAcelerated() {
-        return acelerated;
+    public boolean isAccelerated() {
+        return accelerated;
     }
 }

@@ -76,9 +76,9 @@ public class PieceSelector extends Node {
     }
 
     private void buildMap(){
-        for (int i = 0; i < nameList.size(); i++){
-            addFromString(loadFromFile(nameList.get(i)),nameList.get(i));
-        }
+		for (String aNameList : nameList) {
+			addFromString(loadFromFile(aNameList), aNameList);
+		}
     }
 
     private void addFromString(List<String> lines, String fileName){
@@ -109,13 +109,13 @@ public class PieceSelector extends Node {
         }
     }
 
-    public void buildPieceList(List<String> files){
+    private void buildPieceList(List<String> files){
         for (String fileName : files){
             pieceList.add(loadFromFile(fileName));
         }
     }
 
-    public List<String> loadFromFile(String fileName) {
+    private List<String> loadFromFile(String fileName) {
         try {
             Path path = Paths.get("./resources/customPieces/" + fileName);
             return Files.readAllLines(path);
@@ -125,7 +125,7 @@ public class PieceSelector extends Node {
         }
     }
 
-    public void addToMap(double weight, String itemName) {
+    private void addToMap(double weight, String itemName) {
         if (weight <= 0) return;
         total += weight;
         map.put(total, itemName);

@@ -30,8 +30,7 @@ public class Board extends Node {
 	private int col;
 	private int row;
     private boolean gameOver;
-    public Geometry[] frame;
-    public Node InvalidMoves;
+    private Geometry[] frame;
 
     public Board(int col, int row, float cubeSize, AssetManager assetManager){
         this.cubeSize = cubeSize;
@@ -40,7 +39,6 @@ public class Board extends Node {
         this.row = row;
         this.gameOver = false;
         this.geoMap = new Geometry[col][row];
-        this.InvalidMoves = new Node();
 
         //============================== Frame Material Def =======================
         Material frameMaterial = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
@@ -54,8 +52,7 @@ public class Board extends Node {
         buildFrames(frameMaterial);
     }
 
-    private void buildFrames(Material frameMaterial)
-    {
+    private void buildFrames(Material frameMaterial) {
         Box bottom = new Box(col * cubeSize * 1.25f, cubeSize * 0.25f, cubeSize * 1.5f);
         frame[0] = new Geometry("BottomBoard", bottom);
         frame[0].setLocalTranslation(new Vector3f(0, -row * cubeSize * 1.25f, 0));
@@ -75,7 +72,7 @@ public class Board extends Node {
         attachChild(frame[2]);
     }
 
-    public Vector3f[] piecePosRelativeToBoard(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+    private Vector3f[] piecePosRelativeToBoard(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
         Vector3f[] pos = new Vector3f[boxNum];
         for(int i = 0; i < pieceBoxesAbsolutePos.length; i++){
             pos[i] = new Vector3f();
@@ -86,7 +83,7 @@ public class Board extends Node {
         return pos;
     }
 
-    public Vector3f boxPosRelativeToBoard(Vector3f BoxAbsolutePos){
+    private Vector3f boxPosRelativeToBoard(Vector3f BoxAbsolutePos){
         Vector3f pos = new Vector3f();
         pos.setX(Math.round((((BoxAbsolutePos.distance(new Vector3f(frame[1].getWorldTranslation().getX(), BoxAbsolutePos.getY(), 0))) - (cubeSize * 1.25f)) / (cubeSize * 2.5f))));
         pos.setY(Math.round((((BoxAbsolutePos.distance(new Vector3f(BoxAbsolutePos.getX(), frame[0].getWorldTranslation().getY(), 0))) - (cubeSize * 1.25f)) / (cubeSize * 2.5f))));
@@ -94,7 +91,7 @@ public class Board extends Node {
         return pos;
     }
 
-    public int[][] buildRotationMatrix(Piece piece, int angle){
+    private int[][] buildRotationMatrix(Piece piece, int angle){
         int[][] matrix = new int[2*piece.getNumBox()+1][2*piece.getNumBox()+1];
         Geometry pivot = null;
         Vector3f pos;
@@ -267,7 +264,7 @@ public class Board extends Node {
 		return true;
     }
 
-    public void destroyLine(int line){
+    private void destroyLine(int line){
         //Erase Line
         for (int i = 0; i < col; i++){
             if (geoMap[i][line] != null){
@@ -288,7 +285,7 @@ public class Board extends Node {
         }
     }
 
-    public boolean lineComplete(int Line){
+    private boolean lineComplete(int Line){
         int boxesInLine = 0;
         for (int i = 0; i < col; i++){
             if (geoMap[i][Line] != null){
@@ -298,7 +295,7 @@ public class Board extends Node {
         return boxesInLine == col;
     }
 
-    public int getCompleteLineNum(){
+    private int getCompleteLineNum(){
         for (int line = 0; line < row; line++) {
             if (lineComplete(line)) {
                 return line;
@@ -315,7 +312,6 @@ public class Board extends Node {
             destroyLine(line);
             //Update line num
             line = getCompleteLineNum();
-			Main.app.getDebugMenu(10).setText("Line Multiplier: "+lineCount);
             Main.app.getScore().updateScore(lineCount,100);
             lineCount += 1;
         }
@@ -326,32 +322,32 @@ public class Board extends Node {
 		}
     }
 
-    public void setFrameAlpha(float alphaVal){
-        for (int i = 0; i < frame.length; i++){
-            if (frame[i] != null){
-                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
-                alpha.a = alphaVal;
-                frame[i].getMaterial().setColor("Diffuse", alpha);
-                frame[i].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                frame[i].getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
-                frame[i].getMaterial().setBoolean("UseAlpha",true);
-            }
-        }
+    private void setFrameAlpha(float alphaVal){
+		for (Geometry aFrame : frame) {
+			if (aFrame != null) {
+				ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+				alpha.a = alphaVal;
+				aFrame.getMaterial().setColor("Diffuse", alpha);
+				aFrame.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+				aFrame.getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+				aFrame.getMaterial().setBoolean("UseAlpha", true);
+			}
+		}
     }
 
-    public void setBoxesAlpha(float alphaVal) {
-        for (int i = 0; i < geoMap.length; i++){
-            for (int j = 0; j < geoMap[i].length; j++){
-                if (geoMap[i][j] != null){
-                    ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
-                    alpha.a = alphaVal;
-                    geoMap[i][j].getMaterial().setColor("Diffuse", alpha);
-                    geoMap[i][j].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                    geoMap[i][j].getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
-                    geoMap[i][j].getMaterial().setBoolean("UseAlpha",true);
-                }
-            }
-        }
+    private void setBoxesAlpha(float alphaVal) {
+		for (Geometry[] aGeoMap : geoMap) {
+			for (Geometry anAGeoMap : aGeoMap) {
+				if (anAGeoMap != null) {
+					ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+					alpha.a = alphaVal;
+					anAGeoMap.getMaterial().setColor("Diffuse", alpha);
+					anAGeoMap.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+					anAGeoMap.getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+					anAGeoMap.getMaterial().setBoolean("UseAlpha", true);
+				}
+			}
+		}
     }
 
     public boolean isGameOver() {
@@ -365,9 +361,8 @@ public class Board extends Node {
             setFrameAlpha(alphaVal);
             Main.app.getNextPiece().setAlpha(alphaVal);
             Main.app.getLevelBar().setAlpha(alphaVal);
-            Main.app.getScore().setAlpha(alphaVal);
-            Main.app.getDisplayScore().setAlpha(alphaVal);
-            Main.app.getDisplayLvl().setAlpha(alphaVal);
+            Main.app.getScore().getDisplayScore().setAlpha(alphaVal);
+            Main.app.getLevelBar().getDisplayLvl().setAlpha(alphaVal);
         }
     }
 }

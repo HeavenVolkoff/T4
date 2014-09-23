@@ -6,10 +6,10 @@ import com.jme3.system.AppSettings;
  */
 
 public class Main {
-	public static TetrisBase app;
+	public static T4Base app;
 
     public static void main(String[] args) {
-		app = new TetrisBase();
+		app = new T4Base();
         AppSettings newSetting = new AppSettings(true);
         newSetting.setFrameRate(120);
         app.setSettings(newSetting);

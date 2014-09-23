@@ -236,7 +236,7 @@ public class Piece extends Node implements Cloneable{
         return false;
     }
 
-    public float getPivotPosFromMultiplePoints(List<Float> pivotPos){
+    private float getPivotPosFromMultiplePoints(List<Float> pivotPos){
         float sum = 0;
         float count = 0;
         float min = minFromFloatList(pivotPos);
@@ -249,16 +249,16 @@ public class Piece extends Node implements Cloneable{
     }
 
     public void setAlpha(float alphaVal){
-        for (int i = 0; i < boxGeometries.length; i++){
-            if (boxGeometries[i] != null){
-                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
-                alpha.a = alphaVal;
-                boxGeometries[i].getMaterial().setColor("Diffuse", alpha);
-                boxGeometries[i].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                boxGeometries[i].getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
-                boxGeometries[i].getMaterial().setBoolean("UseAlpha",true);
-            }
-        }
+		for (Geometry boxGeometry : boxGeometries) {
+			if (boxGeometry != null) {
+				ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+				alpha.a = alphaVal;
+				boxGeometry.getMaterial().setColor("Diffuse", alpha);
+				boxGeometry.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+				boxGeometry.getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+				boxGeometry.getMaterial().setBoolean("UseAlpha", true);
+			}
+		}
         alpha = alphaVal;
     }
 

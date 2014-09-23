@@ -15,7 +15,7 @@ import java.util.List;
  * @author BlackPearl & HeavenVolkoff & ykane
  */
 
-public class TetrisBase extends SimpleApplication {
+public class T4Base extends SimpleApplication {
 
 	private Piece currentPiece; //Current Piece on Screen
     private Piece nextPiece; //Next Piece to be on Screen
@@ -25,8 +25,6 @@ public class TetrisBase extends SimpleApplication {
     private LevelBar levelBar;
 	private EffectController lvlBarController;
 	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
-    private DisplayNumbers displayScore;
-    private DisplayNumbers displayLvl;
     private PieceSelector pieceSelector;
 
 	@Override
@@ -40,12 +38,9 @@ public class TetrisBase extends SimpleApplication {
         rootNode.attachChild(board);
 
         //Create Score
-        score = new Score(0.05f,6,-2.25f,3f, 0.1f,assetManager);
-        displayScore = new DisplayNumbers(0.05f,-3.45f,2.5f, 6, 0, ColorRGBA.White, assetManager);
-        rootNode.attachChild(displayScore);
-        EffectController scoreController = new EffectController();
-        score.addControl(scoreController);
-        rootNode.attachChild(score);
+        score = new Score(0.1f);
+        score.createDisplayScore(0.05f,-3.45f,2.5f, 6, 0, ColorRGBA.White, assetManager);
+        rootNode.attachChild(score.getDisplayScore());
 
         //Piece Selector Test
         pieceSelector = new PieceSelector(Arrays.asList(("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Star.piece"), ("Cage.piece")), assetManager);
@@ -53,9 +48,9 @@ public class TetrisBase extends SimpleApplication {
 
         //Create LevelBar
 		lvlBarController = new EffectController();
-        displayLvl = new DisplayNumbers(0.05f*0.3f,-4.7f, 1.95f, 2, 1, ColorRGBA.White, assetManager);
-        rootNode.attachChild(displayLvl);
         levelBar = new LevelBar(0.05f, -2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, lvlBarController);
+		levelBar.createDisplayLvl(0.05f*0.3f,-4.7f, 1.95f, 2, 1, ColorRGBA.White, assetManager);
+		rootNode.attachChild(levelBar.getDisplayLvl());
         rootNode.attachChild(levelBar);
 
         //Create Current Piece
@@ -162,15 +157,7 @@ public class TetrisBase extends SimpleApplication {
 		return debugMenu.get(index);
 	}
 
-    public DisplayNumbers getDisplayScore() {
-        return displayScore;
-    }
-
     public PieceSelector getPieceSelector() {
         return pieceSelector;
-    }
-
-    public DisplayNumbers getDisplayLvl() {
-        return displayLvl;
     }
 }

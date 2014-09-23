@@ -4,8 +4,8 @@
  */
 
 public class Keys {
-	private Boolean onAction; //Defines if it is a Long-Press ou Single-Press Key
-	private String actionName;
+	private final Boolean onAction; //Defines if it is a Long-Press ou Single-Press Key
+	private final String actionName;
 	private int id; //Key ID Code
 	private long startTime; //Long-Press Counter
 	private int repeatTime; //Long-Press Repeat Time

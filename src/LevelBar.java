@@ -16,17 +16,19 @@ import com.jme3.scene.shape.Box;
 
 public class LevelBar extends Node {
 
-    protected Geometry[] frame;
-    protected Geometry percentageGeo;
+    private Geometry[] frame;
+    private Geometry percentageGeo;
     private Material percentageGeoMat;
-    protected float percentageGeoWidth;
+    private float percentageGeoWidth;
+	private DisplayNumbers displayLvl;
+	public int level;
     private int max;
 	private int score;
     private float posX;
     private float posY;
     private float barWidth;
-    protected float cubeSize;
-    AssetManager assetManager;
+    private float cubeSize;
+    private AssetManager assetManager;
     private ParticleEmitter particlesLvlBar;
     private Piece lvlPiece;
 
@@ -35,6 +37,7 @@ public class LevelBar extends Node {
         this.posX = posX;
         this.posY = posY;
         this.barWidth = barWidth;
+		this.level = 1;
         this.max = max;
         this.cubeSize = cubeSize;
         this.assetManager = assetManager;
@@ -59,11 +62,19 @@ public class LevelBar extends Node {
 
         lvlPiece = new Piece(cubeSize*0.3f, posX + barWidth * 0.10f, posY - 0.25f * cubeSize, 0, "LVL.piece",ColorRGBA.White, assetManager, null);
         attachChild(lvlPiece);
-
-        Main.app.getDisplayLvl().write(Main.app.getScore().getLevel());
     }
 
-    private void generateParticles(){
+	public void createDisplayLvl(float cubeSize, float posX, float posY, int maxDigits, int initialValue, ColorRGBA color, AssetManager assetManager){
+		this.displayLvl = new DisplayNumbers(cubeSize, posX, posY, maxDigits, initialValue, color, assetManager);
+
+		displayLvl.write(Main.app.getScore().getLevel());
+	}
+
+	public DisplayNumbers getDisplayLvl() {
+		return displayLvl;
+	}
+
+	private void generateParticles(){
         Material particleMat = new Material(assetManager, "Common/MatDefs/Misc/Particle.j3md");
         particleMat.setTexture("Texture", assetManager.loadTexture("Effects/Explosion/flame.png"));
         particlesLvlBar = new ParticleEmitter("LvlBarParticles", ParticleMesh.Type.Triangle, 30);
@@ -122,11 +133,9 @@ public class LevelBar extends Node {
         //=========================================================================
     }
 
-    private Material createColoredMaterial(ColorRGBA color, AssetManager assetManager){
+    private void createColoredMaterial(ColorRGBA color, AssetManager assetManager){
         percentageGeoMat = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         setMaterialColor(percentageGeoMat, color, 2);
-
-        return percentageGeoMat;
     }
 
     private void setMaterialColor(Material material, ColorRGBA color, float shine){
@@ -173,20 +182,20 @@ public class LevelBar extends Node {
 		attachChild(percentageGeo);
 	}
 
-    public void setFrameAlpha(float alphaVal){
-        for (int i = 0; i < frame.length; i++){
-            if (frame[i] != null){
-                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
-                alpha.a = alphaVal;
-                frame[i].getMaterial().setColor("Diffuse", alpha);
-                frame[i].getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
-                frame[i].getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
-                frame[i].getMaterial().setBoolean("UseAlpha",true);
-            }
-        }
+    private void setFrameAlpha(float alphaVal){
+		for (Geometry aFrame : frame) {
+			if (aFrame != null) {
+				ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+				alpha.a = alphaVal;
+				aFrame.getMaterial().setColor("Diffuse", alpha);
+				aFrame.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+				aFrame.getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+				aFrame.getMaterial().setBoolean("UseAlpha", true);
+			}
+		}
     }
 
-    public void setBarAlpha(float alphaVal) {
+    private void setBarAlpha(float alphaVal) {
         ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
         alpha.a = alphaVal;
         percentageGeo.getMaterial().setColor("Diffuse", alpha);
