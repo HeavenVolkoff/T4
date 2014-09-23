@@ -243,8 +243,11 @@ public class PieceController extends AbstractControl implements Cloneable {
                 if (((Piece)spatial).isFalling()) {
                     //Not hit Horizontal frame
                     if (!Main.app.getBoard().hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
-                            !Main.app.getBoard().hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
+                        !Main.app.getBoard().hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
                         moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
+                        if (this.accelerated){
+                            Main.app.getScore().updateScore(Main.app.getScore().getLevel(),1);
+                        }
                     } else {
                         if (Main.app.getBoard().addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat())) {
 							keyActions("ChangePiece", true);
