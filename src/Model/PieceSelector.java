@@ -1,3 +1,8 @@
+package Model;
+
+import View.Piece;
+import Primary.Main;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;

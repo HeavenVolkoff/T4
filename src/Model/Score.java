@@ -1,5 +1,11 @@
+package Model;
+
+import View.DisplayNumbers;
+import View.Piece;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
+
+import Primary.Main;
 
 /**
  * T4
@@ -43,9 +49,9 @@ public class Score {
 			jump *= 2.1f;
 			Main.app.getControl().setFullFallSpeed((int)(Main.app.getControl().getFullFallSpeed()*(1f-speedMultiplier)));
             if (Main.app.getControl().isAccelerated()){
-                ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed()/4);
+                ((Piece) Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed()/4);
             }else{
-                ((Piece)Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed());
+                ((Piece) Main.app.getControl().getSpatial()).setPieceFallingTime(Main.app.getControl().getFullFallSpeed());
             }
 		}
 	}

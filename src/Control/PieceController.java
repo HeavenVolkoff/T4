@@ -1,3 +1,5 @@
+package Control;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -19,6 +21,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Model.Keys;
+import View.Piece;
+import Primary.Main;
+
 
 /**
  * T4
@@ -67,7 +74,7 @@ public class PieceController extends AbstractControl implements Cloneable {
                 saveHotKeys(appPath + "/resources/PieceControls.ini");
             }
         } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Error: Failed to handle control file!", ex);
+            Logger.getLogger("T4").log(Level.SEVERE, "Error: Failed to handle control file!", ex);
         }
 
         for (Keys key : hotKeys) {
@@ -85,7 +92,7 @@ public class PieceController extends AbstractControl implements Cloneable {
     private void setupDefaultKeys(){
         hotKeys.add(new Keys("ChangePiece", KeyInput.KEY_RETURN));
         hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_SPACE));
-        //==================Set Default Analog Keys=====================//
+        //==================Set Default Analog Model.Keys=====================//
         hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_DOWN, 400));
         hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_UP, 400));
         hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, 150));
@@ -122,7 +129,7 @@ public class PieceController extends AbstractControl implements Cloneable {
             INIFile.load(new FileInputStream(file));
             hotKeys.add(new Keys("ChangePiece", Integer.parseInt(INIFile.getProperty("ChangePiece"))));
             hotKeys.add(new Keys("AccelerateFall", Integer.parseInt(INIFile.getProperty("AccelerateFall"))));
-            //==================Set Default Analog Keys=====================//
+            //==================Set Default Analog Model.Keys=====================//
             hotKeys.add(new Keys("RotateClockwise", Integer.parseInt(INIFile.getProperty("RotateClockwise")), 400));
             hotKeys.add(new Keys("RotateCounterClockwise", Integer.parseInt(INIFile.getProperty("RotateCounterClockwise")), 400));
             hotKeys.add(new Keys("MoveRight", Integer.parseInt(INIFile.getProperty("MoveRight")), 150));
@@ -246,7 +253,7 @@ public class PieceController extends AbstractControl implements Cloneable {
                         !Main.app.getBoard().hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
                         moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
                         if (this.accelerated){
-                            Main.app.getScore().updateScore(Main.app.getScore().getLevel(),1);
+                            Main.app.getScore().updateScore(Main.app.getScore().getLevel(), 1);
                         }
                     } else {
                         if (Main.app.getBoard().addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat())) {
@@ -289,7 +296,7 @@ public class PieceController extends AbstractControl implements Cloneable {
 	 * (transform them, get and set userdata, etc).
 	 * This loop controls the spatial while the Control is enabled. */
 	@Override
-	protected void controlUpdate(float tpf){
+	public void controlUpdate(float tpf){
 		if(spatial != null) {
             fall(2.5f);
             ((Piece)spatial).setRotating(false);
