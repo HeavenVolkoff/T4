@@ -1,3 +1,5 @@
+package View;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
@@ -7,14 +9,16 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
+import Primary.Main;
+
 /**
  * T4
  * @author BlackPearl & HeavenVolkoff & ykane
  */
 
-/* TODO: Board Modifications:
-    - Modular Board
-    - Board Inventor
+/* TODO: View.Board Modifications:
+    - Modular View.Board
+    - View.Board Inventor
     - Tornado Mode
     - Pendulum Light
     - Closing Wall
@@ -150,14 +154,14 @@ public class Board extends Node {
                 }
             }
         }
-        //Get Pivot Board Pos
+        //Get Pivot View.Board Pos
         for (Geometry geo : piece.getBoxGeometries()){
             if (geo.getName().equals("Pivot")){
                 pivotBoardPos = boxPosRelativeToBoard(geo.getWorldBound().getCenter());
                 break;
             }
         }
-        //Verify Board & Piece Transposition
+        //Verify View.Board & View.Piece Transposition
         for (int i = 0; i<matrix.length; i++){
             for (int j = 0; j<matrix.length; j++){
                 if (matrix[i][j]==1){
@@ -312,7 +316,7 @@ public class Board extends Node {
             destroyLine(line);
             //Update line num
             line = getCompleteLineNum();
-            Main.app.getScore().updateScore(lineCount,100);
+
             lineCount += 1;
         }
 		if (lineCount > 1){

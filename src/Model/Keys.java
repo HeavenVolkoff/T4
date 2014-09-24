@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * T4
  * @author BlackPearl & HeavenVolkoff & ykane

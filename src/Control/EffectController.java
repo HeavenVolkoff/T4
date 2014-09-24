@@ -1,7 +1,10 @@
+package Control;
+
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Spatial;
+import View.LevelBar;
 import com.jme3.scene.control.AbstractControl;
+import Primary.Main;
 
 /**
  * T4
@@ -88,7 +91,7 @@ public class EffectController extends AbstractControl{
 
     @Override
 	public void controlUpdate(float tpf){
-        if (spatial.getClass().getName().equals("LevelBar")){
+        if (spatial.getClass().getName().equals("View.LevelBar")){
             resizeBar(tpf);
         }
 	}

@@ -1,3 +1,5 @@
+package Primary;
+
 import com.jme3.system.AppSettings;
 
 /**

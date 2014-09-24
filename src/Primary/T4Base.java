@@ -1,3 +1,13 @@
+package Primary;
+
+import Control.EffectController;
+import Control.PieceController;
+
+import Model.PieceSelector;
+import Model.Score;
+import View.Board;
+import View.LevelBar;
+import View.Piece;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.light.SpotLight;
@@ -17,8 +27,8 @@ import java.util.List;
 
 public class T4Base extends SimpleApplication {
 
-	private Piece currentPiece; //Current Piece on Screen
-    private Piece nextPiece; //Next Piece to be on Screen
+	private Piece currentPiece; //Current View.Piece on Screen
+    private Piece nextPiece; //Next View.Piece to be on Screen
     private PieceController control;
     private Board board;
     private Score score;
@@ -33,33 +43,33 @@ public class T4Base extends SimpleApplication {
 
         setupDebugMenu(14);
 
-        //Create Board
+        //Create View.Board
         board = new Board(10, 20, 0.15f, assetManager);
         rootNode.attachChild(board);
 
-        //Create Score
+        //Create Model.Score
         score = new Score(0.1f);
         score.createDisplayScore(0.05f,-3.45f,2.5f, 6, 0, ColorRGBA.White, assetManager);
         rootNode.attachChild(score.getDisplayScore());
 
-        //Piece Selector Test
+        //View.Piece Selector Test
         pieceSelector = new PieceSelector(Arrays.asList(("Beast.piece"),("Q.piece"),("FemaleSeaHorse.piece"),("M.piece"),("Stick.piece"),("Y.piece"),("SeaHorse.piece"),("Snake.piece"),("Corner.piece"),("U.piece"),("X.piece"),("W.piece"), ("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Plus.piece"), ("Cage.piece")), assetManager);
         rootNode.attachChild(pieceSelector);
 
-        //Create LevelBar
+        //Create View.LevelBar
 		lvlBarController = new EffectController();
         levelBar = new LevelBar(0.05f, -2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, lvlBarController);
 		levelBar.createDisplayLvl(0.05f*0.3f,-4.7f, 1.95f, 2, 1, ColorRGBA.White, assetManager);
 		rootNode.attachChild(levelBar.getDisplayLvl());
         rootNode.attachChild(levelBar);
 
-        //Create Current Piece
+        //Create Current View.Piece
         control = new PieceController(500, inputManager, assetManager, 300);
         currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, pieceSelector.randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,control);
         currentPiece.setFalling(true);
         rootNode.attachChild(currentPiece);
 
-        //Create Next Piece
+        //Create Next View.Piece
         nextPiece = new Piece(0.15f, 2f, 2.5f, 0, pieceSelector.randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,null);
         rootNode.attachChild(nextPiece);
         nextPiece.setFalling(false);
@@ -68,7 +78,6 @@ public class T4Base extends SimpleApplication {
 
 		//Fixed Cam
 		flyCam.setEnabled(false);
-
 	}
 
     private void setupLights(){
@@ -160,4 +169,5 @@ public class T4Base extends SimpleApplication {
     public PieceSelector getPieceSelector() {
         return pieceSelector;
     }
+
 }

@@ -1,3 +1,5 @@
+package View;
+
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
@@ -62,7 +64,7 @@ public class Piece extends Node implements Cloneable{
 
 	//================ Class Constructors==========================//
 	/*
-		TODO: Piece constructors
+		TODO: View.Piece constructors
 			-add read piece color from file
 			-add char-color index to .piece file
 	 */
