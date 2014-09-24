@@ -58,13 +58,13 @@ public class PieceController extends AbstractControl implements Cloneable {
 
         try {
             String appPath = new File(".").getCanonicalPath();
-            File file = new File(appPath + "/PieceControls.ini");
+            File file = new File(appPath + "/resources/PieceControls.ini");
             if (file.exists() && !file.isDirectory()) {
-                loadHotKeys(appPath + "/PieceControls.ini");
+                loadHotKeys(appPath + "/resources/PieceControls.ini");
             }else{
                 setupDefaultKeys();
-                createHotKeysFile(appPath + "/PieceControls.ini");
-                saveHotKeys(appPath + "/PieceControls.ini");
+                createHotKeysFile(appPath + "/resources/PieceControls.ini");
+                saveHotKeys(appPath + "/resources/PieceControls.ini");
             }
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Error: Failed to handle control file!", ex);
