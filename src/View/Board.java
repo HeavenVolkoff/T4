@@ -317,6 +317,8 @@ public class Board extends Node {
             //Update line num
             line = getCompleteLineNum();
 
+            Main.app.getScore().updateScore(lineCount, 100);
+
             lineCount += 1;
         }
 		if (lineCount > 1){
