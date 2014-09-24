@@ -93,7 +93,7 @@ public class T4Base extends SimpleApplication {
     }
 
     private void setupDebugMenu(int menuItems){
-        //Create Debug Menu
+        //Create Debug View.Menu
         float lineSize = 0;
         for(int i = 0; i < menuItems; i++){
             debugMenu.add(new BitmapText(guiFont, false));

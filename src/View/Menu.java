@@ -1,3 +1,5 @@
+package View;
+
 import com.jme3.scene.Node;
 import com.jme3.ui.Picture;
 
