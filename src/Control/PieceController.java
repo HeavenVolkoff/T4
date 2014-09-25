@@ -159,6 +159,10 @@ public class PieceController extends AbstractControl implements Cloneable {
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed);
             }
             Main.app.setNextPiece(new Piece(0.15f, 2f, 2.5f, 0, Main.app.getPieceSelector().randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,null));
+            if (!Main.app.getBoard().canRotate((Piece)spatial,0)){
+                Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
+                Main.app.getBoard().setGameOver(true, 0.1f);
+            }
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed/4);
