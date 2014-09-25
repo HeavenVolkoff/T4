@@ -67,7 +67,7 @@ public class DisplayNumbers extends Node {
 	//================ Construct Display Number ===================//
 	private void buildNumbers(int maxDigits){ //
 		try {
-			Path path = Paths.get("./resources/customPieces/numbers/NumBase.piece");
+			Path path = Paths.get("./resources/Pieces/numbers/NumBase.piece");
 
 			for (int i = 0; i < maxDigits; i++) {
 				constructFromString(Files.readAllLines(path), String.valueOf(i), material, 0);

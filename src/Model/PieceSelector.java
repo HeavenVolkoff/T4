@@ -40,7 +40,7 @@ public class PieceSelector extends Node {
         buildMap();
 
         unlock = false;
-        unlockPiece = new Piece(0.07f, 0, 0, 1.2f, "NewUnlock.piece", ColorRGBA.Orange, assetManager, null);
+        unlockPiece = new Piece(0.07f, 0, 0, 1.2f, "Messages/NewUnlock.piece", ColorRGBA.Orange, assetManager, null);
     }
 
     private void unlockedByLvl(){
@@ -120,7 +120,7 @@ public class PieceSelector extends Node {
 
     private List<String> loadFromFile(String fileName) {
         try {
-            Path path = Paths.get("./resources/customPieces/" + fileName);
+            Path path = Paths.get("./resources/Pieces/" + fileName);
             return Files.readAllLines(path);
         } catch (IOException e) {
             e.printStackTrace();

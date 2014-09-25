@@ -65,13 +65,13 @@ public class PieceController extends AbstractControl implements Cloneable {
 
         try {
             String appPath = new File(".").getCanonicalPath();
-            File file = new File(appPath + "/resources/PieceControls.ini");
+            File file = new File(appPath + "/Configurations/PieceControls.ini");
             if (file.exists() && !file.isDirectory()) {
-                loadHotKeys(appPath + "/resources/PieceControls.ini");
+                loadHotKeys(appPath + "/Configurations/PieceControls.ini");
             }else{
                 setupDefaultKeys();
-                createHotKeysFile(appPath + "/resources/PieceControls.ini");
-                saveHotKeys(appPath + "/resources/PieceControls.ini");
+                createHotKeysFile(appPath + "/Configurations/PieceControls.ini");
+                saveHotKeys(appPath + "/Configurations/PieceControls.ini");
             }
         } catch (IOException ex) {
             Logger.getLogger("T4").log(Level.SEVERE, "Error: Failed to handle control file!", ex);
@@ -260,14 +260,14 @@ public class PieceController extends AbstractControl implements Cloneable {
 							keyActions("ChangePiece", true);
 							Main.app.getBoard().destroyCompletedLines();
 						}else{
-							Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
+							Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
 							Main.app.getBoard().setGameOver(true, 0.1f);
 						}
                     }
                 }
             }else{
                 if (!Main.app.getBoard().isGameOver()) {
-                    Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "GameOver.piece", ColorRGBA.White, assetManager, null));
+                    Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
                     Main.app.getBoard().setGameOver(true, 0.1f);
                 }
             }

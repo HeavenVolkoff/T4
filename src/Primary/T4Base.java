@@ -7,6 +7,7 @@ import Model.PieceSelector;
 import Model.Score;
 import View.Board;
 import View.LevelBar;
+import View.Menu;
 import View.Piece;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
@@ -43,42 +44,49 @@ public class T4Base extends SimpleApplication {
 
         setupDebugMenu(14);
 
+        Menu menu = new Menu();
+        rootNode.attachChild(menu);
+
+        setupFadeFilter(5);
+
+        startEndless();
+
+		//Fixed Cam
+		flyCam.setEnabled(false);
+	}
+
+    public void startEndless() {
         //Create View.Board
         board = new Board(10, 20, 0.15f, assetManager);
         rootNode.attachChild(board);
 
         //Create Model.Score
         score = new Score(0.1f);
-        score.createDisplayScore(0.05f,-3.45f,2.5f, 6, 0, ColorRGBA.White, assetManager);
+        score.createDisplayScore(0.05f, -3.45f, 2.5f, 6, 0, ColorRGBA.White, assetManager);
         rootNode.attachChild(score.getDisplayScore());
 
         //View.Piece Selector Test
-        pieceSelector = new PieceSelector(Arrays.asList(("Beast.piece"),("Q.piece"),("FemaleSeaHorse.piece"),("M.piece"),("Stick.piece"),("Y.piece"),("SeaHorse.piece"),("Snake.piece"),("Corner.piece"),("U.piece"),("X.piece"),("W.piece"), ("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Plus.piece"), ("Cage.piece")), assetManager);
+        pieceSelector = new PieceSelector(Arrays.asList(("Beast.piece"), ("Q.piece"), ("FemaleSeaHorse.piece"), ("M.piece"), ("Stick.piece"), ("Y.piece"), ("SeaHorse.piece"), ("Snake.piece"), ("Corner.piece"), ("U.piece"), ("X.piece"), ("W.piece"), ("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Plus.piece"), ("Cage.piece")), assetManager);
         rootNode.attachChild(pieceSelector);
 
         //Create View.LevelBar
-		lvlBarController = new EffectController();
+        lvlBarController = new EffectController();
         levelBar = new LevelBar(0.05f, -2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, lvlBarController);
-		levelBar.createDisplayLvl(0.05f*0.3f,-4.7f, 1.95f, 2, 1, ColorRGBA.White, assetManager);
-		rootNode.attachChild(levelBar.getDisplayLvl());
+        levelBar.createDisplayLvl(0.05f * 0.3f, -4.7f, 1.95f, 2, 1, ColorRGBA.White, assetManager);
+        rootNode.attachChild(levelBar.getDisplayLvl());
         rootNode.attachChild(levelBar);
 
         //Create Current View.Piece
         control = new PieceController(500, inputManager, assetManager, 300);
-        currentPiece = new Piece(0.15f, 00f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, pieceSelector.randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,control);
+        currentPiece = new Piece(0.15f, 00f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager, control);
         currentPiece.setFalling(true);
         rootNode.attachChild(currentPiece);
 
         //Create Next View.Piece
-        nextPiece = new Piece(0.15f, 2f, 2.5f, 0, pieceSelector.randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,null);
+        nextPiece = new Piece(0.15f, 2f, 2.5f, 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager, null);
         rootNode.attachChild(nextPiece);
         nextPiece.setFalling(false);
-
-        setupFadeFilter(5);
-
-		//Fixed Cam
-		flyCam.setEnabled(false);
-	}
+    }
 
     private void setupLights(){
         //TODO: Create Light function
@@ -118,8 +126,12 @@ public class T4Base extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(float tpf){
-		control.controlUpdate(tpf);
-        lvlBarController.controlUpdate(tpf);
+        if (control != null) {
+            control.controlUpdate(tpf);
+        }
+        if (lvlBarController != null) {
+            lvlBarController.controlUpdate(tpf);
+        }
 	}
 
 	@Override

@@ -92,7 +92,7 @@ public class Piece extends Node implements Cloneable{
         numBox = 0;
 
 		try {
-			Path path = Paths.get("./resources/customPieces/"+fileName);
+			Path path = Paths.get("./resources/Pieces/"+fileName);
 			constructFromString(Files.readAllLines(path), createColoredMaterial(color, assetManager), posZ);
 		} catch (IOException e) {
 			e.printStackTrace();
