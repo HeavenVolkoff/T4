@@ -89,7 +89,7 @@ public class T4Base extends SimpleApplication {
     }
 
     private void setupLights(){
-        //TODO: Create Light function
+        //TODO: Create Independent Light function
         SpotLight spot = new SpotLight();
         spot.setSpotRange(100f);                           // distance
         spot.setSpotInnerAngle(15f * FastMath.DEG_TO_RAD); // inner light cone (central beam)

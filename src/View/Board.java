@@ -25,7 +25,7 @@ import Primary.Main;
 */
 /*
 	TODO: Bug-Fix:
-	- buildRotationMatrix bug on first line(overlapping pieces)
+	 - Crazy GameOver with Cube and I pieces
  */
 public class Board extends Node {
 
@@ -179,13 +179,17 @@ public class Board extends Node {
 		return true;
     }
 
-    public boolean gameOver(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
-        for (int i = 0; i<col; i++){
-			for (Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
-				if ((int)boxPos.getY() < row && geoMap[(int)boxPos.getX()][(int)boxPos.getY()] != null){
-					return true;
-				}
-			}
+    public boolean isGameOver(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+        for(Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
+            if(boxPos.getY() <= row){
+                if(geoMap[(int)boxPos.getX()][(int)boxPos.getY() - 1] != null){
+                    return true;
+                }
+            }else if(geoMap[(int)boxPos.getX()][row - 1] != null) {
+                return true;
+            }else{
+                System.out.println("still going bitch");
+            }
         }
         return false;
     }
@@ -354,10 +358,6 @@ public class Board extends Node {
 				}
 			}
 		}
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
     }
 
     public void setGameOver(boolean gameOver, float alphaVal) {

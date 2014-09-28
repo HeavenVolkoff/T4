@@ -91,9 +91,9 @@ public class PieceController extends AbstractControl implements Cloneable {
 
     private void setupDefaultKeys(){
         hotKeys.add(new Keys("ChangePiece", KeyInput.KEY_RETURN));
-        hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_SPACE));
+        hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_DOWN));
         //==================Set Default Analog Model.Keys=====================//
-        hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_DOWN, 400));
+        hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_SPACE, 400));
         hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_UP, 400));
         hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, 150));
         hotKeys.add(new Keys("MoveLeft", KeyInput.KEY_LEFT, 150));
@@ -159,10 +159,6 @@ public class PieceController extends AbstractControl implements Cloneable {
                 ((Piece) spatial).setPieceFallingTime(fullFallSpeed);
             }
             Main.app.setNextPiece(new Piece(0.15f, 2f, 2.5f, 0, Main.app.getPieceSelector().randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,null));
-            if (!Main.app.getBoard().canRotate((Piece)spatial,0)){
-                Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
-                Main.app.getBoard().setGameOver(true, 0.1f);
-            }
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
                 ((Piece)spatial).setPieceFallingTime(fullFallSpeed/4);
@@ -250,30 +246,28 @@ public class PieceController extends AbstractControl implements Cloneable {
     private void fall(float heightRelativeToCubeSize) {
         int keyElapsedTime = (int) ((System.nanoTime() - ((Piece)spatial).getStartFallTime()) / 1000000);
         if (keyElapsedTime >= ((Piece)spatial).getPieceFallingTime()) {
-            if (!Main.app.getBoard().gameOver(((Piece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox())){
-                if (((Piece)spatial).isFalling()) {
-                    //Not hit Horizontal frame
-                    if (!Main.app.getBoard().hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
-                        !Main.app.getBoard().hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
-                        moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
-                        if (this.accelerated){
-                            Main.app.getScore().updateScore(Main.app.getScore().getLevel(), 1);
-                        }
-                    } else {
-                        if (Main.app.getBoard().addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat())) {
-							keyActions("ChangePiece", true);
-							Main.app.getBoard().destroyCompletedLines();
-						}else{
-							Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
-							Main.app.getBoard().setGameOver(true, 0.1f);
-						}
+            if (((Piece)spatial).isFalling()) {
+                //Not hit Horizontal frame
+                if (!Main.app.getBoard().hitBottomFrame(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox()) &&
+                !Main.app.getBoard().hitBottomPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())) {
+                    moveY(((Piece) spatial).DOWN, ((Piece) spatial).getCubeSize() * heightRelativeToCubeSize);
+                    if (this.accelerated){
+                        Main.app.getScore().updateScore(Main.app.getScore().getLevel(), 1);
                     }
-                }
-            }else{
-                if (!Main.app.getBoard().isGameOver()) {
+                } else {
+                    if (Main.app.getBoard().addPiece(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox(), ((Piece) spatial).getMat())) {
+						keyActions("ChangePiece", true);
+                        if(Main.app.getBoard().isGameOver(((Piece) spatial).getBoxAbsolutePoint(), ((Piece) spatial).getNumBox())){
+                            Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
+                            Main.app.getBoard().setGameOver(true, 0.1f);
+                        }
+						Main.app.getBoard().destroyCompletedLines();
+					}else{
                     Main.app.setCurrentPiece(new Piece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
                     Main.app.getBoard().setGameOver(true, 0.1f);
                 }
+
+            }
             }
             ((Piece)spatial).setStartFallTime(System.nanoTime());
         }
