@@ -93,8 +93,8 @@ public class PieceController extends AbstractControl implements Cloneable {
         hotKeys.add(new Keys("ChangePiece", KeyInput.KEY_RETURN));
         hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_DOWN));
         //==================Set Default Analog Model.Keys=====================//
-        hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_SPACE, 400));
-        hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_UP, 400));
+        hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_UP, 400));
+        hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_SPACE, 400));
         hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, 150));
         hotKeys.add(new Keys("MoveLeft", KeyInput.KEY_LEFT, 150));
     }
