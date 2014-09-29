@@ -8,9 +8,9 @@
 
 ##Creators and Developers
 
-* BlackPearl (Raphael Almeida)
-* Heaven Volkoff (Vítor Augusto)
-* yKane (Guilherme Freire)
+>* BlackPearl (Raphael Almeida)
+>* Heaven Volkoff (Vítor Augusto)
+>* yKane (Guilherme Freire)
 
 ## Wiki`s Purpose
 
