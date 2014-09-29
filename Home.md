@@ -14,7 +14,7 @@
 
 ## Wiki`s Purpose
 
-The main purpose of this Wiki is to serve as documentation of the T4 Struct, Code and (future) API. Also as a Java best-practice and Code Metrics documentation. 
+>The main purpose of this Wiki is to serve as documentation of the T4 Struct, Code and (future) API. Also as a Java best->practice and Code Metrics documentation. 
 
 _____________________________________________________________________________________________________
 
