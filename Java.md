@@ -4,8 +4,8 @@
 >[Original Post (StackOverflow)](http://stackoverflow.com/questions/10040069/abstract-class-vs-interface-in-java)
 
 
->***Abstract*** classes should primarily be used for *objects that are closely related*
-
+>***Abstract classes*** should primarily be used for *objects that are closely related*
+>
 >***Interfaces*** are better at providing common *functionality for unrelated classes*
 
 
