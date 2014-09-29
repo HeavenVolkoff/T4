@@ -4,9 +4,10 @@ T4 (Bricks Remade) is a 3D game based on the tile-matching puzzle video game Tet
 
 ##Creators and Developers
 
->* BlackPearl          (Raphael Almeida)
->* Heaven Volkoff   (Vítor Augusto)
->* yKane                 (Guilherme Freire)
+* BlackPearl          (Raphael Almeida)
+* Heaven Volkoff   (Vítor Augusto)
+* yKane                 (Guilherme Freire)
 
 ##Wiki
-[T4 Wiki](wiki/Home)
+>For Documentation, Struct and History:
+>Go to [T4 Wiki](t4-bricks-remade/wiki/Home)
