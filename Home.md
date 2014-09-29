@@ -8,17 +8,9 @@
 
 ##Creators and Developers
 
-<table>
-    <tr>
-        <td>BlackPearl</td>
-        <td>Heaven Volkoff</td>
-        <td>yKane</td>
-    </tr>
-</table>
-
->*          (Raphael Almeida)
->*   (Vítor Augusto)
->*                 (Guilherme Freire)
+>* BlackPearl          (Raphael Almeida)
+>* Heaven Volkoff   (Vítor Augusto)
+>* yKane                 (Guilherme Freire)
 
 ## Wiki`s Purpose
 
