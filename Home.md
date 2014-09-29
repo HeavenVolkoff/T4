@@ -1,8 +1,22 @@
-# Welcome
+# T4 Wiki
 
-Welcome to your wiki! This is the default page we've installed for your convenience. Go ahead and edit it.
+Welcome to T4 repository wiki.
 
-## Wiki features
+##Background
+
+T4 (Bricks Remade) is a 3D game based on the tile-matching puzzle video game Tetris by Alexey Pajitnov. The game is entirely made in Java, using the jMonkey Engine and the LWJGL OpenGL renderer.
+
+##Creators and Developers
+
+BlackPearl (Raphael Almeida)
+Heaven Volkoff (Vítor Augusto)
+yKane (Guilherme Freire)
+
+## Wiki`s Purpose
+
+The main purpose of this Wiki is to serve as documentation of the T4 Struct, Code and (future) API. Also as a Java best-practice and Code Metrics documentation. 
+
+###Wiki`s Usage (by Bitbucket)
 
 This wiki uses the [Markdown](http://daringfireball.net/projects/markdown/) syntax.
 
