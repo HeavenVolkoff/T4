@@ -95,7 +95,7 @@ public class Board extends Node {
         return pos;
     }
 
-    private int[][] buildRotationMatrix(Piece piece, int angle){
+    private int[][] buildRotationMatrix(PlayablePiece piece, int angle){
         int[][] matrix = new int[2*piece.getNumBox()+1][2*piece.getNumBox()+1];
         Geometry pivot = null;
         Vector3f pos;
@@ -137,7 +137,7 @@ public class Board extends Node {
         return matrix;
     }
 
-    public boolean canRotate(Piece piece, int angle){
+    public boolean canRotate(PlayablePiece piece, int angle){
         int [][] matrix = buildRotationMatrix(piece, angle);
         int boxBoardPosX;
         int boxBoardPosY;
