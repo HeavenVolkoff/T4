@@ -1,7 +1,7 @@
 ##Java Best Practices and Metrics Docs
 
 ####Use of Interface and Abstract Class
-[Original Post (StackOverflow)](http://stackoverflow.com/questions/10040069/abstract-class-vs-interface-in-java)
+>[Original Post (StackOverflow)](http://stackoverflow.com/questions/10040069/abstract-class-vs-interface-in-java)
 
 >######**When To Use Interfaces**
 
@@ -16,3 +16,4 @@
 >>You can offer the best of both worlds, an interface and an abstract class. Implementors can ignore your abstract class if they choose. The only drawback of doing that is calling methods via their interface name is slightly slower than calling them via their abstract class name.
 
 >[More Info](http://mindprod.com/jgloss/interfacevsabstract.html)
+[<- Back](/Home/)
