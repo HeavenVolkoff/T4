@@ -1,6 +1,6 @@
 # T4 Wiki
 
-Welcome to T4 repository wiki.
+>Welcome to T4 repository wiki.
 
 ##Background
 
@@ -8,13 +8,15 @@ T4 (Bricks Remade) is a 3D game based on the tile-matching puzzle video game Tet
 
 ##Creators and Developers
 
-BlackPearl (Raphael Almeida)
-Heaven Volkoff (Vítor Augusto)
-yKane (Guilherme Freire)
+>BlackPearl (Raphael Almeida)
+>Heaven Volkoff (Vítor Augusto)
+>yKane (Guilherme Freire)
 
 ## Wiki`s Purpose
 
 The main purpose of this Wiki is to serve as documentation of the T4 Struct, Code and (future) API. Also as a Java best-practice and Code Metrics documentation. 
+
+_____________________________________________________________________________________________________
 
 ###Wiki`s Usage (by Bitbucket)
 
@@ -30,7 +32,7 @@ $ git clone https://UFRJ-PMT@bitbucket.org/UFRJ-PMT/tetris.git/wiki
 
 Wiki pages are normal files, with the .md extension. You can edit them locally, as well as creating new ones.
 
-## Syntax highlighting
+### Syntax highlighting
 
 
 You can also highlight snippets of text (we use the excellent [Pygments][] library).
