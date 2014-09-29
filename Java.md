@@ -23,8 +23,12 @@
 
 >>You can offer the best of both worlds, an interface and an abstract class. Implementors can ignore your abstract class if they choose. The only drawback of doing that is calling methods via their interface name is slightly slower than calling them via their abstract class name.
 
+>------------------------------------------------------------------------------------------------------------------
+
 >*As always there is a trade-off, an interface gives you freedom with regard to the base class, an abstract class gives you the freedom to add new methods later.* **– Erich Gamma**
+
+>------------------------------------------------------------------------------------------------------------------
 
 >[More Info](http://mindprod.com/jgloss/interfacevsabstract.html)
 
-[< Back](/t4-bricks-remade/wiki/Home)
+[< Back](UFRJ-PMT/t4-bricks-remade/wiki/Home)
