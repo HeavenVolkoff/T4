@@ -15,4 +15,4 @@
 
 >You can offer the best of both worlds, an interface and an abstract class. Implementors can ignore your abstract class if they choose. The only drawback of doing that is calling methods via their interface name is slightly slower than calling them via their abstract class name.
 
-[More Info](http://mindprod.com/jgloss/interfacevsabstract.html)
+>[More Info](http://mindprod.com/jgloss/interfacevsabstract.html)
