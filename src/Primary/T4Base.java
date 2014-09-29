@@ -5,10 +5,7 @@ import Control.PieceController;
 
 import Model.PieceSelector;
 import Model.Score;
-import View.Board;
-import View.LevelBar;
-import View.Menu;
-import View.Piece;
+import View.*;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.light.SpotLight;
@@ -28,7 +25,7 @@ import java.util.List;
 
 public class T4Base extends SimpleApplication {
 
-	private Piece currentPiece; //Current View.Piece on Screen
+	private PlayablePiece currentPiece; //Current View.Piece on Screen
     private Piece nextPiece; //Next View.Piece to be on Screen
     private PieceController control;
     private Board board;
@@ -78,14 +75,13 @@ public class T4Base extends SimpleApplication {
 
         //Create Current View.Piece
         control = new PieceController(500, inputManager, assetManager, 300);
-        currentPiece = new Piece(0.15f, 00f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager, control);
+        currentPiece = new PlayablePiece(0.15f, 00f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager, control);
         currentPiece.setFalling(true);
         rootNode.attachChild(currentPiece);
 
         //Create Next View.Piece
         nextPiece = new Piece(0.15f, 2f, 2.5f, 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager, null);
         rootNode.attachChild(nextPiece);
-        nextPiece.setFalling(false);
     }
 
     private void setupLights(){
@@ -139,7 +135,7 @@ public class T4Base extends SimpleApplication {
        /* (optional) Make advanced modifications to frameBuffer and scene graph. */
 	}
 
-	public void setCurrentPiece(Piece currentPiece){
+	public void setCurrentPiece(PlayablePiece currentPiece){
         this.rootNode.detachChild(this.currentPiece);
 
 		this.currentPiece = currentPiece;
@@ -155,7 +151,6 @@ public class T4Base extends SimpleApplication {
 
         this.nextPiece = nextPiece;
         this.rootNode.attachChild(this.nextPiece);
-        this.nextPiece.setFalling(false);
     }
 
     public Board getBoard() {

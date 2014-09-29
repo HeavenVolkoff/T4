@@ -24,14 +24,6 @@ import java.util.List;
 
 public class Piece extends Node implements Cloneable{
 
-	//===================Constant===================//
-    //Movement Directions
-	public final int LEFT = -1;
-	public final int RIGHT = 1;
-    public final int TOP = 1;
-    public final int DOWN = -1;
-    //==============================================//
-
   	/*
 		TODO: (Novos tipos de peças)
 		- peça fantasma:
@@ -47,27 +39,17 @@ public class Piece extends Node implements Cloneable{
 
 
 	private float cubeSize;
-	private long startFallTime;
-    private int pieceFallingTime;
-    private boolean falling;
 	private float posX;
 	private float posY;
     private int numBox;
-    private Vector3f[] boxAbsolutePoint;
     private Geometry[] boxGeometries;
     private Material material;
     private String fileName;
-    private int Invert;
     private float alpha;
-    private boolean rotating;
+    private int Invert;
 
 
 	//================ Class Constructors==========================//
-	/*
-		TODO: View.Piece constructors
-			-add read piece color from file
-			-add char-color index to .piece file
-	 */
     public Piece(float cubeSize, float posX, float posY, float posZ, String fileName, ColorRGBA color, AssetManager assetManager, Control controler){
         super("rotationPivot");
 
@@ -75,17 +57,12 @@ public class Piece extends Node implements Cloneable{
             addControl(controler);
         }
 
-        this.rotating = false;
         this.cubeSize = cubeSize;
-        this.startFallTime = System.nanoTime();
-        this.pieceFallingTime = 500;
+        this.Invert = 0;
         this.posX = posX+(cubeSize * 1.25f);
         this.posY = posY - 0.5f * cubeSize;
         setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
-        this.falling = true; // Start falling
         this.alpha = color.a;
-
-        this.Invert = 0;
 
         this.fileName = fileName;
 
@@ -186,13 +163,11 @@ public class Piece extends Node implements Cloneable{
         }
         setLocalTranslation(this.getPosX(), this.getPosY(), this.getWorldBound().getCenter().getZ());
 
-        this.boxAbsolutePoint = new Vector3f[boxNum];
 		this.boxGeometries = new Geometry[boxNum];
         this.numBox = 0;
 		for (Geometry geometry : geometries) {
 			this.boxGeometries[this.numBox] = geometry;
 			geometry.move(-absolutePivotPosX, -1 * (absolutePivotPosY), 0);
-			this.boxAbsolutePoint[numBox] = geometry.getWorldBound().getCenter();
 			this.numBox += 1;
 		}
     }
@@ -292,34 +267,6 @@ public class Piece extends Node implements Cloneable{
         this.posY = posY;
     }
 
-    public boolean isFalling() {
-        return falling;
-    }
-
-    public void setFalling(boolean falling) {
-        this.falling = falling;
-    }
-
-    public int getPieceFallingTime() {
-        return pieceFallingTime;
-    }
-
-    public void setPieceFallingTime(int pieceFallingTime) {
-        this.pieceFallingTime = pieceFallingTime;
-    }
-
-    public long getStartFallTime() {
-        return startFallTime;
-    }
-
-    public void setStartFallTime(long startFallTime) {
-        this.startFallTime = startFallTime;
-    }
-
-    public Vector3f[] getBoxAbsolutePoint() {
-        return boxAbsolutePoint;
-    }
-
     public int getNumBox() {
         return numBox;
     }
@@ -338,13 +285,5 @@ public class Piece extends Node implements Cloneable{
 
     public int getInvert() {
         return Invert;
-    }
-
-    public boolean isRotating() {
-        return rotating;
-    }
-
-    public void setRotating(boolean rotating) {
-        this.rotating = rotating;
     }
 }
