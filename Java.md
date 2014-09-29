@@ -17,4 +17,4 @@
 
 >[More Info](http://mindprod.com/jgloss/interfacevsabstract.html)
 
-[<- Back](/Home/)
+[< Back](/t4-bricks-remade/wiki/Home)
