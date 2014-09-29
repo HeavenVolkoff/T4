@@ -31,4 +31,4 @@
 
 >[More Info](http://mindprod.com/jgloss/interfacevsabstract.html)
 
-[< Back](UFRJ-PMT/t4-bricks-remade/wiki/Home)
+[< Back](Home)
