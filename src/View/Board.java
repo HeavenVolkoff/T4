@@ -187,8 +187,6 @@ public class Board extends Node {
                 }
             }else if(geoMap[(int)boxPos.getX()][row - 1] != null) {
                 return true;
-            }else{
-                System.out.println("still going bitch");
             }
         }
         return false;
