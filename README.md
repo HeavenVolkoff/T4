@@ -13,4 +13,4 @@ T4 (Bricks Remade) is a 3D game based on the tile-matching puzzle video game Tet
 ##Wiki
 >For Documentation, Struct and History:
 
->Go to [T4 Wiki](t4-bricks-remade/wiki/Home)
+>Go to [T4 Wiki](/wiki/Home)
