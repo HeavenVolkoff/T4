@@ -65,7 +65,7 @@ public class LevelBar extends Node {
         correctBarXPos();
         attachChild(percentageGeo);
 
-        lvlPiece = new Piece(cubeSize*0.3f, posX + barWidth * 0.10f, posY - 0.25f * cubeSize, 0, "Messages/LVL.piece",ColorRGBA.White, assetManager, null);
+        lvlPiece = new Piece(cubeSize*0.3f, posX + barWidth * 0.10f, posY - 0.25f * cubeSize, 0, "Messages/LVL.piece",ColorRGBA.White, assetManager);
         attachChild(lvlPiece);
     }
 

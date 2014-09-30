@@ -7,7 +7,6 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.control.Control;
 import com.jme3.scene.shape.Box;
 
 import java.io.IOException;
@@ -22,51 +21,39 @@ import java.util.List;
  * @author BlackPearl & HeavenVolkoff & ykane
  */
 
+  /*
+	TODO: (Novos tipos de peças)
+	- peça fantasma:
+		- A peça atravessa as outras enquanto em estado fantasma, e se solidifica ao apertar uma tecla. Se a peça
+	    passar o jogo sem ser solidificada, ela empurra tudo para cima e se solidifica.)
+	- Blocos Luminosos
+	- Bloco Infected
+	- Bloco que se multiplica (aumenta em 1 unidade o contorno do jogo até a original ser destruida)
+	- Bloco explosivo (radius 3x3)
+	- Bloco drill
+	- Fusao de propriedades
+ */
+
+
 public class Piece extends Node implements Cloneable{
-
-  	/*
-		TODO: (Novos tipos de peças)
-		- peça fantasma:
-			- A peça atravessa as outras enquanto em estado fantasma, e se solidifica ao apertar uma tecla. Se a peça
-		    passar o jogo sem ser solidificada, ela empurra tudo para cima e se solidifica.)
-		- Blocos Luminosos
-		- Bloco Infected
-		- Bloco que se multiplica (aumenta em 1 unidade o contorno do jogo até a original ser destruida)
-		- Bloco explosivo (radius 3x3)
-		- Bloco drill
-		- Fusao de propriedades
-	*/
-
 
 	private float cubeSize;
 	private float posX;
 	private float posY;
-    private int numBox;
     private Geometry[] boxGeometries;
     private Material material;
-    private String fileName;
     private float alpha;
-    private int Invert;
-
 
 	//================ Class Constructors==========================//
-    public Piece(float cubeSize, float posX, float posY, float posZ, String fileName, ColorRGBA color, AssetManager assetManager, Control controler){
-        super("rotationPivot");
-
-        if (controler != null) {
-            addControl(controler);
-        }
+    public Piece(float cubeSize, float posX, float posY, float posZ, String fileName, ColorRGBA color, AssetManager assetManager){
+        super(fileName);
 
         this.cubeSize = cubeSize;
-        this.Invert = 0;
-        this.posX = posX+(cubeSize * 1.25f);
-        this.posY = posY - 0.5f * cubeSize;
+        this.posX = posX;
+        this.posY = posY;
+        this.alpha = 1;
+
         setLocalTranslation(new Vector3f(this.posX, this.posY, 0)); //Have to move before fall
-        this.alpha = color.a;
-
-        this.fileName = fileName;
-
-        numBox = 0;
 
 		try {
 			Path path = Paths.get("./resources/Pieces/"+fileName);
@@ -146,8 +133,8 @@ public class Piece extends Node implements Cloneable{
 			posY -= 2.5f*cubeSize;
         }
 
-        this.posX += -(5f*cubeSize + (minFromFloatList(pivotPosX)-minFromGeoListX(geometries)));
-        this.posY += -(2.5f*cubeSize);
+        this.posX += -(2.5f*cubeSize + (minFromFloatList(pivotPosX)-minFromGeoListX(geometries)));
+        this.posY += -(3f*cubeSize);
 
         absolutePivotPosX = getPivotPosFromMultiplePoints(pivotPosX);
         absolutePivotPosY = getPivotPosFromMultiplePoints(pivotPosY);
@@ -157,33 +144,32 @@ public class Piece extends Node implements Cloneable{
             this.posX += minFromFloatList(pivotPosX);
         }
         if (existListVariation(pivotPosY)) {
-            this.posY -= cubeSize * 1.25f + minFromFloatList(pivotPosY);
+            this.posY += cubeSize * 1.25f - minFromFloatList(pivotPosY);
         }else{
             this.posY -= minFromFloatList(pivotPosY);
+        }
+        if (minFromFloatList(pivotPosY) == 0){
+            this.posY += 2.5f*cubeSize;
         }
         setLocalTranslation(this.getPosX(), this.getPosY(), this.getWorldBound().getCenter().getZ());
 
 		this.boxGeometries = new Geometry[boxNum];
-        this.numBox = 0;
+        int numBox = 0;
 		for (Geometry geometry : geometries) {
-			this.boxGeometries[this.numBox] = geometry;
+			this.boxGeometries[numBox] = geometry;
 			geometry.move(-absolutePivotPosX, -1 * (absolutePivotPosY), 0);
-			this.numBox += 1;
+			numBox += 1;
 		}
     }
 
     private void setPieceFileProp(List<String> lines, int lineNum){
-        if (lines.get(lineNum+2).equals("0")){
-            this.Invert = 0;
-        }else{
-            this.Invert = 1;
-        }
-        float red = Float.parseFloat(lines.get(lineNum+4))/255;
-        float green = Float.parseFloat(lines.get(lineNum+6))/255;
-        float blue = Float.parseFloat(lines.get(lineNum+8))/255;
-        float alpha = Float.parseFloat(lines.get(lineNum+10));
+        float red = Float.parseFloat(lines.get(lineNum+2))/255;
+        float green = Float.parseFloat(lines.get(lineNum+4))/255;
+        float blue = Float.parseFloat(lines.get(lineNum+6))/255;
+        float alpha = Float.parseFloat(lines.get(lineNum+8));
         if (red != -1 && green != -1 && blue != -1 && alpha != -1) {
             setMaterialColor(getMat(), new ColorRGBA(red, green, blue, alpha), 3);
+            this.alpha = alpha;
         }
     }
 
@@ -268,7 +254,7 @@ public class Piece extends Node implements Cloneable{
     }
 
     public int getNumBox() {
-        return numBox;
+        return boxGeometries.length;
     }
 
     public Geometry[] getBoxGeometries() {
@@ -277,13 +263,5 @@ public class Piece extends Node implements Cloneable{
 
     public Material getMat() {
         return material;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public int getInvert() {
-        return Invert;
     }
 }

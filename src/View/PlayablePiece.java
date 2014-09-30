@@ -26,16 +26,21 @@ public class PlayablePiece extends Piece {
     private boolean rotating;
 
     public PlayablePiece(float cubeSize, float posX, float posY, float posZ, String fileName, ColorRGBA color, AssetManager assetManager, Control controler) {
-        super(cubeSize, posX, posY, posZ, fileName, color, assetManager, controler);
+        super(cubeSize, posX, posY, posZ, fileName, color, assetManager);
+
+        if (controler != null) {
+            addControl(controler);
+        }
+
         this.rotating = false;
         this.startFallTime = System.nanoTime();
         this.pieceFallingTime = 500;
         this.falling = true; // Start falling
 
-        setBoxAbsolutePoint();
+        setBoxesAbsolutePos();
     }
 
-    private void setBoxAbsolutePoint(){
+    private void setBoxesAbsolutePos(){
         this.boxAbsolutePoint = new Vector3f[super.getNumBox()];
         int count = 0;
         for (Geometry geometry : super.getBoxGeometries()) {
