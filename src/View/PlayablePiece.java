@@ -11,14 +11,6 @@ import com.jme3.scene.control.Control;
  */
 public class PlayablePiece extends Piece {
 
-    //===================Constant===================//
-    //Movement Directions
-    public final int LEFT = -1;
-    public final int RIGHT = 1;
-    public final int TOP = 1;
-    public final int DOWN = -1;
-    //==============================================//
-
     private long startFallTime;
     private int pieceFallingTime;
     private boolean falling;
