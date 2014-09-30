@@ -26,6 +26,6 @@ public class PieceController extends AbstractControl implements Control {
 	}
 
 	public boolean isSetSpatial(){
-		return spatial == null;
+		return spatial != null;
 	}
 }
