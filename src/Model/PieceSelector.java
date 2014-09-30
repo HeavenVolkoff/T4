@@ -40,7 +40,7 @@ public class PieceSelector extends Node {
         buildMap();
 
         unlock = false;
-        unlockPiece = new Piece(0.07f, 0, 0, 1.2f, "Messages/NewUnlock.piece", ColorRGBA.Orange, assetManager, null);
+        unlockPiece = new Piece(0.07f, 0, 0, 1.2f, "Messages/NewUnlock.piece", ColorRGBA.Orange, assetManager);
     }
 
     private void unlockedByLvl(){
@@ -63,11 +63,11 @@ public class PieceSelector extends Node {
     private void verifyUnlockProp(List<String> lines, int lineNum, String fileName, int lvl){
         float lvlMin = -1;
         float chance = -1;
-        if (lines.size()-1>=lineNum+12){
-            lvlMin = Float.parseFloat(lines.get(lineNum + 12));
+        if (lines.size()-1>=lineNum+10){
+            lvlMin = Float.parseFloat(lines.get(lineNum + 10));
         }
-        if (lines.size()-1>=lineNum+14) {
-            chance = Float.parseFloat(lines.get(lineNum + 14));
+        if (lines.size()-1>=lineNum+12) {
+            chance = Float.parseFloat(lines.get(lineNum + 12));
         }
 
         if (lvlMin == lvl){
@@ -98,11 +98,11 @@ public class PieceSelector extends Node {
     private void verifyStringProp(List<String> lines, int lineNum, String fileName){
         float lvlMin = -1;
         float chance = -1;
-        if (lines.size()-1>=lineNum+12){
-            lvlMin = Float.parseFloat(lines.get(lineNum + 12));
+        if (lines.size()-1>=lineNum+10){
+            lvlMin = Float.parseFloat(lines.get(lineNum + 10));
         }
-        if (lines.size()-1>=lineNum+14) {
-            chance = Float.parseFloat(lines.get(lineNum + 14));
+        if (lines.size()-1>=lineNum+12) {
+            chance = Float.parseFloat(lines.get(lineNum + 12));
         }
 
         if (lvlMin != -1 && lvlMin <= Main.app.getScore().getLevel()){

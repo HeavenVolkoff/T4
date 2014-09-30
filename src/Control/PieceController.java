@@ -153,13 +153,13 @@ public class PieceController extends AbstractControl implements Cloneable {
 	private void keyActions(String name, boolean pressed){
 		if (name.equals("ChangePiece") && pressed){
             setSpatial(null);
-            Main.app.setCurrentPiece(new PlayablePiece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, Main.app.getNextPiece().getFileName(), ColorRGBA.randomColor(),  assetManager, this));
+            Main.app.setCurrentPiece(new PlayablePiece(0.15f, 0f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0, Main.app.getNextPiece().getName(), ColorRGBA.randomColor(),  assetManager, this));
             if (this.accelerated) {
                 ((PlayablePiece) spatial).setPieceFallingTime(fullFallSpeed/4);
             }else{
                 ((PlayablePiece) spatial).setPieceFallingTime(fullFallSpeed);
             }
-            Main.app.setNextPiece(new Piece(0.15f, 2f, 2.5f, 0, Main.app.getPieceSelector().randomizeFromMap(),ColorRGBA.randomColor(), assetManager ,null));
+            Main.app.setNextPiece(new Piece(0.15f, 2f, 2.5f, 0, Main.app.getPieceSelector().randomizeFromMap(),ColorRGBA.randomColor(), assetManager));
 		}else if(name.equals("AccelerateFall")) {
             if  (pressed){
                 ((PlayablePiece)spatial).setPieceFallingTime(fullFallSpeed/4);
@@ -169,28 +169,14 @@ public class PieceController extends AbstractControl implements Cloneable {
                 this.accelerated = false;
             }
 		}else if(name.equals("RotateClockwise") && pressed){
-			if(((PlayablePiece)spatial).getInvert() == 0){
-                ((PlayablePiece)spatial).setRotating(true);
-				if (Main.app.getBoard().canRotate((PlayablePiece) spatial, -90)){
-					rotate(0, 0, -90);
-				}
-			}else{
-                ((PlayablePiece)spatial).setRotating(true);
-				if (Main.app.getBoard().canRotate((PlayablePiece) spatial, 90)){
-					rotate(0, 0, 90);
-				}
+            ((PlayablePiece)spatial).setRotating(true);
+	    	if (Main.app.getBoard().canRotate((PlayablePiece) spatial, -90)){
+				rotate(0, 0, -90);
 			}
         }else if(name.equals("RotateCounterClockwise") && pressed){
-            if(((PlayablePiece)spatial).getInvert() == 0){
-                ((PlayablePiece)spatial).setRotating(true);
-                if (Main.app.getBoard().canRotate((PlayablePiece) spatial, 90)){
-                    rotate(0, 0, 90);
-                }
-            }else{
-                ((PlayablePiece)spatial).setRotating(true);
-                if (Main.app.getBoard().canRotate((PlayablePiece) spatial, -90)){
-                    rotate(0, 0, -90);
-                }
+            ((PlayablePiece)spatial).setRotating(true);
+            if (Main.app.getBoard().canRotate((PlayablePiece) spatial, 90)){
+                rotate(0, 0, 90);
             }
 		}else if(name.equals("MoveRight") && pressed){
             if (!Main.app.getBoard().hitRightFrame(((PlayablePiece) spatial).getBoxAbsolutePoint(),((Piece) spatial).getNumBox()) &&

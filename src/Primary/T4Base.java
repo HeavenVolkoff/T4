@@ -63,7 +63,7 @@ public class T4Base extends SimpleApplication {
         rootNode.attachChild(score.getDisplayScore());
 
         //View.Piece Selector Test
-        pieceSelector = new PieceSelector(Arrays.asList(("Beast.piece"), ("Q.piece"), ("FemaleSeaHorse.piece"), ("M.piece"), ("Stick.piece"), ("Y.piece"), ("SeaHorse.piece"), ("Snake.piece"), ("Corner.piece"), ("U.piece"), ("X.piece"), ("W.piece"), ("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Plus.piece"), ("Cage.piece")), assetManager);
+        pieceSelector = new PieceSelector(Arrays.asList(("Beast.piece"), ("H.piece"), ("Q.piece"), ("FemaleSeaHorse.piece"), ("M.piece"), ("Stick.piece"), ("Y.piece"), ("SeaHorse.piece"), ("Snake.piece"), ("Corner.piece"), ("U.piece"), ("X.piece"), ("W.piece"), ("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Plus.piece"), ("Cage.piece")), assetManager);
         rootNode.attachChild(pieceSelector);
 
         //Create View.LevelBar
@@ -80,7 +80,7 @@ public class T4Base extends SimpleApplication {
         rootNode.attachChild(currentPiece);
 
         //Create Next View.Piece
-        nextPiece = new Piece(0.15f, 2f, 2.5f, 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager, null);
+        nextPiece = new Piece(0.15f, 2f, 2.5f, 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager);
         rootNode.attachChild(nextPiece);
     }
 
