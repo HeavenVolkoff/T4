@@ -57,7 +57,9 @@ public class Piece extends Node implements Cloneable, Savable {
 
 		try {
 			Path pieceFile = Paths.get("./resources/Pieces/" + fileName);
-			constructFromString(Files.readAllLines(pieceFile), createColoredMaterial(color, assetManager));
+			if (!constructFromString(Files.readAllLines(pieceFile), createColoredMaterial(color, assetManager))){
+                //CRASH APP
+            }
 		} catch (IOException exception) {
 			logger.log(Level.SEVERE, "Piece file {0} not found, please report this error.", fileName);
 			logger.log(Level.FINE, "Piece {0} Constructor Error while loading file, exception {1}", new Object[]{fileName, exception});
