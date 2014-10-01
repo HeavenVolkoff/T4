@@ -10,7 +10,7 @@ import com.jme3.math.Vector3f;
 public class PlayablePiece extends Piece {
 
 	public PlayablePiece(String fileName, float cubeSize, Vector3f pos, ColorRGBA color, AssetManager assetManager, Control controller){
-        super(fileName, cubeSize, pos, color, assetManager);
+        super(fileName, pos, color, assetManager);
 		if(controller != null && !controller.isSetSpatial()){
 			addControl(controller);
 		}

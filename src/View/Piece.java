@@ -44,6 +44,11 @@ public class Piece extends Node implements Cloneable{
     private Material material;
     private float alpha;
 
+    public static final int LEFT = -1;
+    public static final int RIGHT = 1;
+    public static final int TOP = 1;
+    public static final int DOWN = -1;
+
 	//================ Class Constructors==========================//
     public Piece(float cubeSize, float posX, float posY, float posZ, String fileName, ColorRGBA color, AssetManager assetManager){
         super(fileName);

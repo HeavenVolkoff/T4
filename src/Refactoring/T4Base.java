@@ -9,4 +9,9 @@ import java.util.logging.Logger;
  */
 public class T4Base extends SimpleApplication {
 	Logger logger = Logger.getLogger(T4Base.class.getName());
+
+    @Override
+    public void simpleInitApp() {
+
+    }
 }
