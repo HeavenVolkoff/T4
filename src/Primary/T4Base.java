@@ -5,21 +5,18 @@ import Control.PieceController;
 
 import Model.PieceSelector;
 import Model.Score;
-import Refactoring.*;
+import Refactoring.Control.Constant;
 import View.*;
 import View.Piece;
 import View.PlayablePiece;
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapText;
 import com.jme3.light.SpotLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
-import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
 import com.jme3.renderer.RenderManager;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +38,7 @@ public class T4Base extends SimpleApplication {
 	private EffectController lvlBarController;
 	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
     private PieceSelector pieceSelector;
-    Refactoring.Piece refacPiece;
+    Refactoring.View.Piece refacPiece;
 
 	@Override
 	public void simpleInitApp(){
@@ -56,7 +53,7 @@ public class T4Base extends SimpleApplication {
 
         setupFadeFilter(5);
 
-        //refacPiece = new Refactoring.Piece("O.piece", new Vector3f(0,0,0),ColorRGBA.randomColor(), assetManager);
+        //refacPiece = new Refactoring.View.Piece("O.piece", new Vector3f(0,0,0),ColorRGBA.randomColor(), assetManager);
         //rootNode.attachChild(refacPiece);
 
         startEndless();
@@ -142,7 +139,7 @@ public class T4Base extends SimpleApplication {
             lvlBarController.controlUpdate(tpf);
         }
         if (refacPiece != null){
-            refacPiece.rotate(0,0,tpf*3);
+            refacPiece.rotate(0, 0, tpf * 3);
         }
 	}
 

@@ -1,5 +1,7 @@
-package Refactoring;
+package Refactoring.View;
 
+import Refactoring.Control.Constant;
+import Refactoring.Primary.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.export.Savable;
 import com.jme3.material.Material;
@@ -46,18 +48,17 @@ public class Piece extends Node implements Cloneable, Savable {
 	protected static final Logger logger = Logger.getLogger(Piece.class.getName());
 
 	//======================== Class Constructors ==========================//
-	public Piece(String fileName, Vector3f pos, ColorRGBA color, AssetManager assetManager){
+	public Piece(String fileName, Vector3f pos, ColorRGBA color){
 		super(fileName);
 		this.pos = pos;
 		this.alpha = 1;
-
-        material = createColoredMaterial(ColorRGBA.randomColor(), assetManager);
+        this.material = createColoredMaterial(ColorRGBA.randomColor());
 
 		setLocalTranslation(pos); //move piece to position
 
 		try {
 			Path pieceFile = Paths.get("./resources/Pieces/" + fileName);
-			if (!constructFromString(Files.readAllLines(pieceFile), createColoredMaterial(color, assetManager))){
+			if (!constructFromString(Files.readAllLines(pieceFile), material)){
                 //CRASH APP
             }
 		} catch (IOException exception) {
@@ -66,8 +67,8 @@ public class Piece extends Node implements Cloneable, Savable {
 		}
 	}
 	//======================== Material Manager ============================//
-	private Material createColoredMaterial(ColorRGBA color, AssetManager assetManager){
-		material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+	private Material createColoredMaterial(ColorRGBA color){
+		this.material = new Material(Main.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
 		setMaterialColor(material, color, 2);
 
 		return material;
