@@ -5,10 +5,13 @@ package Refactoring.Control;
  */
 public class Constant {
 
+    //Metrics /Related
 	public static float CUBESIZE;
 	public static float BOXINTERVAL;
 	public static float HALFBOXINTERVAL;
 	public static float MOVEDISTANCE;
+    public static float FRAMEDEPTH;
+    public static float BOARDFRAMEBARTHICKNESS;
 
 	//Movement Directions
 	public static final int LEFT = -1;
@@ -36,5 +39,7 @@ public class Constant {
         Constant.BOXINTERVAL = 0.5f * Constant.CUBESIZE;
         Constant.HALFBOXINTERVAL = 0.25f * Constant.CUBESIZE;
         Constant.MOVEDISTANCE = 2.5f * Constant.CUBESIZE;
+        Constant.FRAMEDEPTH = 1.5f * Constant.CUBESIZE;
+        Constant.BOARDFRAMEBARTHICKNESS = 0.25f * Constant.CUBESIZE;
     }
 }
