@@ -1,8 +1,7 @@
 package Refactoring.View;
 
 import Refactoring.Control.Constant;
-import Refactoring.Control.Control;
-import com.jme3.asset.AssetManager;
+import Refactoring.Control.Model.Control;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;

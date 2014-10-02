@@ -11,7 +11,7 @@ public class Constant {
 	public static float HALFBOXINTERVAL;
 	public static float MOVEDISTANCE;
     public static float FRAMEDEPTH;
-    public static float BOARDFRAMEBARTHICKNESS;
+    public static float BOARDFRAMETHICKNESS;
 
 	//Movement Directions
 	public static final int LEFT = -1;
@@ -40,6 +40,6 @@ public class Constant {
         Constant.HALFBOXINTERVAL = 0.25f * Constant.CUBESIZE;
         Constant.MOVEDISTANCE = 2.5f * Constant.CUBESIZE;
         Constant.FRAMEDEPTH = 1.5f * Constant.CUBESIZE;
-        Constant.BOARDFRAMEBARTHICKNESS = 0.25f * Constant.CUBESIZE;
+        Constant.BOARDFRAMETHICKNESS = 0.25f * Constant.CUBESIZE;
     }
 }

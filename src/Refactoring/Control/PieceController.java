@@ -1,17 +1,11 @@
 package Refactoring.Control;
 
-import Model.*;
 import Model.Keys;
+import Refactoring.Control.Model.Control;
 import Refactoring.Model.INIProperties;
-import Refactoring.Primary.Main;
-import Refactoring.View.Piece;
-import Refactoring.View.PlayablePiece;
-import com.jme3.asset.AssetManager;
-import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;

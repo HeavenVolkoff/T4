@@ -95,7 +95,7 @@ public class Board extends Node {
         return pos;
     }
 
-    private int[][] buildRotationMatrix(PlayablePiece piece, int angle){
+    private int[][] buildRotationMatrix(PlayablePiece piece, int angle){//NOT HERE ANYMORE
         int[][] matrix = new int[2*piece.getNumBox()+1][2*piece.getNumBox()+1];
         Geometry pivot = null;
         Vector3f pos;
@@ -129,7 +129,7 @@ public class Board extends Node {
         return matrix;
     }
 
-    public boolean canRotate(PlayablePiece piece, int angle){
+    public boolean canRotate(PlayablePiece piece, int angle){//NOT HERE ANYMORE
         int [][] matrix = buildRotationMatrix(piece, angle);
         int boxBoardPosX;
         int boxBoardPosY;
@@ -171,7 +171,7 @@ public class Board extends Node {
 		return true;
     }
 
-    public boolean isGameOver(Vector3f[] pieceBoxesAbsolutePos, int boxNum){
+    public boolean isGameOver(Vector3f[] pieceBoxesAbsolutePos, int boxNum){//NOT HERE ANYMORE
         for(Vector3f boxPos : piecePosRelativeToBoard(pieceBoxesAbsolutePos, boxNum)){
             if(boxPos.getY() <= row){
                 if(geoMap[(int)boxPos.getX()][(int)boxPos.getY() - 1] != null){

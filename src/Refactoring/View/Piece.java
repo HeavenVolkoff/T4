@@ -1,6 +1,7 @@
 package Refactoring.View;
 
 import Refactoring.Control.Constant;
+import Refactoring.Model.Alpha;
 import Refactoring.Primary.Main;
 import com.jme3.asset.AssetManager;
 import com.jme3.export.Savable;
@@ -41,7 +42,7 @@ import java.util.logging.Logger;
 	- Fusao de propriedades
  */
 
-public class Piece extends Node implements Cloneable, Savable {
+public class Piece extends Node implements Cloneable, Savable, Alpha {
 	protected Vector3f pos;
 	protected Material material;
 	private float alpha;
@@ -193,6 +194,7 @@ public class Piece extends Node implements Cloneable, Savable {
         }
     }
 
+	@Override
     public void setAlpha(float alphaVal){
         for (Spatial boxGeometry : getChildren()) {
             if (boxGeometry != null) {
@@ -207,6 +209,7 @@ public class Piece extends Node implements Cloneable, Savable {
         alpha = alphaVal;
     }
 
+	@Override
     public float getAlpha(){
         return alpha;
     }
