@@ -3,10 +3,15 @@ package Refactoring.Control;
 import Model.*;
 import Model.Keys;
 import Refactoring.Model.INIProperties;
+import Refactoring.Primary.Main;
+import Refactoring.View.Piece;
+import Refactoring.View.PlayablePiece;
 import com.jme3.asset.AssetManager;
+import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
+import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
@@ -33,9 +38,53 @@ public class PieceController extends AbstractControl implements Control, INIProp
 	private int fullFallSpeed;
 	protected static final Logger logger = Logger.getLogger(PieceController.class.getName());
 
-	public PieceController(){}
+    public PieceController() {
+        this.fullFallSpeed = Constant.INITIALFALLINTERVAL;
+        this.accelerated = false;
 
-	@Override
+        this.actionKeyPress = new ActionListener() {
+            public void onAction(String name, boolean pressed, float tpf) {
+                keyActions(name, pressed);
+            }
+        };
+        this.analogKeyPress = new AnalogListener() {
+            public void onAnalog(String name, float pressed, float tpf) {
+                Keys keyPressed = getKeyByActionName(name);
+                if ((int)((System.nanoTime()-keyPressed.getStartTime())*Constant.NANOTIMETOMILLISECONDS) >= keyPressed.getRepeatTime()) { //Elapsed time >= Repeat Time
+                    keyActions(name, true);
+                }
+            }
+        };
+    }
+
+    private Keys getKeyByActionName(String actionName){
+        for (Keys key : hotKeys) {
+            if(key.getActionName().equals(actionName)) {
+                return key;
+            }
+        }
+        return null;
+    }
+
+    private void keyActions(String name, boolean pressed){
+        if (name.equals("ChangePiece") && pressed){
+
+        }else if(name.equals("AccelerateFall")) {
+
+        }else if(name.equals("RotateClockwise") && pressed){
+
+        }else if(name.equals("RotateCounterClockwise") && pressed){
+
+        }else if(name.equals("MoveRight") && pressed){
+
+        }else if(name.equals("MoveLeft") && pressed){
+
+        }
+        getKeyByActionName(name).setStartTime(System.nanoTime());//Reset Key Press Elapsed Time
+    } //Specific Key Algorithm Execution
+
+
+    @Override
 	public void setSpatial(Spatial spatial) {
 		super.setSpatial(spatial);
 	}
