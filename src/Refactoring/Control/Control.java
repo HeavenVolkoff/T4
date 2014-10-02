@@ -1,4 +1,4 @@
-package Refactoring;
+package Refactoring.Control;
 
 /**
  * Created by HeavenVolkoff on 29/09/14.

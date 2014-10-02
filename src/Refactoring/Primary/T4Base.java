@@ -1,6 +1,8 @@
-package Refactoring;
+package Refactoring.Primary;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
+import com.jme3.input.InputManager;
 
 import java.util.logging.Logger;
 
@@ -13,5 +15,13 @@ public class T4Base extends SimpleApplication {
     @Override
     public void simpleInitApp() {
 
+    }
+
+	public AssetManager getAssetManager(){
+		return assetManager;
+	}
+
+    public InputManager getInputManager(){
+        return inputManager;
     }
 }

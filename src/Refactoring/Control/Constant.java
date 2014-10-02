@@ -1,4 +1,4 @@
-package Refactoring;
+package Refactoring.Control;
 
 /**
  * Created by HeavenVolkoff on 30/09/14.
@@ -18,6 +18,14 @@ public class Constant {
 
     //Color Related
     public static final int RGB255 = 255;
+
+	//Time Interval Related
+	public static final int INITIALFALLINTERVAL = 500; //milliseconds
+	public static final int ROTATIONINTERVAL = 400; //milliseconds
+	public static final int MOVEINTERVAL = 150; //milliseconds
+
+    //Conversion Related
+    public static final int NANOTIMETOMILLISECONDS = 1/1000000;
 
 	public Constant(float cubeSize) {
 		setCUBESIZE(cubeSize);
