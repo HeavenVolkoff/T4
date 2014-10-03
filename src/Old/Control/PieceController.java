@@ -33,7 +33,7 @@ import Old.Primary.Main;
  * @author BlackPearl & HeavenVolkoff & ykane
  */
 
-public class PieceController extends AbstractControl implements Cloneable {
+public class PieceController extends AbstractControl{
 
 	private List<Keys> hotKeys = new ArrayList<Keys>();
 	private ActionListener actionKeyPress;
@@ -286,15 +286,6 @@ public class PieceController extends AbstractControl implements Cloneable {
             fall(2.5f);
             ((PlayablePiece)spatial).setRotating(false);
         }
-	}
-
-	@Override
-	public Control cloneForSpatial(Spatial spatial){
-		final PieceController control = new PieceController();
-    /* Optional: use setters to copy userdata into the cloned control */
-		// control.setIndex(i); // example
-		control.setSpatial(spatial);
-		return control;
 	}
 
 	@Override

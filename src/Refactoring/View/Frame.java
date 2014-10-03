@@ -26,8 +26,6 @@ public class Frame extends Node implements Alpha{
     protected float frameAlpha;
 
     //======================== Class Constructors ==========================//
-	public Frame(){} //Serialization only. Do not use.
-
     public Frame(String name, String parts, Vector3f pos, Vector3f size, float thickness, ColorRGBA color) {
         super(name);
         this.pos = pos;
@@ -39,28 +37,7 @@ public class Frame extends Node implements Alpha{
 
         constructFrames(parts, thickness, size.z);
     }
-
-    private void constructFrames(String parts, float thickness, float depth){
-        char[] charArray = parts.toUpperCase().toCharArray();
-		for (char aChar : charArray) {
-			switch (aChar) {
-				case 'T':
-					createBar("Top", new Vector3f(0, (this.size.y / 2) + (thickness / 2), 0), new Vector2f(this.size.x/2, thickness), depth);
-					break;
-				case 'R':
-					createBar("Right", new Vector3f((this.size.x / 2) + (thickness / 2), 0, 0), new Vector2f(thickness, (this.size.y/2)+thickness* Constant.THICKNESSCORRECTION), depth);
-					break;
-				case 'B':
-					createBar("Bottom", new Vector3f(0, -((this.size.y / 2) + (thickness / 2)), 0), new Vector2f(this.size.x/2, thickness), depth);
-					break;
-				case 'L':
-					createBar("Left", new Vector3f(-((this.size.x / 2) + (thickness / 2)), 0, 0), new Vector2f(thickness, (this.size.y/2)+thickness*Constant.THICKNESSCORRECTION), depth);
-					break;
-				default:
-					break;
-			}
-		}
-    }
+    //=====================================================================//
 
     //======================== Material Manager ============================//
     private Material createColoredMaterial(ColorRGBA color){
@@ -78,6 +55,28 @@ public class Frame extends Node implements Alpha{
         material.setBoolean("UseMaterialColors", true);
     }
     //======================================================================//
+
+    private void constructFrames(String parts, float thickness, float depth){
+        char[] charArray = parts.toUpperCase().toCharArray();
+        for (char aChar : charArray) {
+            switch (aChar) {
+                case 'T':
+                    createBar("Top", new Vector3f(0, (this.size.y / 2) + (thickness / 2), 0), new Vector2f(this.size.x/2, thickness), depth);
+                    break;
+                case 'R':
+                    createBar("Right", new Vector3f((this.size.x / 2) + (thickness / 2), 0, 0), new Vector2f(thickness, (this.size.y/2)+thickness* Constant.THICKNESSCORRECTION), depth);
+                    break;
+                case 'B':
+                    createBar("Bottom", new Vector3f(0, -((this.size.y / 2) + (thickness / 2)), 0), new Vector2f(this.size.x/2, thickness), depth);
+                    break;
+                case 'L':
+                    createBar("Left", new Vector3f(-((this.size.x / 2) + (thickness / 2)), 0, 0), new Vector2f(thickness, (this.size.y/2)+thickness*Constant.THICKNESSCORRECTION), depth);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     private void createBar(String name, Vector3f pos, Vector2f size, float depth){
         Geometry geometry = new Geometry(name, new Box(size.x, size.y, depth));

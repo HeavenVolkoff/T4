@@ -68,9 +68,8 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 			logger.log(Level.SEVERE, "Piece {0} Constructor Error while loading file, exception {1}", new Object[]{fileName, exception});
 		}
 	}
+    //======================================================================//
 
-    public Piece(){
-    }
 	//======================== Material Manager ============================//
 	private Material createColoredMaterial(ColorRGBA color){
 		this.material = new Material(Main.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");

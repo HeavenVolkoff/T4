@@ -33,13 +33,16 @@ public class Board extends Frame{
     private float geoAlpha;
 
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
+    //======================== Class Constructors ==========================//
     public Board(int col, int row){
 		super("board", "BLR", new Vector3f(0, 0, 0), new Vector3f(col * Constant.MOVEDISTANCE, row * Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, Constant.BOARDCOLOR);
 		this.col = col;
 		this.row = row;
 		this.geometryIndexMap = new Integer[col][row];
         this.geoAlpha = 1;
+
 	}
+    //======================================================================//
 
 	public Vector3f[] posRelativeToBoard(Vector3f[] absolutePos){
 		Vector3f[] pos = new Vector3f[absolutePos.length];

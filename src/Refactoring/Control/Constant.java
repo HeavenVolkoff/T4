@@ -30,7 +30,7 @@ public class Constant {
 	public static final int INITIALFALLINTERVAL = 500; //milliseconds
 	public static final int ROTATIONINTERVAL = 400; //milliseconds
 	public static final int MOVEINTERVAL = 150; //milliseconds
-    public static final int REMANINGLINESFALLINTERVAL = 150; //milliseconds
+    public static final int BOARDCHUNCKFALLINTERVAL = 150; //milliseconds
 
     //Conversion Related
     public static final int NANOTIMETOMILLISECONDS = 1/1000000;

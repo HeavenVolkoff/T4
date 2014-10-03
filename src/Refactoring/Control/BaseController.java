@@ -2,11 +2,12 @@
 
 package Refactoring.Control;
 
+import Old.Primary.Main;
 import Refactoring.Model.ConfigManager;
-import Old.Model.Keys;
 import Refactoring.Control.Model.Control;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
@@ -20,10 +21,11 @@ import java.util.List;
  */
 public abstract class BaseController extends AbstractControl implements Control {
 
-	private List<Keys> hotKeys = new ArrayList<Keys>();
+	protected List<Keys> hotKeys = new ArrayList<Keys>();
 	private ActionListener actionKeyPress;
 	private AnalogListener analogKeyPress;
 
+    //======================== Class Constructors ==========================//
     public BaseController() {
         this.actionKeyPress = new ActionListener() {
             public void onAction(String name, boolean pressed, float tpf) {
@@ -41,6 +43,7 @@ public abstract class BaseController extends AbstractControl implements Control 
             }
         };
     }
+    //======================================================================//
 
     private Keys getKeyByActionName(String actionName){
         for (Keys key : hotKeys) {
@@ -90,6 +93,39 @@ public abstract class BaseController extends AbstractControl implements Control 
         }else{
             return false;
         }
+    }
+
+    public boolean setHotKey(String actionName, int keyCode, String fileName) {
+        ConfigManager pieceControlerManager = new ConfigManager(fileName);
+        for (Keys key : hotKeys) {
+            if (key.getActionName().equals(actionName)) {
+                Main.app.getInputManager().deleteMapping(actionName);
+                key.setId(keyCode);
+                Main.app.getInputManager().addMapping(actionName, new KeyTrigger(keyCode));
+                if (key.getOnAction()) {
+                    Main.app.getInputManager().addListener(this.actionKeyPress, actionName);
+                    if (!pieceControlerManager.defineKey(actionName, keyCode + ";-1")) {
+                        return false;
+                    }
+                } else {
+                    Main.app.getInputManager().addListener(this.actionKeyPress, key.getActionName());
+                    Main.app.getInputManager().addListener(this.analogKeyPress, actionName);
+                    if (!pieceControlerManager.defineKey(actionName, keyCode + ";" + key.getRepeatTime())){
+                        return false;
+                    }
+                }
+                if (pieceControlerManager.save()){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    public List<Keys> getHotKeys() {
+        return this.hotKeys;
     }
 
     protected abstract void keyActions(String name, boolean pressed);

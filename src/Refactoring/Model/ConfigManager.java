@@ -14,12 +14,14 @@ import java.util.logging.Logger;
 /**
  * Created by blackpearl on 03/10/14.
  */
+
 public class ConfigManager {
 
     Properties iniFile;
     String fileName;
     protected static final Logger logger = Logger.getLogger(ConfigManager.class.getName());
 
+    //======================== Class Constructors ==========================//
     public ConfigManager (String fileName){
         this.iniFile = new Properties();
 
@@ -29,6 +31,7 @@ public class ConfigManager {
             }
         }
     }
+    //======================================================================//
 
     public boolean load(String fileName){
         try {
@@ -64,14 +67,17 @@ public class ConfigManager {
         }
     }
 
-    public void defineKey(String key, String value){
+    public boolean defineKey(String key, String value){
         if (!fileName.equals("")){
             if (iniFile.stringPropertyNames().contains(key)){
                 iniFile.setProperty(key, value);
+                return true;
             }else{
                 iniFile.put(key, value);
+                return true;
             }
         }
+        return false;
     }
 
     public Set<String> getItems(){

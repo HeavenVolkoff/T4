@@ -22,7 +22,7 @@ public class PlayablePiece extends Piece {
 	private boolean rotating;
     private boolean controlable;
 
-    ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
+    //======================== Class Constructors ==========================//
     public PlayablePiece(String fileName, Vector3f pos, boolean falling, ColorRGBA color, Control controller){
         super(fileName, pos, color);
 
@@ -41,6 +41,7 @@ public class PlayablePiece extends Piece {
         //Align piece to board grid
         move(0, -((getChildren().get(getChildren().size()-1).getWorldBound().getCenter().y+Constant.CUBESIZE/2) - pos.y), 0);
     }
+    //======================================================================//
 
     private void constructGeosAbsolutePoints() {
         this.boxAbsolutePoint = new Vector3f[getNumBox()];
@@ -95,5 +96,4 @@ public class PlayablePiece extends Piece {
     public void setControlable(boolean controlable) {
         this.controlable = controlable;
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
