@@ -1,3 +1,5 @@
+//REFACTORED STATUS: OK.
+
 package Refactoring.Model;
 
 /**

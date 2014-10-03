@@ -6,6 +6,7 @@ import Control.PieceController;
 import Model.PieceSelector;
 import Model.Score;
 import Refactoring.Control.Constant;
+import Refactoring.View.Frame;
 import View.*;
 import View.Piece;
 import View.PlayablePiece;
@@ -14,6 +15,8 @@ import com.jme3.font.BitmapText;
 import com.jme3.light.SpotLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
+import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
 import com.jme3.renderer.RenderManager;
@@ -39,6 +42,7 @@ public class T4Base extends SimpleApplication {
 	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
     private PieceSelector pieceSelector;
     Refactoring.View.Piece refacPiece;
+    Frame frame;
 
 	@Override
 	public void simpleInitApp(){
@@ -55,6 +59,9 @@ public class T4Base extends SimpleApplication {
 
         //refacPiece = new Refactoring.View.Piece("O.piece", new Vector3f(0,0,0),ColorRGBA.randomColor(), assetManager);
         //rootNode.attachChild(refacPiece);
+
+        //frame = new Frame("TestFrame", Constant.TOP+Constant.RIGHT+Constant.BOTTOM+Constant.LEFT, new Vector3f(0,0,0), new Vector3f(10*Constant.MOVEDISTANCE, 20*Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, ColorRGBA.randomColor());
+        //rootNode.attachChild(frame);
 
         startEndless();
 

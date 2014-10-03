@@ -1,12 +1,16 @@
+//REFACTORED STATUS: ON GOING.
+
 package Refactoring.View;
 
 import Primary.Main;
 import Refactoring.Control.Constant;
+import Refactoring.Model.Alpha;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
 import java.util.ArrayList;
@@ -20,13 +24,15 @@ public class Board extends Frame{
     private Integer[][] geometryIndexMap;
     private int col;
     private int row;
+    private float geoAlpha;
 
-	public Board(int col, int row){
-		super("board", "BLR", new Vector3f(0, 0, 0), new Vector2f(col * Constant.MOVEDISTANCE, row * Constant.MOVEDISTANCE), Constant.BOARDFRAMETHICKNESS, ColorRGBA.DarkGray);
+    ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
+    public Board(int col, int row){
+		super("board", "BLR", new Vector3f(0, 0, 0), new Vector3f(col * Constant.MOVEDISTANCE, row * Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, ColorRGBA.DarkGray);
 		this.col = col;
 		this.row = row;
 		this.geometryIndexMap = new Integer[col][row];
-
+        this.geoAlpha = 1;
 	}
 
 	public Vector3f[] posRelativeToBoard(Vector3f[] absolutePos){
@@ -91,31 +97,33 @@ public class Board extends Frame{
 	public List<Integer> getCompleteLines(){
 		List<Integer> completedLines = new ArrayList<Integer>();
 
-		for(int index = 0; index < row; index++){
+		for(int lineIndex = 0; lineIndex < row; lineIndex++){
 			int count = 0;
-			while(geometryIndexMap[index][count] != null && count < col){
+			while(geometryIndexMap[lineIndex][count] != null && count < col){
 				count++;
 			}
 			if(count == col){
-				completedLines.add(index);
+				completedLines.add(lineIndex);
 			}
 		}
-
 		return completedLines;
 	}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+    ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
 	public void destroyCompletedLines(){
-		/*List<Integer> completedLines = getCompleteLines();
-		int compensation = 0;
-
-		for(Integer line : completedLines){
-			for(Integer geoIndex : geometryIndexMap[line - compensation]){
-				detachChildAt(geoIndex);
-				geoIndex = null;
-			}
-
-			compensation++;
-		}*/
-		//Nao acabado
+		List<Integer> completedLines = getCompleteLines();
+        for (int i = 0; i < completedLines.size(); i++) {
+            Main.app.getScore().updateScore(i + 1, 100);//NOT REFACTORED YET
+            for (Integer geoIndex : geometryIndexMap[completedLines.get(i)]) {
+                detachChildAt(geoIndex);
+                geoIndex = null;
+            }
+        }
+        //REGROUP LINES
 	}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }

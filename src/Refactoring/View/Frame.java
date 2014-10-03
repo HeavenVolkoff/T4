@@ -1,8 +1,10 @@
+//REFACTORED STATUS: OK.
+
 package Refactoring.View;
 
 import Refactoring.Control.Constant;
 import Refactoring.Model.Alpha;
-import Refactoring.Primary.Main;
+import Primary.Main;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
@@ -13,48 +15,46 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
-import java.util.logging.Logger;
-
 /**
  * Created by blackpearl on 01/10/14.
  */
 public class Frame extends Node implements Alpha{
 
     protected Vector3f pos;
-    protected Vector2f size;
+    protected Vector3f size;
     protected Material material;
-    protected float alpha;
+    protected float frameAlpha;
 
     //======================== Class Constructors ==========================//
 	public Frame(){} //Serialization only. Do not use.
 
-    public Frame(String name, String parts, Vector3f pos, Vector2f size, float thickness, ColorRGBA color) {
+    public Frame(String name, String parts, Vector3f pos, Vector3f size, float thickness, ColorRGBA color) {
         super(name);
         this.pos = pos;
-        this.alpha = 1;
+        this.frameAlpha = 1;
         this.material = createColoredMaterial(color);
         this.size = size;
 
         setLocalTranslation(pos); //move piece to position
 
-        constructFrames(parts, thickness);
+        constructFrames(parts, thickness, size.z);
     }
 
-    private void constructFrames(String parts, float thickness){
+    private void constructFrames(String parts, float thickness, float depth){
         char[] charArray = parts.toUpperCase().toCharArray();
 		for (char aChar : charArray) {
 			switch (aChar) {
 				case 'T':
-					createBar("Top", new Vector3f(0, (this.size.y / 2) + (thickness / 2), 0), new Vector2f(this.size.x, thickness));
+					createBar("Top", new Vector3f(0, (this.size.y / 2) + (thickness / 2), 0), new Vector2f(this.size.x/2, thickness), depth);
 					break;
 				case 'R':
-					createBar("Right", new Vector3f((this.size.x / 2) + (thickness / 2), 0, 0), new Vector2f(thickness, this.size.y));
+					createBar("Right", new Vector3f((this.size.x / 2) + (thickness / 2), 0, 0), new Vector2f(thickness, (this.size.y/2)+thickness* Constant.THICKNESSCORRECTION), depth);
 					break;
 				case 'B':
-					createBar("Bottom", new Vector3f(0, -((this.size.y / 2) + (thickness / 2)), 0), new Vector2f(this.size.x, thickness));
+					createBar("Bottom", new Vector3f(0, -((this.size.y / 2) + (thickness / 2)), 0), new Vector2f(this.size.x/2, thickness), depth);
 					break;
 				case 'L':
-					createBar("Left", new Vector3f(-((this.size.x / 2) + (thickness / 2)), 0, 0), new Vector2f(thickness, this.size.y));
+					createBar("Left", new Vector3f(-((this.size.x / 2) + (thickness / 2)), 0, 0), new Vector2f(thickness, (this.size.y/2)+thickness*Constant.THICKNESSCORRECTION), depth);
 					break;
 				default:
 					break;
@@ -65,9 +65,9 @@ public class Frame extends Node implements Alpha{
     //======================== Material Manager ============================//
     private Material createColoredMaterial(ColorRGBA color){
         this.material = new Material(Main.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
-        setMaterialColor(material, color, 2);
+        setMaterialColor(this.material, color, 2);
 
-        return material;
+        return this.material;
     }
 
     private void setMaterialColor(Material material, ColorRGBA color, float shine){
@@ -79,8 +79,8 @@ public class Frame extends Node implements Alpha{
     }
     //======================================================================//
 
-    private void createBar(String name, Vector3f pos, Vector2f size){
-        Geometry geometry = new Geometry(name, new Box(size.x, size.y, Constant.FRAMEDEPTH));
+    private void createBar(String name, Vector3f pos, Vector2f size, float depth){
+        Geometry geometry = new Geometry(name, new Box(size.x, size.y, depth));
         geometry.move(pos);
         geometry.setMaterial(this.material);
         attachChild(geometry);
@@ -113,11 +113,11 @@ public class Frame extends Node implements Alpha{
                 ((Geometry)boxGeometry).getMaterial().setBoolean("UseAlpha", true);
             }
         }
-        alpha = alphaVal;
+        frameAlpha = alphaVal;
     }
 
 	@Override
     public float getAlpha(){
-        return alpha;
+        return frameAlpha;
     }
 }

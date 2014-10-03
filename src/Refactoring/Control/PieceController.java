@@ -1,3 +1,5 @@
+//REFACTORED STATUS: ON GOING.
+
 package Refactoring.Control;
 
 import Model.Keys;
@@ -32,6 +34,7 @@ public class PieceController extends AbstractControl implements Control, INIProp
 	private int fullFallSpeed;
 	protected static final Logger logger = Logger.getLogger(PieceController.class.getName());
 
+    ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
     public PieceController() {
         this.fullFallSpeed = Constant.INITIALFALLINTERVAL;
         this.accelerated = false;
@@ -50,16 +53,6 @@ public class PieceController extends AbstractControl implements Control, INIProp
             }
         };
     }
-
-    private Keys getKeyByActionName(String actionName){
-        for (Keys key : hotKeys) {
-            if(key.getActionName().equals(actionName)) {
-                return key;
-            }
-        }
-        return null;
-    }
-
     private void keyActions(String name, boolean pressed){
         if (name.equals("ChangePiece") && pressed){
 
@@ -77,14 +70,25 @@ public class PieceController extends AbstractControl implements Control, INIProp
         getKeyByActionName(name).setStartTime(System.nanoTime());//Reset Key Press Elapsed Time
     } //Specific Key Algorithm Execution
 
+    @Override
+    protected void controlUpdate(float tpf){}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
+    private Keys getKeyByActionName(String actionName){
+        for (Keys key : hotKeys) {
+            if(key.getActionName().equals(actionName)) {
+                return key;
+            }
+        }
+        return null;
+    }
 
     @Override
 	public void setSpatial(Spatial spatial) {
 		super.setSpatial(spatial);
-	}
-
-	@Override
-	protected void controlUpdate(float tpf){
 	}
 
 	@Override
@@ -96,7 +100,11 @@ public class PieceController extends AbstractControl implements Control, INIProp
 	public boolean isSetSpatial(){
 		return spatial != null;
 	}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+
+    ///////////////////////////////////////////MIGRATE TO NEW OPTIONS CLASS/////////////////////////////////////////////
 	@Override
 	public void saveINIFile(String file) {
 		Properties iniFile = new Properties();
@@ -149,4 +157,5 @@ public class PieceController extends AbstractControl implements Control, INIProp
 		hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, Constant.MOVEINTERVAL));
 		hotKeys.add(new Keys("MoveLeft", KeyInput.KEY_LEFT, Constant.MOVEINTERVAL));
 	}
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
