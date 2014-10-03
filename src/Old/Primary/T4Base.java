@@ -1,21 +1,21 @@
-package Primary;
+package Old.Primary;
 
-import Control.EffectController;
-import Control.PieceController;
+import Old.Control.EffectController;
+import Old.Control.PieceController;
 
-import Model.PieceSelector;
-import Model.Score;
+import Old.Model.PieceSelector;
+import Old.Model.Score;
+import Old.View.Board;
 import Refactoring.Control.Constant;
-import Refactoring.View.Frame;
-import View.*;
-import View.Piece;
-import View.PlayablePiece;
+import Refactoring.View.*;
+import Old.View.*;
+import Old.View.Piece;
+import Old.View.PlayablePiece;
 import com.jme3.app.SimpleApplication;
 import com.jme3.font.BitmapText;
 import com.jme3.light.SpotLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
-import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
@@ -32,8 +32,8 @@ import java.util.List;
 
 public class T4Base extends SimpleApplication {
 
-	private PlayablePiece currentPiece; //Current View.Piece on Screen
-    private Piece nextPiece; //Next View.Piece to be on Screen
+	private PlayablePiece currentPiece; //Current Old.View.Piece on Screen
+    private Piece nextPiece; //Next Old.View.Piece to be on Screen
     private PieceController control;
     private Board board;
     private Score score;
@@ -41,8 +41,6 @@ public class T4Base extends SimpleApplication {
 	private EffectController lvlBarController;
 	private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
     private PieceSelector pieceSelector;
-    Refactoring.View.Piece refacPiece;
-    Frame frame;
 
 	@Override
 	public void simpleInitApp(){
@@ -57,11 +55,19 @@ public class T4Base extends SimpleApplication {
 
         setupFadeFilter(5);
 
-        //refacPiece = new Refactoring.View.Piece("O.piece", new Vector3f(0,0,0),ColorRGBA.randomColor(), assetManager);
-        //rootNode.attachChild(refacPiece);
+        /*
+        Refactoring.View.Piece refacPiece = new Refactoring.View.Piece("O.piece", new Vector3f(0,1,0),ColorRGBA.randomColor());
+        rootNode.attachChild(refacPiece);
 
-        //frame = new Frame("TestFrame", Constant.TOP+Constant.RIGHT+Constant.BOTTOM+Constant.LEFT, new Vector3f(0,0,0), new Vector3f(10*Constant.MOVEDISTANCE, 20*Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, ColorRGBA.randomColor());
-        //rootNode.attachChild(frame);
+        Refactoring.View.Piece refacPlayablePiece = new Refactoring.View.PlayablePiece("Beast.piece", new Vector3f(0,-1,0), true, ColorRGBA.randomColor(), null);
+        rootNode.attachChild(refacPlayablePiece);
+
+        Frame frame = new Frame("TestFrame", Constant.TOP+Constant.RIGHT+Constant.BOTTOM+Constant.LEFT, new Vector3f(0,0,0), new Vector3f(5*Constant.MOVEDISTANCE, 10*Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, ColorRGBA.randomColor());
+        rootNode.attachChild(frame);
+
+        Refactoring.View.Board refacBoard = new Refactoring.View.Board(10,20);
+        rootNode.attachChild(refacBoard);
+        */
 
         startEndless();
 
@@ -70,33 +76,33 @@ public class T4Base extends SimpleApplication {
 	}
 
     public void startEndless() {
-        //Create View.Board
+        //Create Old.View.Board
         board = new Board(10, 20, 0.15f, assetManager);
         rootNode.attachChild(board);
 
-        //Create Model.Score
+        //Create Old.Model.Score
         score = new Score(0.1f);
         score.createDisplayScore(0.05f, -3.45f, 2.5f, 6, 0, ColorRGBA.White, assetManager);
         rootNode.attachChild(score.getDisplayScore());
 
-        //View.Piece Selector Test
+        //Old.View.Piece Selector Test
         pieceSelector = new PieceSelector(Arrays.asList(("Beast.piece"), ("H.piece"), ("Q.piece"), ("FemaleSeaHorse.piece"), ("M.piece"), ("Stick.piece"), ("Y.piece"), ("SeaHorse.piece"), ("Snake.piece"), ("Corner.piece"), ("U.piece"), ("X.piece"), ("W.piece"), ("I.piece"), ("L.piece"), ("J.piece"), ("T.piece"), ("Z.piece"), ("S.piece"), ("O.piece"), ("Plus.piece"), ("Cage.piece")), assetManager);
         rootNode.attachChild(pieceSelector);
 
-        //Create View.LevelBar
+        //Create Old.View.LevelBar
         lvlBarController = new EffectController();
         levelBar = new LevelBar(0.05f, -2.7f, 2f, 1.1f, 1000, ColorRGBA.Cyan, assetManager, lvlBarController);
         levelBar.createDisplayLvl(0.05f * 0.3f, -4.7f, 1.95f, 2, 1, ColorRGBA.White, assetManager);
         rootNode.attachChild(levelBar.getDisplayLvl());
         rootNode.attachChild(levelBar);
 
-        //Create Current View.Piece
+        //Create Current Old.View.Piece
         control = new PieceController(500, inputManager, assetManager, 300);
         currentPiece = new PlayablePiece(0.15f, 00f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager, control);
         currentPiece.setFalling(true);
         rootNode.attachChild(currentPiece);
 
-        //Create Next View.Piece
+        //Create Next Old.View.Piece
         nextPiece = new Piece(0.15f, 2f, 2.5f, 0, pieceSelector.randomizeFromMap(), ColorRGBA.randomColor(), assetManager);
         rootNode.attachChild(nextPiece);
     }
@@ -114,7 +120,7 @@ public class T4Base extends SimpleApplication {
     }
 
     private void setupDebugMenu(int menuItems){
-        //Create Debug View.Menu
+        //Create Debug Old.View.Menu
         float lineSize = 0;
         for(int i = 0; i < menuItems; i++){
             debugMenu.add(new BitmapText(guiFont, false));
@@ -144,9 +150,6 @@ public class T4Base extends SimpleApplication {
         }
         if (lvlBarController != null) {
             lvlBarController.controlUpdate(tpf);
-        }
-        if (refacPiece != null){
-            refacPiece.rotate(0, 0, tpf * 3);
         }
 	}
 

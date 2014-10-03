@@ -4,7 +4,7 @@ package Refactoring.View;
 
 import Refactoring.Control.Constant;
 import Refactoring.Model.Alpha;
-import Primary.Main;
+import Old.Primary.Main;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;

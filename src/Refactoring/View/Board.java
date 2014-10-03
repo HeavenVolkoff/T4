@@ -2,15 +2,12 @@
 
 package Refactoring.View;
 
-import Primary.Main;
+import Old.Primary.Main;
 import Refactoring.Control.Constant;
-import Refactoring.Model.Alpha;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
 import java.util.ArrayList;
@@ -19,6 +16,15 @@ import java.util.List;
 /**
  * Created by blackpearl on 01/10/14.
  */
+
+    /* TODO: Old.View.Board Modifications:
+    - Modular Old.View.Board
+    - Old.View.Board Inventor
+    - Tornado Mode
+    - Pendulum Light
+    - Closing Wall
+    */
+
 public class Board extends Frame{
 
     private Integer[][] geometryIndexMap;
@@ -28,7 +34,7 @@ public class Board extends Frame{
 
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
     public Board(int col, int row){
-		super("board", "BLR", new Vector3f(0, 0, 0), new Vector3f(col * Constant.MOVEDISTANCE, row * Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, ColorRGBA.DarkGray);
+		super("board", "BLR", new Vector3f(0, 0, 0), new Vector3f(col * Constant.MOVEDISTANCE, row * Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, Constant.BOARDCOLOR);
 		this.col = col;
 		this.row = row;
 		this.geometryIndexMap = new Integer[col][row];
@@ -108,11 +114,7 @@ public class Board extends Frame{
 		}
 		return completedLines;
 	}
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-    ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
 	public void destroyCompletedLines(){
 		List<Integer> completedLines = getCompleteLines();
         for (int i = 0; i < completedLines.size(); i++) {
@@ -121,9 +123,26 @@ public class Board extends Frame{
                 detachChildAt(geoIndex);
                 geoIndex = null;
             }
+            for (int j = completedLines.get(i)+1; j < row-1; j++){//NO EFFECT REGROUP LINES
+                for (int k = 0; k <  geometryIndexMap[completedLines.get(j)].length; k++) {
+                    if (geometryIndexMap[completedLines.get(j)][k] != null) {
+                        getChild(geometryIndexMap[completedLines.get(j)][k]).move(0, -Constant.MOVEDISTANCE, 0);
+                        geometryIndexMap[completedLines.get(j) - 1][k] = geometryIndexMap[completedLines.get(j)][k];
+                        geometryIndexMap[completedLines.get(j)][k] = null;
+                    }
+                }
+            }
         }
-        //REGROUP LINES
 	}
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
+    private int[][] buildRotationMatrix(PlayablePiece piece, int angle) {
+        return new int[0][];
+    }
+
+    public boolean canRotate(PlayablePiece piece, int angle) {
+        return false;
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

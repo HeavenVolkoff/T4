@@ -1,4 +1,4 @@
-package View;
+package Old.View;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
@@ -9,7 +9,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
-import Primary.Main;
+import Old.Primary.Main;
 
 /**
  * T4
@@ -255,14 +255,6 @@ public class Board extends Node {
 
 
     ///////////////////////////////////////////TO BE IMPLEMENTED////////////////////////////////////////////////////////
-    /* TODO: View.Board Modifications:
-    - Modular View.Board
-    - View.Board Inventor
-    - Tornado Mode
-    - Pendulum Light
-    - Closing Wall
-    */
-
     private int[][] buildRotationMatrix(PlayablePiece piece, int angle){
         int[][] matrix = new int[2*piece.getNumBox()+1][2*piece.getNumBox()+1];
         Geometry pivot = null;
@@ -314,14 +306,14 @@ public class Board extends Node {
                 }
             }
         }
-        //Get Pivot View.Board Pos
+        //Get Pivot Old.View.Board Pos
         for (Geometry geo : piece.getBoxGeometries()){
             if (geo.getName().equals("Pivot")){
                 pivotBoardPos = boxPosRelativeToBoard(geo.getWorldBound().getCenter());
                 break;
             }
         }
-        //Verify View.Board & View.Piece Transposition
+        //Verify Old.View.Board & Old.View.Piece Transposition
         for (int i = 0; i<matrix.length; i++){
             for (int j = 0; j<matrix.length; j++){
                 if (matrix[i][j]==1){

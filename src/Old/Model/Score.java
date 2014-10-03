@@ -1,12 +1,11 @@
-package Model;
+package Old.Model;
 
-import View.DisplayNumbers;
-import View.Piece;
-import View.PlayablePiece;
+import Old.View.DisplayNumbers;
+import Old.View.PlayablePiece;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 
-import Primary.Main;
+import Old.Primary.Main;
 
 /**
  * T4

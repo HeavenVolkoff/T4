@@ -1,13 +1,14 @@
-//REFACTORED STATUS: ON GOING.
+//REFACTORED STATUS: OK.
 
 package Refactoring.Control;
+
+import com.jme3.math.ColorRGBA;
 
 /**
  * Created by HeavenVolkoff on 30/09/14.
  */
 public class Constant {
 
-    ////////////////////////////////////////OTHERS MUST BE IMPLEMENTED//////////////////////////////////////////////////
     //Metrics Related
 	public static float CUBESIZE;
 	public static float BOXINTERVAL;
@@ -43,6 +44,11 @@ public class Constant {
     public static final String BOTTOM = "B";
     public static final String LEFT = "L";
 
+    //Color Related
+    public static final ColorRGBA BOARDCOLOR = ColorRGBA.DarkGray;
+
+    //File Related
+    public static final String PIECECONTROLERCONFIGFILE = "/Configurations/PieceControls.ini";
 
     public Constant(float cubeSize) {
 		setCUBESIZE(cubeSize);
@@ -56,5 +62,4 @@ public class Constant {
         Constant.BOARDFRAMEDEPTH = 1.5f * Constant.CUBESIZE;
         Constant.BOARDFRAMETHICKNESS = 0.25f * Constant.CUBESIZE;
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

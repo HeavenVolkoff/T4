@@ -1,4 +1,4 @@
-//REFACTORED STATUS: ON GOING.
+//REFACTORED STATUS: OK.
 
 package Refactoring.View;
 
@@ -22,35 +22,6 @@ public class PlayablePiece extends Piece {
 	private boolean rotating;
     private boolean controlable;
 
-    ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
-    public PlayablePiece(List<Spatial> geo, boolean falling, boolean controlable, Control controller) {
-        super();
-
-        setName("BoardPiece");
-
-        if(controller != null && !controller.isSetSpatial()){
-            addControl(controller);
-        }
-
-        constructFromGeoList(geo);
-
-        this.alpha = 1;
-        this.rotating = false;
-        this.controlable = controlable;
-        this.startFallTime = System.nanoTime();
-        this.pieceFallingTime = Constant.REMANINGLINESFALLINTERVAL;
-        this.falling = falling;
-
-        constructGeosAbsolutePoints();
-
-        setLocalTranslation(pos); //move piece to position
-    }
-
-    private void constructFromGeoList(List<Spatial> geo){
-        //ADD CODE HERE
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
     public PlayablePiece(String fileName, Vector3f pos, boolean falling, ColorRGBA color, Control controller){
         super(fileName, pos, color);
@@ -68,7 +39,7 @@ public class PlayablePiece extends Piece {
         constructGeosAbsolutePoints();
 
         //Align piece to board grid
-        move(0, -(getChildren().get(getChildren().size()-1).getWorldBound().getCenter().y), 0);
+        move(0, -((getChildren().get(getChildren().size()-1).getWorldBound().getCenter().y+Constant.CUBESIZE/2) - pos.y), 0);
     }
 
     private void constructGeosAbsolutePoints() {

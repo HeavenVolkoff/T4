@@ -1,6 +1,6 @@
-package Control;
+package Old.Control;
 
-import View.PlayablePiece;
+import Old.View.PlayablePiece;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
@@ -23,9 +23,9 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Model.Keys;
-import View.Piece;
-import Primary.Main;
+import Old.Model.Keys;
+import Old.View.Piece;
+import Old.Primary.Main;
 
 
 /**
@@ -93,7 +93,7 @@ public class PieceController extends AbstractControl implements Cloneable {
     private void setupDefaultKeys(){
         hotKeys.add(new Keys("ChangePiece", KeyInput.KEY_RETURN));
         hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_DOWN));
-        //==================Set Default Analog Model.Keys=====================//
+        //==================Set Default Analog Old.Model.Keys=====================//
         hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_UP, 400));
         hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_SPACE, 400));
         hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, 150));
@@ -130,7 +130,7 @@ public class PieceController extends AbstractControl implements Cloneable {
             INIFile.load(new FileInputStream(file));
             hotKeys.add(new Keys("ChangePiece", Integer.parseInt(INIFile.getProperty("ChangePiece"))));
             hotKeys.add(new Keys("AccelerateFall", Integer.parseInt(INIFile.getProperty("AccelerateFall"))));
-            //==================Set Default Analog Model.Keys=====================//
+            //==================Set Default Analog Old.Model.Keys=====================//
             hotKeys.add(new Keys("RotateClockwise", Integer.parseInt(INIFile.getProperty("RotateClockwise")), 400));
             hotKeys.add(new Keys("RotateCounterClockwise", Integer.parseInt(INIFile.getProperty("RotateCounterClockwise")), 400));
             hotKeys.add(new Keys("MoveRight", Integer.parseInt(INIFile.getProperty("MoveRight")), 150));
@@ -279,7 +279,7 @@ public class PieceController extends AbstractControl implements Cloneable {
 	/** Implement your spatial's behaviour here.
 	 * From here you can modify the scene graph and the spatial
 	 * (transform them, get and set userdata, etc).
-	 * This loop controls the spatial while the Control is enabled. */
+	 * This loop controls the spatial while the Old.Control is enabled. */
 	@Override
 	public void controlUpdate(float tpf){
 		if(spatial != null) {

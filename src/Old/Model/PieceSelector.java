@@ -1,7 +1,7 @@
-package Model;
+package Old.Model;
 
-import View.Piece;
-import Primary.Main;
+import Old.View.Piece;
+import Old.Primary.Main;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;

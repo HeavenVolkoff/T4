@@ -2,10 +2,9 @@
 
 package Refactoring.View;
 
+import Old.Primary.Main;
 import Refactoring.Control.Constant;
 import Refactoring.Model.Alpha;
-import Refactoring.Primary.Main;
-import com.jme3.asset.AssetManager;
 import com.jme3.export.Savable;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
@@ -66,7 +65,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
             }
 		} catch (IOException exception) {
 			logger.log(Level.SEVERE, "Piece file {0} not found, please report this error.", fileName);
-			logger.log(Level.FINE, "Piece {0} Constructor Error while loading file, exception {1}", new Object[]{fileName, exception});
+			logger.log(Level.SEVERE, "Piece {0} Constructor Error while loading file, exception {1}", new Object[]{fileName, exception});
 		}
 	}
 
@@ -181,7 +180,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
         }
     }
 
-    private void createGeometry(String name, Vector3f pos){
+    protected void createGeometry(String name, Vector3f pos){
         Geometry geometry = new Geometry(name, new Box(Constant.CUBESIZE, Constant.CUBESIZE, Constant.CUBESIZE));
         geometry.setLocalTranslation(pos);
         geometry.setMaterial(this.material);
