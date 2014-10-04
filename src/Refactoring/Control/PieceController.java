@@ -19,25 +19,26 @@ public class PieceController extends BaseController{
 
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
     //=========================== Constructors =====================//
-    PieceController(){
-        this.fullFallSpeed = Constant.INITIALFALLINTERVAL;
+    PieceController(int initialFallSpeed){
+        this.fullFallSpeed = initialFallSpeed;
         this.accelerated = false;
 
         if (!this.loadHotKeys(Constant.PIECECONTROLERCONFIGFILE)){
-            //=================Set Default OnAction Keys====================//
-            hotKeys.add(new Keys("ChangePiece", KeyInput.KEY_RETURN));
-            hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_DOWN));
-            //==================Set Default Analog Keys=====================//
-            hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_UP, Constant.ROTATIONINTERVAL));
-            hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_SPACE, Constant.ROTATIONINTERVAL));
-            hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, Constant.MOVEINTERVAL));
-            hotKeys.add(new Keys("MoveLeft", KeyInput.KEY_LEFT, Constant.MOVEINTERVAL));
-            if (!this.setupDefaultHotKeys(Constant.PIECECONTROLERCONFIGFILE)){
-                logger.log(Level.WARNING, "Can't save file {0}, maybe you don't have permission, if you do, please report this error.", Constant.PIECECONTROLERCONFIGFILE);
-            }
+            logger.log(Level.WARNING, "Can't load file {0}, maybe you don't have permission, if you do, please report this error.", Constant.PIECECONTROLERCONFIGFILE);
         }
     }
     //==============================================================//
+
+    @Override
+    protected void setupDefaultHotKeys(){
+        hotKeys.add(new Keys("ChangePiece", KeyInput.KEY_RETURN));
+        hotKeys.add(new Keys("AccelerateFall", KeyInput.KEY_DOWN));
+        //==================Set Default Analog Keys=====================//
+        hotKeys.add(new Keys("RotateClockwise", KeyInput.KEY_UP, Constant.ROTATIONINTERVAL));
+        hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_SPACE, Constant.ROTATIONINTERVAL));
+        hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, Constant.MOVEINTERVAL));
+        hotKeys.add(new Keys("MoveLeft", KeyInput.KEY_LEFT, Constant.MOVEINTERVAL));
+    }
 
     @Override
     protected void controlUpdate(float tpf) {

@@ -61,21 +61,24 @@ public abstract class BaseController extends AbstractControl implements Control 
                 String[] infos = pieceControlerManager.getValue(itemKey).split(";");
                 if (infos[1].equals("-1")) {
                     hotKeys.add(new Keys(itemKey, Integer.parseInt(infos[0])));
+                    Main.app.getInputManager().addListener(this.actionKeyPress, itemKey);
                 } else {
                     hotKeys.add(new Keys(itemKey, Integer.parseInt(infos[0]), Integer.parseInt(infos[1])));
+                    Main.app.getInputManager().addListener(this.actionKeyPress, itemKey);
+                    Main.app.getInputManager().addListener(this.analogKeyPress, itemKey);
                 }
             }
             if (hotKeys.size() != 0) {
                 return true;
-            } else {
-                return false;
             }
-        }else{
-            return false;
         }
+        hotKeys.clear();
+        setupDefaultHotKeys();
+        saveHotKeys(fileName);
+        return false;
     }
 
-    protected boolean setupDefaultHotKeys(String fileName) {
+    protected boolean saveHotKeys(String fileName) {
         ConfigManager pieceControlerManager = new ConfigManager(fileName);
         if (pieceControlerManager.load(fileName)) {
             for (Keys key : hotKeys) {
@@ -87,13 +90,12 @@ public abstract class BaseController extends AbstractControl implements Control 
             }
             if (pieceControlerManager.save()) {
                 return true;
-            } else {
-                return false;
             }
-        }else{
-            return false;
         }
+        return false;
     }
+
+    protected abstract void setupDefaultHotKeys();
 
     public boolean setHotKey(String actionName, int keyCode, String fileName) {
         ConfigManager pieceControlerManager = new ConfigManager(fileName);
@@ -108,7 +110,7 @@ public abstract class BaseController extends AbstractControl implements Control 
                         return false;
                     }
                 } else {
-                    Main.app.getInputManager().addListener(this.actionKeyPress, key.getActionName());
+                    Main.app.getInputManager().addListener(this.actionKeyPress, actionName);
                     Main.app.getInputManager().addListener(this.analogKeyPress, actionName);
                     if (!pieceControlerManager.defineKey(actionName, keyCode + ";" + key.getRepeatTime())){
                         return false;
