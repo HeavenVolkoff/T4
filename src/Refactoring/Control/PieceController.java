@@ -20,6 +20,7 @@ public class PieceController extends BaseController{
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
     //=========================== Constructors =====================//
     PieceController(int initialFallSpeed){
+        super();
         this.fullFallSpeed = initialFallSpeed;
         this.accelerated = false;
 

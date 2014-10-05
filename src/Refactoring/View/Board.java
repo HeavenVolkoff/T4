@@ -1,4 +1,4 @@
-//REFACTORED STATUS: ON GOING.
+//REFACTORED STATUS: OK.
 
 package Refactoring.View;
 
@@ -30,7 +30,6 @@ public class Board extends Frame{
     private Integer[][] geometryIndexMap;
     private int col;
     private int row;
-    private float geoAlpha;
 
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
     //======================== Class Constructors ==========================//
@@ -39,8 +38,6 @@ public class Board extends Frame{
 		this.col = col;
 		this.row = row;
 		this.geometryIndexMap = new Integer[col][row];
-        this.geoAlpha = 1;
-
 	}
     //======================================================================//
 
@@ -53,36 +50,6 @@ public class Board extends Frame{
 			pos[i].setZ(0);
 		}
 		return pos;
-	}
-
-	public boolean hitBottom(Vector3f[] pieceGeoAbsolutePos){
-		Vector3f[] pos = posRelativeToBoard(pieceGeoAbsolutePos);
-		for (Vector3f geoPos : pos){
-			if(geoPos.getY() == 0 || ((int)geoPos.getY()<row && geometryIndexMap[(int) geoPos.getX()][(int) geoPos.getY() - 1] != null)){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean hitLeft(Vector3f[] pieceGeoAbsolutePos){
-		Vector3f[] pos = posRelativeToBoard(pieceGeoAbsolutePos);
-		for (Vector3f geoPos : pos){
-			if(geoPos.getX() == 0 || geometryIndexMap[(int) geoPos.getX() - 1][(int) geoPos.getY()] != null){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean hitRigth(Vector3f[] pieceGeoAbsolutePos){
-		Vector3f[] pos = posRelativeToBoard(pieceGeoAbsolutePos);
-		for (Vector3f geoPos : pos){
-			if(geoPos.getX() == (this.col - 1) || geometryIndexMap[(int) geoPos.getX() + 1][(int) geoPos.getY()] != null){
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public boolean addPiece(Vector3f[] pieceGeoAbsolutePos, Material mat){
@@ -137,15 +104,18 @@ public class Board extends Frame{
             }
         }
 	}
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
-    private int[][] buildRotationMatrix(PlayablePiece piece, int angle) {
-        return new int[0][];
+    public int getRow() {
+        return row;
     }
 
-    public boolean canRotate(PlayablePiece piece, int angle) {
-        return false;
+    public int getCol() {
+        return col;
+    }
+
+    public Integer[][] getGeometryIndexMap() {
+        return geometryIndexMap;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }

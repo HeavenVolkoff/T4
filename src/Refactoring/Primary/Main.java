@@ -2,7 +2,6 @@
 
 package Refactoring.Primary;
 
-import Old.Primary.T4Base;
 import com.jme3.system.AppSettings;
 
 /**
@@ -11,7 +10,7 @@ import com.jme3.system.AppSettings;
  */
 
 public class Main {
-	public static Old.Primary.T4Base app;
+	public static T4Base app;
 
     public static void main(String[] args) {
 		app = new T4Base();

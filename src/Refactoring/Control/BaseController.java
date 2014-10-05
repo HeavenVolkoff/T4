@@ -61,11 +61,8 @@ public abstract class BaseController extends AbstractControl implements Control 
                 String[] infos = pieceControlerManager.getValue(itemKey).split(";");
                 if (infos[1].equals("-1")) {
                     hotKeys.add(new Keys(itemKey, Integer.parseInt(infos[0])));
-                    Main.app.getInputManager().addListener(this.actionKeyPress, itemKey);
                 } else {
                     hotKeys.add(new Keys(itemKey, Integer.parseInt(infos[0]), Integer.parseInt(infos[1])));
-                    Main.app.getInputManager().addListener(this.actionKeyPress, itemKey);
-                    Main.app.getInputManager().addListener(this.analogKeyPress, itemKey);
                 }
             }
             if (hotKeys.size() != 0) {
@@ -74,6 +71,17 @@ public abstract class BaseController extends AbstractControl implements Control 
         }
         hotKeys.clear();
         setupDefaultHotKeys();
+
+        for (Keys key : hotKeys) {
+            Main.app.getInputManager().addMapping(key.getActionName(), new KeyTrigger(key.getId()));
+            if (key.getOnAction()) {
+                Main.app.getInputManager().addListener(this.actionKeyPress, key.getActionName());
+            } else {
+                Main.app.getInputManager().addListener(this.actionKeyPress, key.getActionName());
+                Main.app.getInputManager().addListener(this.analogKeyPress, key.getActionName());
+            }
+        }
+
         saveHotKeys(fileName);
         return false;
     }
