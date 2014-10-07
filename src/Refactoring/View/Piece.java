@@ -48,6 +48,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 	protected Material material;
     protected float alpha;
 	protected static final Logger logger = Logger.getLogger(Piece.class.getName());
+    protected Vector3f[] absolutePivotPos;
 
 	//======================== Class Constructors ==========================//
 	public Piece(String fileName, Vector3f pos, ColorRGBA color){

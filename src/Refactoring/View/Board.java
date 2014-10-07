@@ -6,6 +6,7 @@ import Old.Primary.Main;
 import Refactoring.Control.Constant;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
@@ -34,7 +35,7 @@ public class Board extends Frame{
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
     //======================== Class Constructors ==========================//
     public Board(int col, int row){
-		super("board", "BLR", new Vector3f(0, 0, 0), new Vector3f(col * Constant.MOVEDISTANCE, row * Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, Constant.BOARDCOLOR);
+		super("board", Constant.RIGHT+Constant.BOTTOM+Constant.LEFT, new Vector3f(0, 0, 0), new Vector3f(col * Constant.MOVEDISTANCE, row * Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, Constant.BOARDCOLOR);
 		this.col = col;
 		this.row = row;
 		this.geometryIndexMap = new Integer[col][row];
@@ -45,12 +46,19 @@ public class Board extends Frame{
 		Vector3f[] pos = new Vector3f[absolutePos.length];
 		for(int i = 0; i < absolutePos.length; i++){
 			pos[i] = new Vector3f();
-			pos[i].setX(Math.round((((absolutePos[i].distance(new Vector3f(getBarPos('L').getX(), absolutePos[i].getY(), 0))) - (Constant.BOARDFRAMETHICKNESS + Constant.CUBESIZE)) / Constant.MOVEDISTANCE)));
-			pos[i].setY(Math.round((((absolutePos[i].distance(new Vector3f(absolutePos[i].getX(), getBarPos('B').getY(), 0))) - (Constant.BOARDFRAMETHICKNESS + Constant.CUBESIZE)) / Constant.MOVEDISTANCE)));
+			pos[i].setX(Math.round((((absolutePos[i].distance(new Vector3f(getBarPos(Constant.LEFT).getX(), absolutePos[i].getY(), 0))) - (Constant.BOARDFRAMETHICKNESS + Constant.CUBESIZE)) / Constant.MOVEDISTANCE)));
+			pos[i].setY(Math.round((((absolutePos[i].distance(new Vector3f(absolutePos[i].getX(), getBarPos(Constant.BOTTOM).getY(), 0))) - (Constant.BOARDFRAMETHICKNESS + Constant.CUBESIZE)) / Constant.MOVEDISTANCE)));
 			pos[i].setZ(0);
 		}
 		return pos;
 	}
+
+    public Vector2f posRelativeToBoard(Vector2f absolutePos){
+        Vector2f pos = new Vector2f();
+        pos.setX(Math.round((((absolutePos.distance(new Vector2f(getBarPos(Constant.LEFT).getX(), absolutePos.getY()))) - (Constant.BOARDFRAMETHICKNESS + Constant.CUBESIZE)) / Constant.MOVEDISTANCE)));
+        pos.setY(Math.round((((absolutePos.distance(new Vector2f(absolutePos.getX(), getBarPos(Constant.BOTTOM).getY()))) - (Constant.BOARDFRAMETHICKNESS + Constant.CUBESIZE)) / Constant.MOVEDISTANCE)));
+        return pos;
+    }
 
 	public boolean addPiece(Vector3f[] pieceGeoAbsolutePos, Material mat){
 		int count = 0;

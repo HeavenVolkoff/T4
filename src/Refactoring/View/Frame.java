@@ -85,8 +85,8 @@ public class Frame extends Node implements Alpha{
         attachChild(geometry);
     }
 
-	protected Vector3f getBarPos(char part){
-		switch (part) {
+	protected Vector3f getBarPos(String part){
+		switch (part.charAt(0)) {
 			case 'T':
 				return getChild("Top").getWorldBound().getCenter();
 			case 'R':
