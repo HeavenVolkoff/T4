@@ -8,6 +8,9 @@ import Refactoring.View.PlayablePiece;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import org.lwjgl.Sys;
+
+import java.util.Arrays;
 
 /**
  * Created by blackpearl on 04/10/14.
@@ -29,17 +32,17 @@ public final class BasicMechanics {
     public static boolean hitLeft(Vector3f[] pieceGeoAbsolutePos, Board board){
         Vector3f[] pos = board.posRelativeToBoard(pieceGeoAbsolutePos);
         for (Vector3f geoPos : pos){
-            if(geoPos.getX() == 0 || board.getGeometryIndexMap()[(int) geoPos.getX() - 1][(int) geoPos.getY()] != null){
+            if(geoPos.getX() == 0 || (geoPos.getY() < board.getRow() && board.getGeometryIndexMap()[(int) geoPos.getX() - 1][(int) geoPos.getY()] != null)){
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean hitRigth(Vector3f[] pieceGeoAbsolutePos, Board board){
+    public static boolean hitRight(Vector3f[] pieceGeoAbsolutePos, Board board){
         Vector3f[] pos = board.posRelativeToBoard(pieceGeoAbsolutePos);
         for (Vector3f geoPos : pos){
-            if(geoPos.getX() == (board.getCol() - 1) || board.getGeometryIndexMap()[(int) geoPos.getX() + 1][(int) geoPos.getY()] != null){
+            if(geoPos.getX() == (board.getCol() - 1) || (geoPos.getY() < board.getRow() && board.getGeometryIndexMap()[(int) geoPos.getX() + 1][(int) geoPos.getY()] != null)){
                 return true;
             }
         }
@@ -110,62 +113,151 @@ public final class BasicMechanics {
     |  ||  ||  ||  ||  ||  ||  |    2  5
     |  ||  ||  ||  ||  ||  ||  |    3  6
     |  ||  ||  ||  ||  ||  ||  |    4  7
+
+
+
+
+      0   1   2   3   4   5   6   7   8   9
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 19
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 18
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 17
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 16
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 15
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 14
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 13
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 12
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 11
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 10
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  |  9
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  |  8
+    |  ||  ||  ||p0||pp||  ||  ||  ||  ||  |  7
+    |  ||  ||  ||pp||p1||pp||pp||  ||  ||  |  6
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  |  5
+    |  ||  ||  ||55||  ||  ||  ||  ||  ||  |  4
+    |  ||  ||  ||55||  ||  ||  ||  ||  ||  |  3
+    |  ||  ||  ||55||22||  ||  ||  ||  ||  |  2
+    |  ||11||  ||55||22||33||33||  ||44||44|  1
+    |11||11||11||22||22||33||33||44||44||  |  0
+
+    |  ||  ||  ||  ||  ||  ||  ||  |
+    |  ||  ||  ||  ||  ||  ||  ||  |
+    |  ||  ||  ||  ||  ||  ||  ||  |
+    |  ||  ||  ||pp||p0||  ||  ||  |
+    |  ||  ||  ||p1||pp||  ||  ||  |
+    |  ||  ||  ||pp||  ||  ||  ||  |
+    |  ||  ||  ||pp||  ||  ||  ||  |
+    |  ||  ||  ||  ||  ||  ||  ||  |
+    |  ||  ||  ||  ||  ||  ||  ||  |
+    |  ||  ||  ||  ||  ||  ||  ||  |
+
+      0   1   2   3   4   5   6   7   8   9
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 19
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 18
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 17
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 16
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 15
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 14
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 13
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 12
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 11
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  | 10
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  |  9
+    |  ||  ||  ||  ||  ||  ||  ||  ||  ||  |  8
+    |  ||  ||pp||p0||  ||  ||  ||  ||  ||  |  7
+    |  ||  ||p1||pp||  ||  ||  ||  ||  ||  |  6
+    |  ||  ||pp||  ||  ||  ||  ||  ||  ||  |  5
+    |  ||  ||pp||55||  ||  ||  ||  ||  ||  |  4
+    |  ||  ||  ||55||  ||  ||  ||  ||  ||  |  3
+    |  ||  ||  ||55||22||  ||  ||  ||  ||  |  2
+    |  ||11||  ||55||22||33||33||  ||44||44|  1
+    |11||11||11||22||22||33||33||44||44||  |  0
      */
 
 
-    private int[][] buildRotationMatrix(PlayablePiece piece, int angle, Board board) {
+    private static int[][] buildRotationMatrix(PlayablePiece piece, Vector2f[] pivotPos, int angle, Board board) {
         int[][] matrix = new int[2*piece.getNumBox()+1][2*piece.getNumBox()+1];
 
+        Spatial[] pivots = {piece.getChild("Pivot0"), piece.getChild("Pivot1")};
+        pivotPos[0] = new Vector2f(pivots[0].getWorldBound().getCenter().x,pivots[0].getWorldBound().getCenter().y);
+        if (pivots[1] != null) {
+            pivotPos[1] = new Vector2f(pivots[1].getWorldBound().getCenter().x,pivots[1].getWorldBound().getCenter().y);
+        }
+
+       	if (pivotPos[0] != null){
+			Vector2f matrixPivotPos = board.posRelativeToBoard(pivotPos[0]);
+
+			if (angle == Constant.CLOCKWISE) {
+                for (Vector3f geoPos : board.posRelativeToBoard(piece.getBoxAbsolutePoint())) {
+                    matrix[piece.getNumBox() + ((int) matrixPivotPos.getX() - (int) geoPos.getX()) * -1][piece.getNumBox() + ((int) matrixPivotPos.getY() - (int) geoPos.getY()) * -1] = 1;
+                }
+			}else if(angle == Constant.COUNTERCLOCKWISE){
+                for (Vector3f geoPos : board.posRelativeToBoard(piece.getBoxAbsolutePoint())) {
+                    matrix[(int) matrixPivotPos.getX() - (int) geoPos.getX() + piece.getNumBox()][(int) matrixPivotPos.getY() - (int) geoPos.getY() + piece.getNumBox()] = 1;
+                }
+			}
+			matrix[piece.getNumBox()][piece.getNumBox()] = 2;
+		}
+		return matrix;
+    }
+
+	public static boolean canRotate(PlayablePiece piece, int angle, Board board){
         Vector2f[] pivotPos = new Vector2f[2];
-        for (Spatial geo : piece.getBoxGeometries()){
-            if (geo.getName().equals("Pivot")){
-                if (pivotPos[0] == null){
-                    pivotPos[0] = new Vector2f(geo.getWorldBound().getCenter().x,geo.getWorldBound().getCenter().y);
-                }else if(pivotPos[1] == null){
-                    pivotPos[1] = new Vector2f(geo.getWorldBound().getCenter().x,geo.getWorldBound().getCenter().y);
+        int [][] matrix = buildRotationMatrix(piece, pivotPos, angle, board);
+
+        for(int[] line : matrix){
+            for(int pos : line){
+                System.out.print(pos);
+            }
+            System.out.println("");
+        }
+        System.out.println("");
+
+        int boxBoardPosX;
+        int boxBoardPosY;
+        Vector2f pivotMatrixPos = new Vector2f();
+        Vector2f pivotBoardPos = new Vector2f();
+
+        //Get Pivot Matrix Pos
+        for (int i = 0; i<matrix.length; i++){
+            for (int j = 0; j<matrix.length; j++){
+                if (matrix[i][j]==2){
+                    pivotMatrixPos.setX(i);
+                    pivotMatrixPos.setY(j);
                     break;
                 }
             }
         }
-		if (pivotPos[0] != null){
-			Vector2f matrixPivotPos = board.posRelativeToBoard(pivotPos[0]);
+        //Get Pivot Board Pos
+        Spatial pivot = piece.getChild("Pivot0");
+        pivotBoardPos = board.posRelativeToBoard(new Vector2f(pivot.getWorldBound().getCenter().x,pivot.getWorldBound().getCenter().y));
 
-			if (angle == Constant.CLOCKWISE) {
-				for (Vector3f geoPos : piece.getBoxAbsolutePoint()) {
-					matrix[(int) matrixPivotPos.getX() - (int) geoPos.getX() + piece.getNumBox()][(int) matrixPivotPos.getY() - (int) geoPos.getY() + piece.getNumBox()] = 1;
-				}
-			}else if(angle == Constant.COUNTERCLOCKWISE){
-				for (Vector3f geoPos : piece.getBoxAbsolutePoint()) {
-					matrix[piece.getNumBox() + ((int) matrixPivotPos.getX() - (int) geoPos.getX()) * -1][piece.getNumBox() + ((int) matrixPivotPos.getY() - (int) geoPos.getY()) * -1] = 1;
-				}
-			}
-			matrix[piece.getNumBox()][piece.getNumBox()] = 2;
-		}
+        System.out.println(pivotBoardPos);
+
         if(pivotPos[1] != null) {
-            if (pivotPos[0].x > pivotPos[1].x){
-				for (int[] line : matrix){
-					for (int i = 1; i < line.length - 1; i++){
-						line[i] = line[i-1];
-					}
-				}
-			}else{
-				for (int line = 1; line < matrix.length - 2; line++){
-					for(int i = 0; i < matrix[line].length - 1; i++){
-						matrix[line][i] = matrix[line - 1][i];
-					}
-				}
-			}
+            if (pivotPos[0].x < pivotPos[1].x){
+                pivotBoardPos.x += 1;
+            }else{
+                pivotBoardPos.y -= 1;
+            }
         }
-		return matrix;
-    }
 
-	public static boolean canRotate(){
-		return true;
+        //Verify Board & Piece Transposition
+        for (int i = 0; i<matrix.length; i++){
+            for (int j = 0; j<matrix.length; j++){
+                if (matrix[i][j]==1){
+                    boxBoardPosY = (int)pivotBoardPos.getY()+ (i-(int)pivotMatrixPos.getX())*-1;
+                    boxBoardPosX = (int)pivotBoardPos.getX()+ (j-(int)pivotMatrixPos.getY());
+                    if (boxBoardPosX < 0 || boxBoardPosX >= board.getCol() || boxBoardPosY < 0){
+                        return false;
+                    }
+                    if (boxBoardPosX >= 0 && boxBoardPosY >= 0 && boxBoardPosX < board.getCol() && boxBoardPosY < board.getRow() && board.getGeometryIndexMap()[boxBoardPosX][boxBoardPosY] != null) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
 	}
-
-    public boolean canRotate(PlayablePiece piece, int angle) {
-        return false;
-    }
 
     public void setGameOver(boolean gameOver, float alphaVal) {
     }

@@ -24,8 +24,8 @@ public class Constant {
 	public static final int TODOWN = -1;
 
 	//Rotation Related
-	public static final int CLOCKWISE = 90;
-	public static final int COUNTERCLOCKWISE = -90;
+	public static final int CLOCKWISE = -90;
+	public static final int COUNTERCLOCKWISE = 90;
 
     //Color Related
     public static final int RGB255 = 255;

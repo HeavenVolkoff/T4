@@ -113,7 +113,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
                                 i += 1;
                             } else if (charArray[i+1] == 'P') {
                                 pivotPos.add(new Vector2f(pos.x + Constant.CUBESIZE, pos.y));
-                                createGeometry("Pivot", new Vector3f(pos.x + Constant.CUBESIZE, pos.y, this.pos.z));
+                                createGeometry("Pivot"+(pivotPos.size()-1), new Vector3f(pos.x + Constant.CUBESIZE, pos.y, this.pos.z));
                                 pos.x += Constant.CUBESIZE * 2;
                                 i += 1;
                             }else{

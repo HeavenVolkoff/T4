@@ -81,27 +81,34 @@ public class PieceController extends BaseController{
 					}else{
 						((PlayablePiece) spatial).setPieceFallingTime(fullFallSpeed);
 					}
-					Main.app.setNextPiece(new Piece(/*Main.app.getPieceSelector().randomizeFromMap())*/"Z.piece", new Vector3f(2f, 2.5f, 0), ColorRGBA.randomColor()));
+					Main.app.setNextPiece(new Piece(/*Main.app.getPieceSelector().randomizeFromMap())*/"O.piece", new Vector3f(2f, 2.5f, 0), ColorRGBA.randomColor()));
 					break;
 
 				case "AccelerateFall":
-
+                    ((PlayablePiece)spatial).setPieceFallingTime(fullFallSpeed/4);
+                    this.accelerated = true;
 					break;
 
 				case "RotateClockwise":
-
+                    ((PlayablePiece)spatial).setRotating(true);
+                    rotate(Constant.CLOCKWISE);
 					break;
 
 				case "RotateCounterClockwise":
-
+                    ((PlayablePiece)spatial).setRotating(true);
+                    rotate(Constant.COUNTERCLOCKWISE);
 					break;
 
 				case "MoveRight":
-
+                    if (!BasicMechanics.hitRight(((PlayablePiece) spatial).getBoxAbsolutePoint(), Main.app.getBoard()) && !((PlayablePiece) spatial).isRotating()){
+                        moveX(Constant.TORIGHT, Constant.MOVEDISTANCE);
+                    }
 					break;
 
 				case "MoveLeft":
-
+                    if (!BasicMechanics.hitLeft(((PlayablePiece) spatial).getBoxAbsolutePoint(), Main.app.getBoard()) && !((PlayablePiece) spatial).isRotating()){
+                        moveX(Constant.TOLEFT, Constant.MOVEDISTANCE);
+                    }
 					break;
 
 				default:
@@ -110,7 +117,8 @@ public class PieceController extends BaseController{
 		}else{
 			switch (name) {
 				case "AccelerateFall":
-
+                    ((PlayablePiece)spatial).setPieceFallingTime(fullFallSpeed);
+                    this.accelerated = false;
 					break;
 
 				default:
@@ -121,9 +129,9 @@ public class PieceController extends BaseController{
     }
 
     //==========================Movement============================//
-    private void rotate(float degreesX, float degreesY, float degreesZ){
-		if(BasicMechanics.canRotate()){
-			spatial.rotate((float) Math.toRadians(degreesX), (float) Math.toRadians(degreesY), (float) Math.toRadians(degreesZ));
+    private void rotate(int degreesZ){
+		if(BasicMechanics.canRotate((PlayablePiece)spatial, degreesZ, Main.app.getBoard())){
+			spatial.rotate( 0, 0, (float) Math.toRadians(degreesZ));
 		}
     }
 
@@ -143,7 +151,6 @@ public class PieceController extends BaseController{
 		if (keyElapsedTime >= ((PlayablePiece)spatial).getPieceFallingTime()) {
 			if (((PlayablePiece)spatial).isFalling()) {
 				//Not hit Horizontal frame
-				System.out.println(BasicMechanics.hitBottom(((PlayablePiece) spatial).getBoxAbsolutePoint(), Main.app.getBoard()));
 				if (!BasicMechanics.hitBottom(((PlayablePiece) spatial).getBoxAbsolutePoint(), Main.app.getBoard())) {
 					moveY(Constant.TODOWN, Constant.MOVEDISTANCE);
 					if (this.accelerated){

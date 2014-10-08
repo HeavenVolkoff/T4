@@ -1,6 +1,7 @@
 package Old.Control;
 
 import Old.View.PlayablePiece;
+import Refactoring.Model.BasicMechanics;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;

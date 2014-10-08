@@ -48,7 +48,7 @@ public class T4Base extends SimpleApplication {
 		rootNode.attachChild(board);
 
 		control = new PieceController(500);
-		currentPiece = new PlayablePiece("T.piece",new Vector3f(0f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0), true, ColorRGBA.randomColor(), control);
+		currentPiece = new PlayablePiece("O.piece",new Vector3f(0f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0), true, ColorRGBA.randomColor(), control);
 		rootNode.attachChild(currentPiece);
 
 		nextPiece = new Piece("L.piece", new Vector3f(2f, 2.5f, 0), ColorRGBA.randomColor());
