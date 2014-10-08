@@ -4,7 +4,7 @@ package Refactoring.View;
 
 import Refactoring.Control.Constant;
 import Refactoring.Model.Alpha;
-import Old.Primary.Main;
+import Refactoring.Primary.Main;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
@@ -41,10 +41,10 @@ public class Frame extends Node implements Alpha{
 
     //======================== Material Manager ============================//
     private Material createColoredMaterial(ColorRGBA color){
-        this.material = new Material(Main.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
-        setMaterialColor(this.material, color, 2);
+        Material material = new Material(Main.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
+        setMaterialColor(material, color, 2);
 
-        return this.material;
+        return material;
     }
 
     private void setMaterialColor(Material material, ColorRGBA color, float shine){

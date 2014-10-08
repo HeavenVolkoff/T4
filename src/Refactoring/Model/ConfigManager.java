@@ -45,8 +45,8 @@ public class ConfigManager {
                 return false;
             }
         } catch (IOException ex) {
-        logger.log(Level.WARNING, "Error while trying to load {0} file, please report this error.", fileName);
-        return false;
+        	logger.log(Level.WARNING, "Error while trying to load {0} file, please report this error.", fileName);
+        	return false;
         }
     }
 

@@ -2,7 +2,7 @@
 
 package Refactoring.View;
 
-import Old.Primary.Main;
+import Refactoring.Primary.Main;
 import Refactoring.Control.Constant;
 import Refactoring.Model.Alpha;
 import com.jme3.export.Savable;
@@ -55,7 +55,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 		super(fileName);
 		this.pos = pos;
 		this.alpha = 1;
-        this.material = createColoredMaterial(ColorRGBA.randomColor());
+        this.material = createColoredMaterial(color);
 
 		setLocalTranslation(pos); //move piece to position
 
@@ -222,13 +222,21 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
         return pos;
     }
 
-    public int getNumBox() {
+	public void setPosX(float posX) {
+		this.pos.setX(posX);
+	}
+
+	public void setPosY(float posY) {
+		this.pos.setY(posY);
+	}
+
+	public int getNumBox() {
         return getChildren().size();
     }
 
     public List<Spatial> getBoxGeometries() {
-        return getChildren();
-    }
+		return getChildren();
+	}
 
     public Material getMat() {
         return material;

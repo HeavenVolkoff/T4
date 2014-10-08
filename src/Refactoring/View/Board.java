@@ -74,19 +74,19 @@ public class Board extends Frame{
 				return false;
 			}
 		}
-		Main.app.getScore().updateScore(1,10);//NOT REFACTORED YET
+		//Main.app.getScore().updateScore(1,10);//NOT REFACTORED YET
 		return true;
 	}
 
 	public List<Integer> getCompleteLines(){
 		List<Integer> completedLines = new ArrayList<Integer>();
 
-		for(int lineIndex = 0; lineIndex < row; lineIndex++){
+		for(int lineIndex = 0; lineIndex < col; lineIndex++){
 			int count = 0;
-			while(geometryIndexMap[lineIndex][count] != null && count < col){
+			while(count < row && geometryIndexMap[lineIndex][count] != null){
 				count++;
 			}
-			if(count == col){
+			if(count == row){
 				completedLines.add(lineIndex);
 			}
 		}

@@ -2,7 +2,7 @@
 
 package Refactoring.Control;
 
-import Old.Primary.Main;
+import Refactoring.Primary.Main;
 import Refactoring.Model.ConfigManager;
 import Refactoring.Control.Model.Control;
 import com.jme3.input.controls.ActionListener;

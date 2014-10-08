@@ -2,8 +2,13 @@
 
 package Refactoring.Control;
 
+import Refactoring.Model.BasicMechanics;
+import Refactoring.Primary.Main;
+import Refactoring.View.Piece;
 import Refactoring.View.PlayablePiece;
 import com.jme3.input.KeyInput;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +24,7 @@ public class PieceController extends BaseController{
 
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
     //=========================== Constructors =====================//
-    PieceController(int initialFallSpeed){
+    public PieceController(int initialFallSpeed){
         super();
         this.fullFallSpeed = initialFallSpeed;
         this.accelerated = false;
@@ -44,7 +49,7 @@ public class PieceController extends BaseController{
     @Override
     protected void controlUpdate(float tpf) {
         if(spatial != null) {
-            fall(Constant.MOVEDISTANCE);
+            fall();
             ((PlayablePiece)spatial).setRotating(false);
         }
     }
@@ -66,32 +71,105 @@ public class PieceController extends BaseController{
     ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
     @Override
     protected void keyActions(String name, boolean pressed) {
-        if (name.equals("ChangePiece") && pressed){
+		if (pressed) {
+			switch (name) {
+				case "ChangePiece":
+					setSpatial(null);
+					Main.app.setCurrentPiece(new PlayablePiece(Main.app.getNextPiece().getName(), new Vector3f(0f, 0.15f+(0.15f*20*1.5f)-(4.5f*0.15f), 0), true, ColorRGBA.randomColor(), this));
+					if (this.accelerated) {
+						((PlayablePiece) spatial).setPieceFallingTime(fullFallSpeed/4);
+					}else{
+						((PlayablePiece) spatial).setPieceFallingTime(fullFallSpeed);
+					}
+					Main.app.setNextPiece(new Piece(/*Main.app.getPieceSelector().randomizeFromMap())*/"Z.piece", new Vector3f(2f, 2.5f, 0), ColorRGBA.randomColor()));
+					break;
 
-        }else if(name.equals("AccelerateFall")) {
+				case "AccelerateFall":
 
-        }else if(name.equals("RotateClockwise") && pressed){
+					break;
 
-        }else if(name.equals("RotateCounterClockwise") && pressed){
+				case "RotateClockwise":
 
-        }else if(name.equals("MoveRight") && pressed){
+					break;
 
-        }else if(name.equals("MoveLeft") && pressed){
+				case "RotateCounterClockwise":
 
-        }
+					break;
+
+				case "MoveRight":
+
+					break;
+
+				case "MoveLeft":
+
+					break;
+
+				default:
+					break;
+			}
+		}else{
+			switch (name) {
+				case "AccelerateFall":
+
+					break;
+
+				default:
+					break;
+			}
+
+		}
     }
 
     //==========================Movement============================//
     private void rotate(float degreesX, float degreesY, float degreesZ){
+		if(BasicMechanics.canRotate()){
+			spatial.rotate((float) Math.toRadians(degreesX), (float) Math.toRadians(degreesY), (float) Math.toRadians(degreesZ));
+		}
     }
 
     private void moveX(int orientation, float distance){
+		spatial.move(distance * orientation, 0, 0);
+		((Piece) spatial).setPosX(distance * orientation);
     }
 
     private void moveY(int orientation, float distance){
+		spatial.move(0, distance * orientation, 0);
+		((Piece) spatial).setPosY(distance * orientation);
     }
 
-    private void fall(float heightRelativeToCubeSize) {
+    private void fall() {
+		int keyElapsedTime = (int) ((System.nanoTime() - ((PlayablePiece)spatial).getStartFallTime()) / 1000000);
+
+		if (keyElapsedTime >= ((PlayablePiece)spatial).getPieceFallingTime()) {
+			if (((PlayablePiece)spatial).isFalling()) {
+				//Not hit Horizontal frame
+				System.out.println(BasicMechanics.hitBottom(((PlayablePiece) spatial).getBoxAbsolutePoint(), Main.app.getBoard()));
+				if (!BasicMechanics.hitBottom(((PlayablePiece) spatial).getBoxAbsolutePoint(), Main.app.getBoard())) {
+					moveY(Constant.TODOWN, Constant.MOVEDISTANCE);
+					if (this.accelerated){
+						//Main.app.getScore().updateScore(Main.app.getScore().getLevel(), 1);
+					}
+				}else if (Main.app.getBoard().addPiece(((PlayablePiece) spatial).getBoxAbsolutePoint(), ((PlayablePiece) spatial).getMat())) {
+					keyActions("ChangePiece", true);
+					/*
+					NEED REFACTOR
+					if(Main.app.getBoard().isGameOver(((PlayablePiece) spatial).getBoxAbsolutePoint(), ((PlayablePiece) spatial).getNumBox())){
+						Main.app.setCurrentPiece(new PlayablePiece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
+						Main.app.getBoard().setGameOver(true, 0.1f);
+					}
+					*/
+					Main.app.getBoard().destroyCompletedLines();
+				}else{
+					/*
+					NEED REFACTOR
+					Main.app.setCurrentPiece(new PlayablePiece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
+					Main.app.getBoard().setGameOver(true, 0.1f);
+					*/
+				}
+
+			}
+			((PlayablePiece)spatial).setStartFallTime(System.nanoTime());
+		}
     }
     //==============================================================//
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

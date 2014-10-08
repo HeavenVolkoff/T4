@@ -17,11 +17,15 @@ public class Constant {
     public static float BOARDFRAMEDEPTH;
     public static float BOARDFRAMETHICKNESS;
 
-	//Movement Directions
+	//Movement Directions Related
 	public static final int TOLEFT = -1;
 	public static final int TORIGHT = 1;
 	public static final int TOUP = 1;
 	public static final int TODOWN = -1;
+
+	//Rotation Related
+	public static final int CLOCKWISE = 90;
+	public static final int COUNTERCLOCKWISE = -90;
 
     //Color Related
     public static final int RGB255 = 255;
