@@ -36,7 +36,7 @@ public abstract class BaseController extends AbstractControl implements Control 
         this.analogKeyPress = new AnalogListener() {
             public void onAnalog(String name, float pressed, float tpf) {
                 Keys keyPressed = getKeyByActionName(name);
-                if ((int)((System.nanoTime()-keyPressed.getStartTime())*Constant.NANOTIMETOMILLISECONDS) >= keyPressed.getRepeatTime()) { //Elapsed time >= Repeat Time
+                if ((int)((System.nanoTime()-keyPressed.getStartTime())/Constant.NANOTIMETOMILLISECONDS) >= keyPressed.getRepeatTime()) { //Elapsed time >= Repeat Time
                     keyActions(name, true);
                     getKeyByActionName(name).setStartTime(System.nanoTime());
                 }
@@ -54,6 +54,18 @@ public abstract class BaseController extends AbstractControl implements Control 
         return null;
     }
 
+    private void createMapingsAndListeners(){
+        for (Keys key : hotKeys) {
+            Main.app.getInputManager().addMapping(key.getActionName(), new KeyTrigger(key.getId()));
+            if (key.getOnAction()) {
+                Main.app.getInputManager().addListener(this.actionKeyPress, key.getActionName());
+            } else {
+                Main.app.getInputManager().addListener(this.actionKeyPress, key.getActionName());
+                Main.app.getInputManager().addListener(this.analogKeyPress, key.getActionName());
+            }
+        }
+    }
+
     protected boolean loadHotKeys(String fileName) {
         ConfigManager pieceControlerManager = new ConfigManager(fileName);
         if (pieceControlerManager.load(fileName)) {
@@ -66,21 +78,15 @@ public abstract class BaseController extends AbstractControl implements Control 
                 }
             }
             if (hotKeys.size() != 0) {
+                createMapingsAndListeners();
                 return true;
             }
         }
+
         hotKeys.clear();
         setupDefaultHotKeys();
 
-        for (Keys key : hotKeys) {
-            Main.app.getInputManager().addMapping(key.getActionName(), new KeyTrigger(key.getId()));
-            if (key.getOnAction()) {
-                Main.app.getInputManager().addListener(this.actionKeyPress, key.getActionName());
-            } else {
-                Main.app.getInputManager().addListener(this.actionKeyPress, key.getActionName());
-                Main.app.getInputManager().addListener(this.analogKeyPress, key.getActionName());
-            }
-        }
+        createMapingsAndListeners();
 
         saveHotKeys(fileName);
         return false;

@@ -73,7 +73,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 
 	//======================== Material Manager ============================//
 	private Material createColoredMaterial(ColorRGBA color){
-		this.material = new Material(Main.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
+		Material material = new Material(Main.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
 		setMaterialColor(material, color, 2);
 
 		return material;
@@ -92,7 +92,17 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 		Vector2f pos = new Vector2f();
 		List<Vector2f> pivotPos = new ArrayList<Vector2f>();
 
-		for (int lineNum = 0;lineNum < lines.size(); lineNum++){
+        int pieceStartLine;
+        float ResizeFactor;
+        if (lines.get(0).equals("//ResizeFactor//")){
+            ResizeFactor = Float.parseFloat(lines.get(1));
+            pieceStartLine = 2;
+        }else{
+            ResizeFactor = 1;
+            pieceStartLine = 0;
+        }
+
+		for (int lineNum = pieceStartLine;lineNum < lines.size(); lineNum++){
 			if(lines.get(lineNum).equals("//INFO//")){
 				this.setPieceFileProp(lines, lineNum);
                 break;
@@ -101,20 +111,20 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
                 for (int i = 0, charArrayLength = charArray.length; i < charArrayLength; i++) {
                     switch (charArray[i]) {
                         case '|':
-                            pos.x += Constant.HALFBOXINTERVAL;
+                            pos.x += Constant.HALFBOXINTERVAL * ResizeFactor;
                             break;
                         case ' ':
-                            pos.x += Constant.CUBESIZE;
+                            pos.x += Constant.CUBESIZE * ResizeFactor;
                             break;
                         case '0':
                             if (charArray[i+1] == '0') {
-                                createGeometry("Geometry" + getChildren().size(), new Vector3f(pos.x + Constant.CUBESIZE, pos.y, this.pos.z));
-                                pos.x += Constant.CUBESIZE * 2;
+                                createGeometry("Geometry" + getChildren().size(), new Vector3f(pos.x + Constant.CUBESIZE * ResizeFactor, pos.y, this.pos.z), Constant.CUBESIZE * ResizeFactor);
+                                pos.x += Constant.CUBESIZE * 2 * ResizeFactor;
                                 i += 1;
                             } else if (charArray[i+1] == 'P') {
-                                pivotPos.add(new Vector2f(pos.x + Constant.CUBESIZE, pos.y));
-                                createGeometry("Pivot"+(pivotPos.size()-1), new Vector3f(pos.x + Constant.CUBESIZE, pos.y, this.pos.z));
-                                pos.x += Constant.CUBESIZE * 2;
+                                pivotPos.add(new Vector2f(pos.x + Constant.CUBESIZE * ResizeFactor, pos.y));
+                                createGeometry("Pivot"+(pivotPos.size()-1), new Vector3f(pos.x + Constant.CUBESIZE * ResizeFactor, pos.y, this.pos.z), Constant.CUBESIZE * ResizeFactor);
+                                pos.x += Constant.CUBESIZE * 2 * ResizeFactor;
                                 i += 1;
                             }else{
                                 logger.log(Level.SEVERE, "Invalid Character {0} at Piece File", i);
@@ -123,8 +133,8 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
                             break;
                         case 'P':
                             if (charArray[i+1] == 'P') {
-                                pivotPos.add(new Vector2f(pos.x + Constant.CUBESIZE, pos.y));
-                                pos.x += Constant.CUBESIZE * 2;
+                                pivotPos.add(new Vector2f(pos.x + Constant.CUBESIZE * ResizeFactor, pos.y));
+                                pos.x += Constant.CUBESIZE * 2 * ResizeFactor;
                                 i += 1;
                             }else{
                                 logger.log(Level.SEVERE, "Invalid Character {0} at Piece File", i);
@@ -137,7 +147,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
                     }
                 }
                 pos.x = 0;
-                pos.y -= Constant.MOVEDISTANCE;
+                pos.y -= Constant.MOVEDISTANCE * ResizeFactor;
             }
 		}
 
@@ -180,8 +190,8 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
         }
     }
 
-    protected void createGeometry(String name, Vector3f pos){
-        Geometry geometry = new Geometry(name, new Box(Constant.CUBESIZE, Constant.CUBESIZE, Constant.CUBESIZE));
+    protected void createGeometry(String name, Vector3f pos, float cubeSize){
+        Geometry geometry = new Geometry(name, new Box(cubeSize, cubeSize, cubeSize));
         geometry.setLocalTranslation(pos);
         geometry.setMaterial(this.material);
         attachChild(geometry);

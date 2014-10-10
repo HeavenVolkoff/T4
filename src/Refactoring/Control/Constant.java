@@ -37,7 +37,7 @@ public class Constant {
     public static final int BOARDCHUNCKFALLINTERVAL = 150; //milliseconds
 
     //Conversion Related
-    public static final int NANOTIMETOMILLISECONDS = 1/1000000;
+    public static final int NANOTIMETOMILLISECONDS = 1000000;
 
     //Correction Related
     public static final float THICKNESSCORRECTION = 1.5f;

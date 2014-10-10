@@ -81,12 +81,12 @@ public class Board extends Frame{
 	public List<Integer> getCompleteLines(){
 		List<Integer> completedLines = new ArrayList<Integer>();
 
-		for(int lineIndex = 0; lineIndex < col; lineIndex++){
+		for(int lineIndex = 0; lineIndex < row; lineIndex++){
 			int count = 0;
-			while(count < row && geometryIndexMap[lineIndex][count] != null){
+			while(count < col && geometryIndexMap[count][lineIndex] != null){
 				count++;
 			}
-			if(count == row){
+			if(count == col){
 				completedLines.add(lineIndex);
 			}
 		}
@@ -95,11 +95,12 @@ public class Board extends Frame{
 
 	public void destroyCompletedLines(){
 		List<Integer> completedLines = getCompleteLines();
+
         for (int i = 0; i < completedLines.size(); i++) {
-            Main.app.getScore().updateScore(i + 1, 100);//NOT REFACTORED YET
+            //Main.app.getScore().updateScore(i + 1, 100);//NOT REFACTORED YET
             for (Integer geoIndex : geometryIndexMap[completedLines.get(i)]) {
-                detachChildAt(geoIndex);
-                geoIndex = null;
+                    detachChildAt(geoIndex);
+                    geoIndex = null;
             }
             for (int j = completedLines.get(i)+1; j < row-1; j++){//NO EFFECT REGROUP LINES
                 for (int k = 0; k <  geometryIndexMap[completedLines.get(j)].length; k++) {

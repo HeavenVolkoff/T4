@@ -39,7 +39,7 @@ public class ConfigManager {
             File file = new File(appPath + fileName);
             if (file.exists() && !file.isDirectory()) {
                 iniFile.load(new FileInputStream(file));
-                this.fileName = fileName;
+                this.fileName = appPath + fileName;
                 return true;
             } else {
                 return false;
@@ -55,7 +55,7 @@ public class ConfigManager {
             String appPath = new File(".").getCanonicalPath();
             File file = new File(appPath + fileName);
             if (!file.isDirectory()) {
-                iniFile.store(new FileOutputStream(fileName), null);
+                iniFile.store(new FileOutputStream(appPath + fileName), null);
                 load(fileName);
                 return true;
             } else {

@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 /**
  * Created by blackpearl on 03/10/14.
  */
-public class PieceController extends BaseController{
+public class PieceController extends BaseController {
 
     private boolean accelerated;
     private int fullFallSpeed;
@@ -30,7 +30,7 @@ public class PieceController extends BaseController{
         this.accelerated = false;
 
         if (!this.loadHotKeys(Constant.PIECECONTROLERCONFIGFILE)){
-            logger.log(Level.WARNING, "Can't load file {0}, maybe you don't have permission, if you do, please report this error.", Constant.PIECECONTROLERCONFIGFILE);
+            logger.log(Level.WARNING, "Can not load file {0}, maybe you do not have permission, if you do, please report this error.", Constant.PIECECONTROLERCONFIGFILE);
         }
     }
     //==============================================================//
@@ -81,7 +81,7 @@ public class PieceController extends BaseController{
 					}else{
 						((PlayablePiece) spatial).setPieceFallingTime(fullFallSpeed);
 					}
-					Main.app.setNextPiece(new Piece(/*Main.app.getPieceSelector().randomizeFromMap())*/"O.piece", new Vector3f(2f, 2.5f, 0), ColorRGBA.randomColor()));
+					Main.app.setNextPiece(new Piece(/*Main.app.getPieceSelector().randomizeFromMap())*/"O.piece", new Vector3f(Main.app.getBoard().getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, Main.app.getBoard().getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor()));
 					break;
 
 				case "AccelerateFall":
@@ -132,7 +132,7 @@ public class PieceController extends BaseController{
     private void rotate(int degreesZ){
 		if(BasicMechanics.canRotate((PlayablePiece)spatial, degreesZ, Main.app.getBoard())){
 			spatial.rotate( 0, 0, (float) Math.toRadians(degreesZ));
-		}
+        }
     }
 
     private void moveX(int orientation, float distance){
@@ -158,20 +158,10 @@ public class PieceController extends BaseController{
 					}
 				}else if (Main.app.getBoard().addPiece(((PlayablePiece) spatial).getBoxAbsolutePoint(), ((PlayablePiece) spatial).getMat())) {
 					keyActions("ChangePiece", true);
-					/*
-					NEED REFACTOR
-					if(Main.app.getBoard().isGameOver(((PlayablePiece) spatial).getBoxAbsolutePoint(), ((PlayablePiece) spatial).getNumBox())){
-						Main.app.setCurrentPiece(new PlayablePiece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
-						Main.app.getBoard().setGameOver(true, 0.1f);
-					}
-					*/
+					BasicMechanics.isGameOver(((PlayablePiece) spatial).getBoxAbsolutePoint());
 					Main.app.getBoard().destroyCompletedLines();
 				}else{
-					/*
-					NEED REFACTOR
-					Main.app.setCurrentPiece(new PlayablePiece(0.1f, 2*0.1f, -1, 1.2f, "Messages/GameOver.piece", ColorRGBA.White, assetManager, null));
-					Main.app.getBoard().setGameOver(true, 0.1f);
-					*/
+					BasicMechanics.isGameOver(((PlayablePiece) spatial).getBoxAbsolutePoint());
 				}
 
 			}

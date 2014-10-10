@@ -23,6 +23,7 @@ public class T4Base extends SimpleApplication {
     ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
     private PlayablePiece currentPiece; //Current Old.View.Piece on Screen
     private Piece nextPiece; //Next Old.View.Piece to be on Screen
+    private Piece messages;
     private PieceController control;
     private Board board;
     //private Score score;
@@ -51,7 +52,7 @@ public class T4Base extends SimpleApplication {
 		currentPiece = new PlayablePiece("O.piece",new Vector3f(0f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0), true, ColorRGBA.randomColor(), control);
 		rootNode.attachChild(currentPiece);
 
-		nextPiece = new Piece("L.piece", new Vector3f(2f, 2.5f, 0), ColorRGBA.randomColor());
+		nextPiece = new Piece("L.piece", new Vector3f(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, board.getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor());
 		rootNode.attachChild(nextPiece);
 	}
 
@@ -97,7 +98,9 @@ public class T4Base extends SimpleApplication {
 		this.rootNode.detachChild(this.currentPiece);
 
 		this.currentPiece = currentPiece;
-		this.rootNode.attachChild(this.currentPiece);
+        if (this.currentPiece != null) {
+            this.rootNode.attachChild(this.currentPiece);
+        }
     }
 
     public Board getBoard() {
@@ -110,6 +113,18 @@ public class T4Base extends SimpleApplication {
 
     public PieceController getControl() {
         return control;
+    }
+
+    public Piece getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Piece messages) {
+        if (this.messages != null) {
+            this.rootNode.detachChild(this.messages);
+        }
+        this.messages = messages;
+        this.rootNode.attachChild(this.messages);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
