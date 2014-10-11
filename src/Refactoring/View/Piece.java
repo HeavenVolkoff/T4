@@ -48,7 +48,6 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 	protected Material material;
     protected float alpha;
 	protected static final Logger logger = Logger.getLogger(Piece.class.getName());
-    protected Vector3f[] absolutePivotPos;
 
 	//======================== Class Constructors ==========================//
 	public Piece(String fileName, Vector3f pos, ColorRGBA color){
@@ -59,15 +58,9 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 
 		setLocalTranslation(pos); //move piece to position
 
-		try {
-			Path pieceFile = Paths.get("./resources/Pieces/" + fileName);
-			if (!constructFromString(Files.readAllLines(pieceFile), material)){
-                //CRASH APP
-            }
-		} catch (IOException exception) {
-			logger.log(Level.SEVERE, "Piece file {0} not found, please report this error.", fileName);
-			logger.log(Level.SEVERE, "Piece {0} Constructor Error while loading file, exception {1}", new Object[]{fileName, exception});
-		}
+		if (!constructFromString(Main.app.getPieceLoader().getPieceMemoryMap().get(fileName), material)) {
+            logger.log(Level.SEVERE, "Can Not Construct Piece {0}.", fileName);
+        }
 	}
     //======================================================================//
 

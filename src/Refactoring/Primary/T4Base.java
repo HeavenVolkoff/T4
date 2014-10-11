@@ -5,6 +5,8 @@ package Refactoring.Primary;
 
 import Refactoring.Control.Constant;
 import Refactoring.Control.PieceController;
+import Refactoring.Control.PieceSelector;
+import Refactoring.Model.AssetLoader;
 import Refactoring.View.Board;
 import Refactoring.View.Piece;
 import Refactoring.View.PlayablePiece;
@@ -15,6 +17,7 @@ import com.jme3.light.SpotLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 /**
  * Created by HeavenVolkoff on 30/09/14.
@@ -26,11 +29,12 @@ public class T4Base extends SimpleApplication {
     private Piece messages;
     private PieceController control;
     private Board board;
+    private PieceSelector pieceSelector;
+    private AssetLoader pieceLoader;
     //private Score score;
     //private LevelBar levelBar;
     //private EffectController lvlBarController;
     //private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
-    //private PieceSelector pieceSelector;
 
     @Override
     public void simpleInitApp() {
@@ -45,14 +49,19 @@ public class T4Base extends SimpleApplication {
     }
 
 	public void startEndless() {
+        pieceLoader = new AssetLoader(Constant.PIECERESOURCEFOLDER);
+        pieceLoader.loadToMemoryMap(Constant.MESSAGESRESOURCEFOLDER);
+
+        pieceSelector = new PieceSelector();
+
 		board = new Board(10, 20);
 		rootNode.attachChild(board);
 
 		control = new PieceController(500);
-		currentPiece = new PlayablePiece("O.piece",new Vector3f(0f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0), true, ColorRGBA.randomColor(), control);
+		currentPiece = new PlayablePiece(pieceSelector.randomizeFromRandomicMap(), new Vector3f(0f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0), true, ColorRGBA.randomColor(), control);
 		rootNode.attachChild(currentPiece);
 
-		nextPiece = new Piece("L.piece", new Vector3f(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, board.getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor());
+		nextPiece = new Piece(pieceSelector.randomizeFromRandomicMap(), new Vector3f(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, board.getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor());
 		rootNode.attachChild(nextPiece);
 	}
 
@@ -125,6 +134,14 @@ public class T4Base extends SimpleApplication {
         }
         this.messages = messages;
         this.rootNode.attachChild(this.messages);
+    }
+
+    public PieceSelector getPieceSelector() {
+        return pieceSelector;
+    }
+
+    public AssetLoader getPieceLoader() {
+        return pieceLoader;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

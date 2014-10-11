@@ -163,7 +163,7 @@ public final class BasicMechanics {
         Main.app.getNextPiece().setAlpha(alphaVal);
         //Add LevelBar, and Score Alpha
         Main.app.setCurrentPiece(null);
-        Main.app.setMessages(new Piece("Messages/GameOver.piece", new Vector3f(0,0,+1), ColorRGBA.White));
+        Main.app.setMessages(new Piece("GameOver.piece", new Vector3f(0,0,+1), ColorRGBA.White));
     }
 
     public static boolean isGameOver(Vector3f[] pieceBoxesAbsolutePos){
