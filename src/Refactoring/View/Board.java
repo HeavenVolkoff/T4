@@ -2,10 +2,8 @@
 
 package Refactoring.View;
 
-import Old.Primary.Main;
 import Refactoring.Control.Constant;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -13,7 +11,6 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -116,16 +113,10 @@ public class Board extends Frame{
                         geo.setName("Box" + String.valueOf(k) + String.valueOf(j - 1));
                         geometryIndexMap[j - 1][k] = "Box" + String.valueOf(k) + String.valueOf(j - 1);
                         geometryIndexMap[j][k] = null;
-                        System.out.println(getChild(geometryIndexMap[j - 1][k]));
                     }
                 }
             }
         }
-
-        for(int i = geometryIndexMap.length - 1; i >= 0; i--){
-            System.out.println(Arrays.toString(geometryIndexMap[i]));
-        }
-        System.out.println(completedLines);
 	}
 
     public int getRow() {

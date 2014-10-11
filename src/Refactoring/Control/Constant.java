@@ -53,6 +53,8 @@ public class Constant {
 
     //File Related
     public static final String PIECECONTROLERCONFIGFILE = "/Configurations/PieceControls.ini";
+    public static final String PIECERESOURCEFOLDER = "./resources/Pieces/";
+    public static final String MESSAGESRESOURCEFOLDER = "./resources/Pieces/Messages/";
 
     public Constant(float cubeSize) {
 		setCUBESIZE(cubeSize);

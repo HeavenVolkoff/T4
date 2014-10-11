@@ -81,7 +81,7 @@ public class PieceController extends BaseController {
 					}else{
 						((PlayablePiece) spatial).setPieceFallingTime(fullFallSpeed);
 					}
-					Main.app.setNextPiece(new Piece(/*Main.app.getPieceSelector().randomizeFromMap())*/"O.piece", new Vector3f(Main.app.getBoard().getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, Main.app.getBoard().getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor()));
+					Main.app.setNextPiece(new Piece(Main.app.getPieceSelector().randomizeFromRandomicMap(), new Vector3f(Main.app.getBoard().getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, Main.app.getBoard().getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor()));
 					break;
 
 				case "AccelerateFall":

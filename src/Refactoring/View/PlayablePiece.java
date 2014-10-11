@@ -7,6 +7,7 @@ import Refactoring.Control.Model.Control;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 
 import java.util.List;
 
@@ -39,7 +40,11 @@ public class PlayablePiece extends Piece {
         constructGeosAbsolutePoints();
 
         //Align piece to board grid
-        move(0, -((getChildren().get(getChildren().size()-1).getWorldBound().getCenter().y+Constant.CUBESIZE/2) - pos.y), 0);
+        if (getChild("Pivot0") != null && getChild("Pivot1") != null){
+            move(0, -((getChildren().get(getChildren().size()-1).getWorldBound().getCenter().y+Constant.CUBESIZE/2) - pos.y), 0);
+        }else{
+            move(Constant.HALFBOXINTERVAL+Constant.CUBESIZE, -((getChildren().get(getChildren().size()-1).getWorldBound().getCenter().y+Constant.CUBESIZE/2) - pos.y), 0);
+        }
     }
     //======================================================================//
 
