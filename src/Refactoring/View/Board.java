@@ -3,6 +3,7 @@
 package Refactoring.View;
 
 import Refactoring.Control.Constant;
+import Refactoring.Primary.Main;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -74,7 +75,7 @@ public class Board extends Frame{
 				return false;
 			}
 		}
-		//Main.app.getScore().updateScore(1,10);//NOT REFACTORED YET
+		Main.app.getScore().updateScore(10);
 		return true;
 	}
 
@@ -95,11 +96,14 @@ public class Board extends Frame{
 
 	public void destroyCompletedLines(){
 		List<Integer> completedLines = getCompleteLines();
-        int correction = 0;
 
+        int ScoreMultiplyer = 1;
         for (int lineNum = completedLines.size()-1; lineNum >= 0; lineNum--) {
             Integer completedLine = completedLines.get(lineNum);
-            //Main.app.getScore().updateScore(i + 1, 100);//NOT REFACTORED YET
+
+            Main.app.getScore().updateScore(ScoreMultiplyer*100);
+            ScoreMultiplyer++;
+
             for (int i = 0; i < col; i++) {
                 detachChildNamed(geometryIndexMap[completedLine][i]);
                 geometryIndexMap[completedLine][i] = null;

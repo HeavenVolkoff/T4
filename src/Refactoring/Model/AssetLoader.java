@@ -2,6 +2,7 @@ package Refactoring.Model;
 
 import Refactoring.Control.Constant;
 import Refactoring.View.Piece;
+import Refactoring.View.ProgressBar;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 /**
  * Created by Raphael on 10/11/2014.
  */
+
 public class AssetLoader {
 
     private NavigableMap<String, List<String>> pieceMemoryMap;
@@ -30,14 +32,16 @@ public class AssetLoader {
     }
 
     public void loadToMemoryMap(String directory){
+        System.out.println("Loading From "+directory);
         final File folder = new File(directory);
         List<String> files = listFilesFromFolder(folder);
 
         for (int i = 0; i < files.size(); i++){
             this.pieceMemoryMap.put(files.get(i),loadFromFile(files.get(i), directory));
-            System.out.println("Loading: " + files.get(i) + (i*100/files.size()) + "% done.");
+            System.out.println("Loading: " + files.get(i) +" "+ (i*100/files.size()) + "% done.");
         }
         System.out.println("Loading: 100% done.");
+        System.out.println("-----------------------------------------------------");
     }
 
     private List<String> listFilesFromFolder(final File folder) {

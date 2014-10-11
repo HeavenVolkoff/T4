@@ -7,6 +7,7 @@ import java.util.*;
 /**
  * Created by Raphael on 10/11/2014.
  */
+
 public class PieceSelector {
 
     private Random random;

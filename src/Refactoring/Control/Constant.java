@@ -7,6 +7,7 @@ import com.jme3.math.ColorRGBA;
 /**
  * Created by HeavenVolkoff on 30/09/14.
  */
+
 public class Constant {
 
     //Metrics Related
@@ -16,6 +17,9 @@ public class Constant {
 	public static float MOVEDISTANCE;
     public static float BOARDFRAMEDEPTH;
     public static float BOARDFRAMETHICKNESS;
+    public static float PROGRESSBARTHICKNESS;
+    public static float PROGRESSBARSPACING;
+    public static float SCORENUMBERRESIZEFACTOR = 0.33f;
 
 	//Movement Directions Related
 	public static final int TOLEFT = -1;
@@ -55,6 +59,7 @@ public class Constant {
     public static final String PIECECONTROLERCONFIGFILE = "/Configurations/PieceControls.ini";
     public static final String PIECERESOURCEFOLDER = "./resources/Pieces/";
     public static final String MESSAGESRESOURCEFOLDER = "./resources/Pieces/Messages/";
+    public static final String NUMBERRESOURCEFOLDER = "./resources/Pieces/Numbers/";
 
     public Constant(float cubeSize) {
 		setCUBESIZE(cubeSize);
@@ -67,5 +72,7 @@ public class Constant {
         Constant.MOVEDISTANCE = 2.5f * Constant.CUBESIZE;
         Constant.BOARDFRAMEDEPTH = 1.5f * Constant.CUBESIZE;
         Constant.BOARDFRAMETHICKNESS = 0.25f * Constant.CUBESIZE;
+        Constant.PROGRESSBARTHICKNESS =  0.15f * Constant.CUBESIZE;
+        Constant.PROGRESSBARSPACING = 0.75f * Constant.PROGRESSBARTHICKNESS;
     }
 }
