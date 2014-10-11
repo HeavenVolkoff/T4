@@ -9,9 +9,11 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,7 +30,7 @@ import java.util.List;
 
 public class Board extends Frame{
 
-    private Integer[][] geometryIndexMap;
+    private String[][] geometryIndexMap;
     private int col;
     private int row;
 
@@ -38,7 +40,7 @@ public class Board extends Frame{
 		super("board", Constant.RIGHT+Constant.BOTTOM+Constant.LEFT, new Vector3f(0, 0, 0), new Vector3f(col * Constant.MOVEDISTANCE, row * Constant.MOVEDISTANCE, Constant.BOARDFRAMEDEPTH), Constant.BOARDFRAMETHICKNESS, Constant.BOARDCOLOR);
 		this.col = col;
 		this.row = row;
-		this.geometryIndexMap = new Integer[col][row];
+		this.geometryIndexMap = new String[row][col];
 	}
     //======================================================================//
 
@@ -66,9 +68,10 @@ public class Board extends Frame{
 		for (Vector3f geoPos : pos){
 			if ((int)geoPos.getY() < row) {
 				Geometry geo = new Geometry("Box" + String.valueOf((int) geoPos.getX()) + String.valueOf((int) geoPos.getY()), new Box(Constant.CUBESIZE, Constant.CUBESIZE, Constant.CUBESIZE));
+                geometryIndexMap[(int)geoPos.getY()][(int)geoPos.getX()] = "Box" + String.valueOf((int) geoPos.getX()) + String.valueOf((int) geoPos.getY());
 				geo.setLocalTranslation(pieceGeoAbsolutePos[count].getX(), pieceGeoAbsolutePos[count].getY(), this.pos.getZ());
 				geo.setMaterial(mat);
-				geometryIndexMap[(int)geoPos.getX()][(int)geoPos.getY()] = attachChild(geo);
+				attachChild(geo);
 				count++;
 			}else{
 				return false;
@@ -83,7 +86,7 @@ public class Board extends Frame{
 
 		for(int lineIndex = 0; lineIndex < row; lineIndex++){
 			int count = 0;
-			while(count < col && geometryIndexMap[count][lineIndex] != null){
+			while(count < col && geometryIndexMap[lineIndex][count] != null){
 				count++;
 			}
 			if(count == col){
@@ -95,23 +98,34 @@ public class Board extends Frame{
 
 	public void destroyCompletedLines(){
 		List<Integer> completedLines = getCompleteLines();
+        int correction = 0;
 
-        for (int i = 0; i < completedLines.size(); i++) {
+        for (int lineNum = completedLines.size()-1; lineNum >= 0; lineNum--) {
+            Integer completedLine = completedLines.get(lineNum);
             //Main.app.getScore().updateScore(i + 1, 100);//NOT REFACTORED YET
-            for (Integer geoIndex : geometryIndexMap[completedLines.get(i)]) {
-                    detachChildAt(geoIndex);
-                    geoIndex = null;
+            for (int i = 0; i < col; i++) {
+                detachChildNamed(geometryIndexMap[completedLine][i]);
+                geometryIndexMap[completedLine][i] = null;
             }
-            for (int j = completedLines.get(i)+1; j < row-1; j++){//NO EFFECT REGROUP LINES
-                for (int k = 0; k <  geometryIndexMap[completedLines.get(j)].length; k++) {
-                    if (geometryIndexMap[completedLines.get(j)][k] != null) {
-                        getChild(geometryIndexMap[completedLines.get(j)][k]).move(0, -Constant.MOVEDISTANCE, 0);
-                        geometryIndexMap[completedLines.get(j) - 1][k] = geometryIndexMap[completedLines.get(j)][k];
-                        geometryIndexMap[completedLines.get(j)][k] = null;
+
+            for (int j = completedLine + 1; j < row; j++) {//NO EFFECT REGROUP LINES
+                for (int k = 0; k < col; k++) {
+                    if (geometryIndexMap[j][k] != null) {
+                        Spatial geo = getChild(geometryIndexMap[j][k]);
+                        geo.move(0, -Constant.MOVEDISTANCE, 0);
+                        geo.setName("Box" + String.valueOf(k) + String.valueOf(j - 1));
+                        geometryIndexMap[j - 1][k] = "Box" + String.valueOf(k) + String.valueOf(j - 1);
+                        geometryIndexMap[j][k] = null;
+                        System.out.println(getChild(geometryIndexMap[j - 1][k]));
                     }
                 }
             }
         }
+
+        for(int i = geometryIndexMap.length - 1; i >= 0; i--){
+            System.out.println(Arrays.toString(geometryIndexMap[i]));
+        }
+        System.out.println(completedLines);
 	}
 
     public int getRow() {
@@ -122,7 +136,7 @@ public class Board extends Frame{
         return col;
     }
 
-    public Integer[][] getGeometryIndexMap() {
+    public String[][] getGeometryIndexMap() {
         return geometryIndexMap;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

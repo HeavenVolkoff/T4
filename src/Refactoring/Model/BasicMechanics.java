@@ -24,7 +24,7 @@ public final class BasicMechanics {
     public static boolean hitBottom(Vector3f[] pieceGeoAbsolutePos, Board board){
         Vector3f[] pos = board.posRelativeToBoard(pieceGeoAbsolutePos);
         for (Vector3f geoPos : pos){
-            if(geoPos.getY() == 0 || ((int)geoPos.getY()<board.getRow() && board.getGeometryIndexMap()[(int) geoPos.getX()][(int) geoPos.getY() - 1] != null)){
+            if(geoPos.getY() == 0 || ((int)geoPos.getY()<board.getRow() && board.getGeometryIndexMap()[(int) geoPos.getY() - 1][(int) geoPos.getX()] != null)){
                 return true;
             }
         }
@@ -34,7 +34,7 @@ public final class BasicMechanics {
     public static boolean hitLeft(Vector3f[] pieceGeoAbsolutePos, Board board){
         Vector3f[] pos = board.posRelativeToBoard(pieceGeoAbsolutePos);
         for (Vector3f geoPos : pos){
-            if(geoPos.getX() == 0 || (geoPos.getY() < board.getRow() && board.getGeometryIndexMap()[(int) geoPos.getX() - 1][(int) geoPos.getY()] != null)){
+            if(geoPos.getX() == 0 || (geoPos.getY() < board.getRow() && board.getGeometryIndexMap()[(int) geoPos.getY()][(int) geoPos.getX() - 1] != null)){
                 return true;
             }
         }
@@ -44,7 +44,7 @@ public final class BasicMechanics {
     public static boolean hitRight(Vector3f[] pieceGeoAbsolutePos, Board board){
         Vector3f[] pos = board.posRelativeToBoard(pieceGeoAbsolutePos);
         for (Vector3f geoPos : pos){
-            if(geoPos.getX() == (board.getCol() - 1) || (geoPos.getY() < board.getRow() && board.getGeometryIndexMap()[(int) geoPos.getX() + 1][(int) geoPos.getY()] != null)){
+            if(geoPos.getX() == (board.getCol() - 1) || (geoPos.getY() < board.getRow() && board.getGeometryIndexMap()[(int) geoPos.getY()][(int) geoPos.getX() + 1] != null)){
                 return true;
             }
         }
@@ -148,7 +148,7 @@ public final class BasicMechanics {
                     boxBoardPosX = (int)pivotBoardPos.getX()+ (j-(int)pivotMatrixPos.getY());
                     if (boxBoardPosX < 0 || boxBoardPosX >= board.getCol() || boxBoardPosY < 0 || boxBoardPosY >= board.getRow()){
                         return false;
-                    }else if (board.getGeometryIndexMap()[boxBoardPosX][boxBoardPosY] != null) {
+                    }else if (board.getGeometryIndexMap()[boxBoardPosY][boxBoardPosX] != null) {
                         return false;
                     }
                 }
@@ -169,11 +169,11 @@ public final class BasicMechanics {
     public static boolean isGameOver(Vector3f[] pieceBoxesAbsolutePos){
         for(Vector3f boxPos : Main.app.getBoard().posRelativeToBoard(pieceBoxesAbsolutePos)){
             if(boxPos.getY() <= Main.app.getBoard().getRow()){
-                if(Main.app.getBoard().getGeometryIndexMap()[(int)boxPos.getX()][(int)boxPos.getY() - 1] != null){
+                if(Main.app.getBoard().getGeometryIndexMap()[(int)boxPos.getY() - 1][(int)boxPos.getX()] != null){
                     gameOver(0.1f);
                     return true;
                 }
-            }else if(Main.app.getBoard().getGeometryIndexMap()[(int)boxPos.getX()][Main.app.getBoard().getRow() - 1] != null) {
+            }else if(Main.app.getBoard().getGeometryIndexMap()[Main.app.getBoard().getRow() - 1][(int)boxPos.getX()] != null) {
                 gameOver(0.1f);
                 return true;
             }
