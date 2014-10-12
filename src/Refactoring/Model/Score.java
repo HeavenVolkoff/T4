@@ -1,6 +1,7 @@
 package Refactoring.Model;
 
 import Old.View.DisplayNumbers;
+import Refactoring.Control.Constant;
 import Refactoring.Primary.Main;
 
 /**
@@ -19,7 +20,7 @@ public class Score {
         this.score = 0;
         this.streakMultiplier = 1;
         this.level = 1;
-        this.nextLevelScore = 1000;
+        this.nextLevelScore = Constant.INITIALJUMP;
         this.priorLevelScore = 0;
         this.speedMultiplier = speedMultiplyer;
     }
@@ -45,8 +46,6 @@ public class Score {
                 }
             }
         }
-
-        Main.app.getScoreDisplay().write(this.score);
     }
 
     public int getScore() {
@@ -65,11 +64,11 @@ public class Score {
         return level;
     }
 
-    public int getJumpLast() {
+    public int getPriorLevelScore() {
         return priorLevelScore;
     }
 
-    public int getJump() {
+    public int getNextLevelScore() {
         return nextLevelScore;
     }
 }

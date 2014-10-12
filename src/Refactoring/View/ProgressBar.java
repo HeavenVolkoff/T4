@@ -18,7 +18,6 @@ public class ProgressBar extends Frame {
 
     private float max;
     private float progress;
-    private float goTo;
     private float width;
     private ColorRGBA barColor;
     private Geometry progressBar;
@@ -32,7 +31,6 @@ public class ProgressBar extends Frame {
 
         this.width = 0;
         setProgress(progress);
-        this.goTo = progress;
     }
 
     //======================== Material Manager ============================//
@@ -55,6 +53,7 @@ public class ProgressBar extends Frame {
     public void setProgress(float progress){
         if (progress <= this.max) {
             if (this.width == 0) {
+                detachChildNamed("ProgressGeo");
                 this.progress = progress;
                 this.width = (this.progress * ((this.size.x / 2) - (Constant.PROGRESSBARSPACING))) / max;
                 Box box = new Box(this.width, (size.y / 2) - Constant.PROGRESSBARSPACING * 2, size.z);
@@ -67,7 +66,7 @@ public class ProgressBar extends Frame {
                 this.progress = progress;
                 this.width = (this.progress * ((this.size.x / 2) - (Constant.PROGRESSBARSPACING))) / max;
                 float scaleFactor = this.width / oldWidth;
-                progressBar.setLocalScale(scaleFactor, 1, 1);
+                progressBar.scale(scaleFactor, 1, 1);
                 progressBar.setLocalTranslation(-((((this.size.x / 2) - (Constant.PROGRESSBARSPACING))) - this.width), 0, 0);
             }
         }else{
@@ -75,12 +74,12 @@ public class ProgressBar extends Frame {
         }
     }
 
-    public void setProgressWithEffect(float progress){
-        this.goTo = progress;
-    }
-
     public void setMax(float max) {
         this.max = max;
         setProgress(this.progress);
+    }
+
+    public float getProgress() {
+        return progress;
     }
 }

@@ -18,6 +18,7 @@ public class DisplayNumber extends Node {
     private Vector3f pos;
     private int maxDigits;
     protected static final Logger logger = Logger.getLogger(Piece.class.getName());
+    private int value;
 
     public DisplayNumber(Vector3f pos, float resizeFactor, int initialValue, int maxDigits, ColorRGBA color){
         this.pos = pos;
@@ -55,11 +56,18 @@ public class DisplayNumber extends Node {
                 }
                 attachChild(numbers[this.maxDigits - 1 - i]);
             }
+            this.value = value;
         }else{
+            this.value = 9;
             for (int i = 0; i < this.maxDigits; i++) {
                 numbers[i].write(9);
+                this.value += (i*10)*9;
             }
             logger.log(Level.WARNING, "Out of Range Number Send to DisplayNumber {0}.", val);
         }
+    }
+
+    public int getValue() {
+        return value;
     }
 }

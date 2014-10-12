@@ -146,7 +146,7 @@ public class PieceController extends BaseController {
     }
 
     private void fall() {
-		int keyElapsedTime = (int) ((System.nanoTime() - ((PlayablePiece)spatial).getStartFallTime()) / 1000000);
+		int keyElapsedTime = (int) ((System.nanoTime() - ((PlayablePiece)spatial).getStartFallTime()) / Constant.NANOTIMETOMILLISECONDS);
 
 		if (keyElapsedTime >= ((PlayablePiece)spatial).getPieceFallingTime()) {
 			if (((PlayablePiece)spatial).isFalling()) {

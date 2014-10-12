@@ -3,15 +3,14 @@
 package Refactoring.Primary;
 
 
+import Old.Control.EffectController;
 import Refactoring.Control.Constant;
 import Refactoring.Control.PieceController;
 import Refactoring.Control.PieceSelector;
+import Refactoring.Control.PointsEffectController;
 import Refactoring.Model.AssetLoader;
 import Refactoring.Model.Score;
-import Refactoring.View.Board;
-import Refactoring.View.DisplayNumber;
-import Refactoring.View.Piece;
-import Refactoring.View.PlayablePiece;
+import Refactoring.View.*;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
@@ -37,7 +36,8 @@ public class T4Base extends SimpleApplication {
     private AssetLoader pieceLoader;
     private Score score;
     private DisplayNumber scoreDisplay;
-    //private LevelBar levelBar;
+    private PointsEffectController pointsControler;
+    private ProgressBar levelBar;
     //private EffectController lvlBarController;
     //private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
 
@@ -81,8 +81,14 @@ public class T4Base extends SimpleApplication {
 		currentPiece = new PlayablePiece(pieceSelector.randomizeFromRandomicMap(), new Vector3f(0f, 0.15f + (0.15f * 20 * 1.5f) - (4.5f * 0.15f), 0), true, ColorRGBA.randomColor(), control);
 		rootNode.attachChild(currentPiece);
 
-		nextPiece = new Piece(pieceSelector.randomizeFromRandomicMap(), new Vector3f(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, board.getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor());
-		rootNode.attachChild(nextPiece);
+        nextPiece = new Piece(pieceSelector.randomizeFromRandomicMap(), new Vector3f(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, board.getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor());
+        rootNode.attachChild(nextPiece);
+
+        levelBar = new ProgressBar(new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 8.8f), board.getRow()*Constant.MOVEDISTANCE/4f, 0), new Vector3f(Constant.CUBESIZE*12f, Constant.CUBESIZE, Constant.CUBESIZE/4), Constant.INITIALJUMP, 0, ColorRGBA.DarkGray, ColorRGBA.Cyan);
+        rootNode.attachChild(levelBar);
+
+        pointsControler = new PointsEffectController();
+
     	}
 
     private void setupFadeFilter(int time){
@@ -108,9 +114,9 @@ public class T4Base extends SimpleApplication {
 
 	@Override
 	public void simpleUpdate(float tpf){
-		/*if (control != null) {
-			control.controlUpdate(tpf);
-		}*/
+		if (pointsControler != null) {
+            pointsControler.controlUpdate(tpf);
+		}
 	}
 
 	public void setNextPiece(Piece nextPiece){
@@ -179,6 +185,10 @@ public class T4Base extends SimpleApplication {
 
     public DisplayNumber getScoreDisplay() {
         return scoreDisplay;
+    }
+
+    public ProgressBar getLevelBar() {
+        return levelBar;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

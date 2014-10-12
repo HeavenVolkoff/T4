@@ -61,6 +61,9 @@ public class Constant {
     public static final String MESSAGESRESOURCEFOLDER = "./resources/Pieces/Messages/";
     public static final String NUMBERRESOURCEFOLDER = "./resources/Pieces/Numbers/";
 
+    //Score Related
+    public static final int INITIALJUMP = 1000;
+
     public Constant(float cubeSize) {
 		setCUBESIZE(cubeSize);
 	}
@@ -72,7 +75,7 @@ public class Constant {
         Constant.MOVEDISTANCE = 2.5f * Constant.CUBESIZE;
         Constant.BOARDFRAMEDEPTH = 1.5f * Constant.CUBESIZE;
         Constant.BOARDFRAMETHICKNESS = 0.25f * Constant.CUBESIZE;
-        Constant.PROGRESSBARTHICKNESS =  0.15f * Constant.CUBESIZE;
+        Constant.PROGRESSBARTHICKNESS =  0.10f * Constant.CUBESIZE;
         Constant.PROGRESSBARSPACING = 0.75f * Constant.PROGRESSBARTHICKNESS;
     }
 }
