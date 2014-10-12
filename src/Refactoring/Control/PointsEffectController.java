@@ -71,9 +71,6 @@ public class PointsEffectController{
                     Main.app.getLevelBar().getParticlesBar().setParticlesPerSec(26);
                     Main.app.getLevelBar().getParticlesBar().setNumParticles(52);
                 }
-                System.out.println("");
-                System.out.println("Variation "+variation);
-                System.out.println("Num Particles "+Main.app.getLevelBar().getParticlesBar().getMaxNumParticles());
                 Main.app.getLevelBar().getParticlesBar().emitAllParticles();
                 Main.app.getLevelBar().attachChild(Main.app.getLevelBar().getParticlesBar());
                 changedNumParticles = true;

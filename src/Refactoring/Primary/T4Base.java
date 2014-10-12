@@ -3,10 +3,7 @@
 package Refactoring.Primary;
 
 
-import Refactoring.Control.Constant;
-import Refactoring.Control.PieceController;
-import Refactoring.Control.PieceSelector;
-import Refactoring.Control.PointsEffectController;
+import Refactoring.Control.*;
 import Refactoring.Model.AssetLoader;
 import Refactoring.Model.Score;
 import Refactoring.View.*;
@@ -14,6 +11,8 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.light.SpotLight;
 import com.jme3.material.Material;
@@ -22,6 +21,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
+import com.jme3.renderer.queue.RenderQueue;
 
 /**
  * Created by HeavenVolkoff on 30/09/14.
@@ -58,16 +58,25 @@ public class T4Base extends SimpleApplication {
 
         startLoading();
 
+        //startMenu();
+
         startEndless();
 
 		//Fixed Cam
 		flyCam.setEnabled(false);
     }
 
+    private void startMenu(){
+        MenuControler menuControler = new MenuControler();
+        MainMenu mainMenu = new MainMenu(menuControler, ColorRGBA.Orange, ColorRGBA.randomColor());
+        rootNode.attachChild(mainMenu);
+    }
+
     private void startLoading(){
         pieceLoader = new AssetLoader(Constant.PIECERESOURCEFOLDER);
         pieceLoader.loadToMemoryMap(Constant.MESSAGESRESOURCEFOLDER);
         pieceLoader.loadToMemoryMap(Constant.NUMBERRESOURCEFOLDER);
+        pieceLoader.loadToMemoryMap(Constant.SYMBOLSSOURCEFOLDER);
     }
 
     private void startEndless() {
@@ -88,6 +97,9 @@ public class T4Base extends SimpleApplication {
         nextPiece = new Piece(pieceSelector.randomizeFromRandomicMap(), new Vector3f(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, board.getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor());
         rootNode.attachChild(nextPiece);
 
+        Frame nextPieceFrame = new Frame("NextPieceFrame", Constant.TOP+Constant.LEFT+Constant.BOTTOM+Constant.RIGHT, nextPiece.getPos(), new Vector3f(6*Constant.MOVEDISTANCE, 6*Constant.MOVEDISTANCE, Constant.CUBESIZE), Constant.CUBESIZE/4, ColorRGBA.Gray);
+        rootNode.attachChild(nextPieceFrame);
+
         levelBar = new ProgressBar(new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 8f), board.getRow()*Constant.MOVEDISTANCE/4f, 0), new Vector3f(Constant.CUBESIZE*13f, Constant.CUBESIZE*1.6f, Constant.CUBESIZE/4), Constant.INITIALJUMP, 0, ColorRGBA.DarkGray, ColorRGBA.Cyan);
         rootNode.attachChild(levelBar);
 
@@ -98,7 +110,6 @@ public class T4Base extends SimpleApplication {
         rootNode.attachChild(multiplierIndicator);
 
         pointsControler = new PointsEffectController();
-
     	}
 
     private void setupFadeFilter(int time){

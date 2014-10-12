@@ -58,9 +58,11 @@ public class Constant {
 
     //File Related
     public static final String PIECECONTROLERCONFIGFILE = "/Configurations/PieceControls.ini";
+    public static final String MENUCONTROLERCONFIGFILE = "/Configurations/MenuControls.ini";
     public static final String PIECERESOURCEFOLDER = "./resources/Pieces/";
     public static final String MESSAGESRESOURCEFOLDER = "./resources/Pieces/Messages/";
     public static final String NUMBERRESOURCEFOLDER = "./resources/Pieces/Numbers/";
+    public static final String SYMBOLSSOURCEFOLDER = "./resources/Pieces/Symbols/";
 
     //Score Related
     public static final int INITIALJUMP = 1000;

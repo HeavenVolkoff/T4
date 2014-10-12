@@ -25,11 +25,11 @@ public class PieceController extends BaseController {
     ///////////////////////////////////////////REFACTORED///////////////////////////////////////////////////////////////
     //=========================== Constructors =====================//
     public PieceController(int initialFallSpeed){
-        super();
+        super(Constant.PIECECONTROLERCONFIGFILE);
         this.fullFallSpeed = initialFallSpeed;
         this.accelerated = false;
 
-        if (!this.loadHotKeys(Constant.PIECECONTROLERCONFIGFILE)){
+        if (!this.loadHotKeys()){
             logger.log(Level.WARNING, "Can not load file {0}, maybe you do not have permission, if you do, please report this error.", Constant.PIECECONTROLERCONFIGFILE);
         }
     }

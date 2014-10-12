@@ -24,9 +24,11 @@ public abstract class BaseController extends AbstractControl implements Control 
 	protected List<Keys> hotKeys = new ArrayList<Keys>();
 	private ActionListener actionKeyPress;
 	private AnalogListener analogKeyPress;
+    private String fileName;
 
     //======================== Class Constructors ==========================//
-    public BaseController() {
+    public BaseController(String fileName) {
+        this.fileName = fileName;
         this.actionKeyPress = new ActionListener() {
             public void onAction(String name, boolean pressed, float tpf) {
                 keyActions(name, pressed);
@@ -66,7 +68,7 @@ public abstract class BaseController extends AbstractControl implements Control 
         }
     }
 
-    protected boolean loadHotKeys(String fileName) {
+    protected boolean loadHotKeys() {
         ConfigManager pieceControlerManager = new ConfigManager(fileName);
         if (pieceControlerManager.load(fileName)) {
             for (String itemKey : pieceControlerManager.getItems()) {
@@ -88,11 +90,11 @@ public abstract class BaseController extends AbstractControl implements Control 
 
         createMapingsAndListeners();
 
-        saveHotKeys(fileName);
+        saveHotKeys();
         return false;
     }
 
-    protected boolean saveHotKeys(String fileName) {
+    protected boolean saveHotKeys() {
         ConfigManager pieceControlerManager = new ConfigManager(fileName);
         if (pieceControlerManager.load(fileName)) {
             for (Keys key : hotKeys) {
@@ -111,7 +113,7 @@ public abstract class BaseController extends AbstractControl implements Control 
 
     protected abstract void setupDefaultHotKeys();
 
-    public boolean setHotKey(String actionName, int keyCode, String fileName) {
+    public boolean setHotKey(String actionName, int keyCode) {
         ConfigManager pieceControlerManager = new ConfigManager(fileName);
         for (Keys key : hotKeys) {
             if (key.getActionName().equals(actionName)) {
