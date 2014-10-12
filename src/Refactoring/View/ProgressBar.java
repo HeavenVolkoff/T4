@@ -56,6 +56,8 @@ public class ProgressBar extends Frame {
         particlesBar.setLowLife(0.5f);
         particlesBar.setHighLife(3f);
         particlesBar.getParticleInfluencer().setVelocityVariation(size*2f);
+        particlesBar.setLocalTranslation(pos);
+        attachChild(particlesBar);
     }
 
     //======================== Material Manager ============================//
