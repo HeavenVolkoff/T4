@@ -3,6 +3,7 @@
 package Refactoring.View;
 
 import Refactoring.Control.Constant;
+import Refactoring.Model.Score;
 import Refactoring.Primary.Main;
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
@@ -76,6 +77,9 @@ public class Board extends Frame{
 			}
 		}
 		Main.app.getScore().updateScore(10);
+        if (getCompleteLines().size() == 0){
+            Main.app.getScore().setStreakMultiplier(1);
+        }
 		return true;
 	}
 
@@ -120,6 +124,10 @@ public class Board extends Frame{
                     }
                 }
             }
+        }
+
+        if (completedLines.size() > 0){
+            Main.app.getScore().setStreakMultiplier(Main.app.getScore().getStreakMultiplier()+1);
         }
 	}
 

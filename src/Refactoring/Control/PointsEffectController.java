@@ -43,6 +43,7 @@ public class PointsEffectController{
                 this.scoreToNextLvl *= 2.1f;
                 Main.app.getLevelBar().setMax(this.scoreToNextLvl-this.priorLevelScore);
                 Main.app.getLevelBar().setProgress(incrementLeftOvers);
+                Main.app.getLvlIndicator().writeValue(Main.app.getLvlIndicator().getValue()+1);
             }
         }
     }

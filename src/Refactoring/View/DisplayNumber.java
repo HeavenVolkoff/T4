@@ -19,6 +19,7 @@ public class DisplayNumber extends Node {
     private int maxDigits;
     protected static final Logger logger = Logger.getLogger(Piece.class.getName());
     private int value;
+    private float size;
 
     public DisplayNumber(Vector3f pos, float resizeFactor, int initialValue, int maxDigits, ColorRGBA color){
         this.pos = pos;
@@ -33,9 +34,9 @@ public class DisplayNumber extends Node {
     }
 
     private void setupNumbers(float resizeFactor, ColorRGBA color){
-        float size = ((((3*Constant.CUBESIZE)+(2*Constant.BOXINTERVAL))*maxDigits)+(Constant.CUBESIZE*4)*(maxDigits-1))*resizeFactor;
+        size = ((((3*Constant.CUBESIZE)+(2*Constant.BOXINTERVAL))*maxDigits)+(Constant.CUBESIZE*4)*(maxDigits-1))*resizeFactor;
         for (int i = 0; i < this.maxDigits; i++){
-            numbers[i] = new BoxedNumber(new Vector3f(-(size/2)+(i*((3*Constant.CUBESIZE)+(2*Constant.BOXINTERVAL)+(Constant.CUBESIZE*4))*resizeFactor), pos.y, pos.z), resizeFactor, null, color);
+            numbers[i] = new BoxedNumber(new Vector3f(-(size/2)+(i*((3*Constant.CUBESIZE)+(2*Constant.BOXINTERVAL)+(Constant.CUBESIZE*4))*resizeFactor), 0, 0), resizeFactor, null, color);
             attachChild(numbers[i]);
         }
     }
@@ -65,6 +66,10 @@ public class DisplayNumber extends Node {
             }
             logger.log(Level.WARNING, "Out of Range Number Send to DisplayNumber {0}.", val);
         }
+    }
+
+    public float getSize() {
+        return size;
     }
 
     public int getValue() {

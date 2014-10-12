@@ -58,6 +58,7 @@ public class Score {
 
     public void setStreakMultiplier(int multiplier) {
         this.streakMultiplier = multiplier;
+        Main.app.getMultiplierIndicator().writeValue(multiplier);
     }
 
     public int getLevel() {

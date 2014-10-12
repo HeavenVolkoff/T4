@@ -44,12 +44,14 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 	protected Material material;
     protected float alpha;
 	protected static final Logger logger = Logger.getLogger(Piece.class.getName());
+    private float resizeFactor;
 
 	//======================== Class Constructors ==========================//
 	public Piece(String fileName, Vector3f pos, ColorRGBA color){
 		super(fileName);
 		this.pos = pos;
 		this.alpha = 1;
+        this.resizeFactor = 1;
         this.material = createColoredMaterial(color);
 
 		setLocalTranslation(pos); //move piece to position
@@ -63,6 +65,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
         super(fileName);
         this.pos = pos;
         this.alpha = 1;
+        this.resizeFactor = resizeFactor;
         this.material = createColoredMaterial(color);
 
         setLocalTranslation(pos); //move piece to position
@@ -242,5 +245,22 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 
     public Material getMat() {
         return material;
+    }
+
+    public float getWidth(){
+        if (getChildren().size() > 0) {
+            float min = getChildren().get(0).getWorldBound().getCenter().x;
+            float max = getChildren().get(0).getWorldBound().getCenter().x;
+            for (Spatial geo : getChildren()) {
+                if (geo.getWorldBound().getCenter().x < min){
+                    min = geo.getWorldBound().getCenter().x;
+                }
+                if (geo.getWorldBound().getCenter().x > max){
+                    max = geo.getWorldBound().getCenter().x;
+                }
+            }
+            return max-min+2*Constant.CUBESIZE*resizeFactor;
+        }
+        return 0;
     }
 }

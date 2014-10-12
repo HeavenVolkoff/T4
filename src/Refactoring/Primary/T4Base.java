@@ -3,7 +3,6 @@
 package Refactoring.Primary;
 
 
-import Old.Control.EffectController;
 import Refactoring.Control.Constant;
 import Refactoring.Control.PieceController;
 import Refactoring.Control.PieceSelector;
@@ -38,6 +37,8 @@ public class T4Base extends SimpleApplication {
     private DisplayNumber scoreDisplay;
     private PointsEffectController pointsControler;
     private ProgressBar levelBar;
+    private Indicator lvlIndicator;
+    private Indicator multiplierIndicator;
     //private EffectController lvlBarController;
     //private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
 
@@ -74,7 +75,7 @@ public class T4Base extends SimpleApplication {
 
         score = new Score(0.1f);
 
-        scoreDisplay = new DisplayNumber(new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10),board.getRow()*Constant.MOVEDISTANCE/5.5f,0), Constant.SCORENUMBERRESIZEFACTOR, 0, 6, ColorRGBA.White);
+        scoreDisplay = new DisplayNumber(new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 8.6f),board.getRow()*Constant.MOVEDISTANCE/3f,0), Constant.SCORENUMBERRESIZEFACTOR, 0, 6, ColorRGBA.White);
         rootNode.attachChild(scoreDisplay);
 
         control = new PieceController(500);
@@ -84,8 +85,14 @@ public class T4Base extends SimpleApplication {
         nextPiece = new Piece(pieceSelector.randomizeFromRandomicMap(), new Vector3f(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, board.getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor());
         rootNode.attachChild(nextPiece);
 
-        levelBar = new ProgressBar(new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 8.8f), board.getRow()*Constant.MOVEDISTANCE/4f, 0), new Vector3f(Constant.CUBESIZE*12f, Constant.CUBESIZE, Constant.CUBESIZE/4), Constant.INITIALJUMP, 0, ColorRGBA.DarkGray, ColorRGBA.Cyan);
+        levelBar = new ProgressBar(new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 8f), board.getRow()*Constant.MOVEDISTANCE/4f, 0), new Vector3f(Constant.CUBESIZE*13f, Constant.CUBESIZE*1.6f, Constant.CUBESIZE/4), Constant.INITIALJUMP, 0, ColorRGBA.DarkGray, ColorRGBA.Cyan);
         rootNode.attachChild(levelBar);
+
+        lvlIndicator = new Indicator("LVL.piece", new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10f)-(Constant.CUBESIZE*10f), board.getRow()*Constant.MOVEDISTANCE/4f, 0), Constant.LVLRESIZEFACTOR, 1, ColorRGBA.White);
+        rootNode.attachChild(lvlIndicator);
+
+        multiplierIndicator = new Indicator("Multiplier.piece", new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 3f)-(Constant.CUBESIZE*10f), board.getRow()*Constant.MOVEDISTANCE/5.5f, 0), Constant.LVLRESIZEFACTOR, 1, ColorRGBA.White);
+        rootNode.attachChild(multiplierIndicator);
 
         pointsControler = new PointsEffectController();
 
@@ -191,5 +198,12 @@ public class T4Base extends SimpleApplication {
         return levelBar;
     }
 
+    public Indicator getLvlIndicator() {
+        return lvlIndicator;
+    }
+
+    public Indicator getMultiplierIndicator() {
+        return multiplierIndicator;
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

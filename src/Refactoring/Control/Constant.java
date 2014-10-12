@@ -20,6 +20,7 @@ public class Constant {
     public static float PROGRESSBARTHICKNESS;
     public static float PROGRESSBARSPACING;
     public static float SCORENUMBERRESIZEFACTOR = 0.33f;
+    public static float LVLRESIZEFACTOR = 0.15f;
 
 	//Movement Directions Related
 	public static final int TOLEFT = -1;

@@ -154,7 +154,7 @@ public class PieceController extends BaseController {
 				if (!BasicMechanics.hitBottom(((PlayablePiece) spatial).getBoxAbsolutePoint(), Main.app.getBoard())) {
 					moveY(Constant.TODOWN, Constant.MOVEDISTANCE);
 					if (this.accelerated){
-						//Main.app.getScore().updateScore(Main.app.getScore().getLevel(), 1);
+					    Main.app.getScore().updateScore(Main.app.getScore().getLevel());
 					}
 				}else if (Main.app.getBoard().addPiece(((PlayablePiece) spatial).getBoxAbsolutePoint(), ((PlayablePiece) spatial).getMat())) {
 					keyActions("ChangePiece", true);
