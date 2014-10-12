@@ -77,14 +77,14 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
     //======================================================================//
 
 	//======================== Material Manager ============================//
-	private Material createColoredMaterial(ColorRGBA color){
+	protected Material createColoredMaterial(ColorRGBA color){
 		Material material = new Material(Main.app.getAssetManager(), "Common/MatDefs/Light/Lighting.j3md");
 		setMaterialColor(material, color, 2);
 
 		return material;
 	}
 
-	private void setMaterialColor(Material material, ColorRGBA color, float shine){
+    protected void setMaterialColor(Material material, ColorRGBA color, float shine){
 		material.setColor("Ambient", color);
 		material.setColor("Diffuse", color);
 		material.setColor("Specular", color);

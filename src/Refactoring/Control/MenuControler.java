@@ -54,7 +54,7 @@ public class MenuControler extends BaseController {
     @Override
     protected void controlUpdate(float tpf) {
         if(spatial != null) {
-
+            ((MainMenu)spatial).getT4Piece().alphaEffect(tpf / 2);
         }
     }
 }

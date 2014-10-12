@@ -9,19 +9,13 @@ import Refactoring.Model.Score;
 import Refactoring.View.*;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
-import com.jme3.effect.ParticleEmitter;
-import com.jme3.effect.ParticleMesh;
-import com.jme3.font.BitmapFont;
-import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
 import com.jme3.light.SpotLight;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
-import com.jme3.renderer.queue.RenderQueue;
 
 /**
  * Created by HeavenVolkoff on 30/09/14.
@@ -58,12 +52,16 @@ public class T4Base extends SimpleApplication {
 
         startLoading();
 
-        //startMenu();
+        startMenu();
 
-        startEndless();
+        //startEndless();
 
 		//Fixed Cam
 		flyCam.setEnabled(false);
+
+        //Remove Statistics
+        setDisplayFps(false);
+        setDisplayStatView(false);
     }
 
     private void startMenu(){
