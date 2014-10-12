@@ -10,7 +10,7 @@ public class PointsEffectController{
     float increment;
     int scoreToNextLvl;
     int priorLevelScore;
-
+    boolean changedNumParticles = false;
 
     public PointsEffectController(){
             this.scoreToNextLvl = Main.app.getScore().getNextLevelScore();
@@ -20,7 +20,7 @@ public class PointsEffectController{
     private int updateScore(float tpf, float multiplyer){
         if (Main.app.getScoreDisplay() != null && Main.app.getScore() != null){
             if (Main.app.getScoreDisplay().getValue() < Main.app.getScore().getScore()){
-                increment += (multiplyer*tpf)+(0.1f*(Main.app.getScore().getScore()-Main.app.getScoreDisplay().getValue()));
+                increment += (multiplyer*tpf)+(0.01f*(Main.app.getScore().getScore()-Main.app.getScoreDisplay().getValue()));
                 if ((int)(Main.app.getScoreDisplay().getValue()+increment) <= Main.app.getScore().getScore()){
                     Main.app.getScoreDisplay().write((int)(Main.app.getScoreDisplay().getValue()+increment));
                     return (int)increment;
@@ -49,7 +49,37 @@ public class PointsEffectController{
     }
 
     public void controlUpdate(float tpf) {
-        if (updateScore(tpf, 80) != -1){
+        if (Main.app.getScoreDisplay().getValue() == Main.app.getScore().getScore()) {
+            Main.app.getLevelBar().getParticlesBar().setParticlesPerSec(0);
+            changedNumParticles = false;
+        }else{
+            if (!changedNumParticles) {
+                float variation = (Main.app.getScore().getScore() - (Main.app.getLevelBar().getProgress() + this.priorLevelScore));
+                if (variation < 10) {
+                    Main.app.getLevelBar().getParticlesBar().setParticlesPerSec(8);
+                    Main.app.getLevelBar().getParticlesBar().setNumParticles(10);
+                } else if (variation >= 10 && variation <= 100) {
+                    Main.app.getLevelBar().getParticlesBar().setParticlesPerSec(12);
+                    Main.app.getLevelBar().getParticlesBar().setNumParticles(20);
+                } else if (variation >= 100 && variation <= 500) {
+                    Main.app.getLevelBar().getParticlesBar().setParticlesPerSec(15);
+                    Main.app.getLevelBar().getParticlesBar().setNumParticles(40);
+                } else if (variation >= 500 && variation <= 1000) {
+                    Main.app.getLevelBar().getParticlesBar().setParticlesPerSec(20);
+                    Main.app.getLevelBar().getParticlesBar().setNumParticles(50);
+                } else if (variation >= 1000 && variation <= 2000) {
+                    Main.app.getLevelBar().getParticlesBar().setParticlesPerSec(26);
+                    Main.app.getLevelBar().getParticlesBar().setNumParticles(52);
+                }
+                System.out.println("");
+                System.out.println("Variation "+variation);
+                System.out.println("Num Particles "+Main.app.getLevelBar().getParticlesBar().getMaxNumParticles());
+                Main.app.getLevelBar().getParticlesBar().emitAllParticles();
+                Main.app.getLevelBar().attachChild(Main.app.getLevelBar().getParticlesBar());
+                changedNumParticles = true;
+            }
+        }
+        if (updateScore(tpf, 100) != -1){
             updateProgress();
             increment = 0;
         }
