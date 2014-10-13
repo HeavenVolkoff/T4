@@ -5,17 +5,25 @@ package Refactoring.Primary;
 
 import Refactoring.Control.*;
 import Refactoring.Model.AssetLoader;
+import Refactoring.Model.BasicMechanics;
 import Refactoring.Model.Score;
 import Refactoring.View.*;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.plugins.FileLocator;
+import com.jme3.font.BitmapFont;
 import com.jme3.input.InputManager;
 import com.jme3.light.SpotLight;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.post.filters.FadeFilter;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+
+import java.lang.reflect.Array;
 
 /**
  * Created by HeavenVolkoff on 30/09/14.
@@ -23,8 +31,8 @@ import com.jme3.post.filters.FadeFilter;
 
 public class T4Base extends SimpleApplication {
     ///////////////////////////////////////////NOT READY YET////////////////////////////////////////////////////////////
-    private PlayablePiece currentPiece; //Current Old.View.Piece on Screen
-    private Piece nextPiece; //Next Old.View.Piece to be on Screen
+    private PlayablePiece currentPiece;
+    private Piece nextPiece;
     private Piece messages;
     private PieceController control;
     private Board board;
@@ -36,8 +44,10 @@ public class T4Base extends SimpleApplication {
     private ProgressBar levelBar;
     private Indicator lvlIndicator;
     private Indicator multiplierIndicator;
-    //private EffectController lvlBarController;
-    //private List<BitmapText> debugMenu = new ArrayList<BitmapText>();
+    private MenuOptions options;
+    private MainMenu mainMenu;
+    private MenuControler menuControler;
+    private Frame nextPieceFrame;
 
     @Override
     public void simpleInitApp() {
@@ -64,20 +74,47 @@ public class T4Base extends SimpleApplication {
         setDisplayStatView(false);
     }
 
-    private void startMenu(){
-        MenuControler menuControler = new MenuControler();
-        MainMenu mainMenu = new MainMenu(menuControler, ColorRGBA.Orange, ColorRGBA.randomColor());
+    public void startMenu(){
+        rootNode.detachAllChildren();
+
+        Main.app.getInputManager().reset();
+        Main.app.getInputManager().clearMappings();
+        Main.app.getInputManager().clearRawInputListeners();
+
+        menuControler = new MenuControler();
+
+        options = new MenuOptions(new Vector3f(0,-20*Constant.CUBESIZE,0), new String[]{"StoryModeItem.j3o", "EndlessModeItem.j3o", "PieceFactorItem.j3o", "OptionsItem.j3o", "ExitItem.j3o"}, new String[]{"L.piece", "T.piece", "O.piece", "I.piece", "J.piece"}, 0, new ColorRGBA(0/255f, 73/255f, 178/255f, 1f), ColorRGBA.Cyan);
+        rootNode.attachChild(options);
+
+        mainMenu = new MainMenu(menuControler, ColorRGBA.Orange, options);
+        mainMenu.setupText("T4 - Bricks Remade. (Raphael Almeida, Guilherme Freire e Vitor Augusto).", ColorRGBA.DarkGray);
         rootNode.attachChild(mainMenu);
     }
 
+    public void unloadStartMenu(){
+        menuControler = null;
+        options = null;
+        mainMenu = null;
+        guiNode.detachAllChildren();
+    }
+
     private void startLoading(){
+        assetManager.registerLocator("./assets", FileLocator.class);
+
         pieceLoader = new AssetLoader(Constant.PIECERESOURCEFOLDER);
         pieceLoader.loadToMemoryMap(Constant.MESSAGESRESOURCEFOLDER);
         pieceLoader.loadToMemoryMap(Constant.NUMBERRESOURCEFOLDER);
         pieceLoader.loadToMemoryMap(Constant.SYMBOLSSOURCEFOLDER);
     }
 
-    private void startEndless() {
+    public void startEndless() {
+        rootNode.detachAllChildren();
+        unloadStartMenu();
+
+        Main.app.getInputManager().reset();
+        Main.app.getInputManager().clearMappings();
+        Main.app.getInputManager().clearRawInputListeners();
+
         pieceSelector = new PieceSelector();
 
 		board = new Board(10, 20);
@@ -95,7 +132,7 @@ public class T4Base extends SimpleApplication {
         nextPiece = new Piece(pieceSelector.randomizeFromRandomicMap(), new Vector3f(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 10, board.getRow()*Constant.MOVEDISTANCE/3f, 0), ColorRGBA.randomColor());
         rootNode.attachChild(nextPiece);
 
-        Frame nextPieceFrame = new Frame("NextPieceFrame", Constant.TOP+Constant.LEFT+Constant.BOTTOM+Constant.RIGHT, nextPiece.getPos(), new Vector3f(6*Constant.MOVEDISTANCE, 6*Constant.MOVEDISTANCE, Constant.CUBESIZE), Constant.CUBESIZE/4, ColorRGBA.Gray);
+        nextPieceFrame = new Frame("NextPieceFrame", Constant.TOP+Constant.LEFT+Constant.BOTTOM+Constant.RIGHT, nextPiece.getPos(), new Vector3f(6*Constant.MOVEDISTANCE, 6*Constant.MOVEDISTANCE, Constant.CUBESIZE), Constant.CUBESIZE/4, ColorRGBA.Gray);
         rootNode.attachChild(nextPieceFrame);
 
         levelBar = new ProgressBar(new Vector3f(-(board.getCol()*Constant.MOVEDISTANCE/2 + Constant.CUBESIZE * 8f), board.getRow()*Constant.MOVEDISTANCE/4f, 0), new Vector3f(Constant.CUBESIZE*13f, Constant.CUBESIZE*1.6f, Constant.CUBESIZE/4), Constant.INITIALJUMP, 0, ColorRGBA.DarkGray, ColorRGBA.Cyan);
@@ -108,7 +145,23 @@ public class T4Base extends SimpleApplication {
         rootNode.attachChild(multiplierIndicator);
 
         pointsControler = new PointsEffectController();
-    	}
+
+        BasicMechanics.verifyGameOver(currentPiece.getBoxAbsolutePoint());
+    }
+
+    public void unloadEndless(){
+        pieceSelector = null;
+        board = null;
+        score = null;
+        scoreDisplay = null;
+        control = null;
+        currentPiece = null;
+        nextPiece = null;
+        levelBar = null;
+        lvlIndicator = null;
+        multiplierIndicator = null;
+        pointsControler = null;
+    }
 
     private void setupFadeFilter(int time){
         FilterPostProcessor fpp = new FilterPostProcessor(assetManager);
@@ -217,5 +270,18 @@ public class T4Base extends SimpleApplication {
     public Indicator getMultiplierIndicator() {
         return multiplierIndicator;
     }
+
+    public Frame getNextPieceFrame() {
+        return nextPieceFrame;
+    }
+
+    public BitmapFont getGuiFont(){
+        return this.guiFont;
+    }
+
+    public Node getGuiNode(){
+        return  guiNode;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

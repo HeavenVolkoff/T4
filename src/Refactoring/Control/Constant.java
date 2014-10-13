@@ -21,6 +21,7 @@ public class Constant {
     public static float PROGRESSBARSPACING;
     public static float SCORENUMBERRESIZEFACTOR = 0.33f;
     public static float LVLRESIZEFACTOR = 0.15f;
+    public static float MENUITEMSDISTANCE;
 
 	//Movement Directions Related
 	public static final int TOLEFT = -1;
@@ -80,5 +81,6 @@ public class Constant {
         Constant.BOARDFRAMETHICKNESS = 0.25f * Constant.CUBESIZE;
         Constant.PROGRESSBARTHICKNESS =  0.10f * Constant.CUBESIZE;
         Constant.PROGRESSBARSPACING = 0.75f * Constant.PROGRESSBARTHICKNESS;
+        Constant.MENUITEMSDISTANCE = 5f * Constant.CUBESIZE;
     }
 }

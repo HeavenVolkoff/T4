@@ -161,12 +161,16 @@ public final class BasicMechanics {
         gameOver = true;
         Main.app.getBoard().setAlpha(alphaVal);
         Main.app.getNextPiece().setAlpha(alphaVal);
-        //Add LevelBar, and Score Alpha
+        Main.app.getNextPieceFrame().setAlpha(alphaVal);
+        Main.app.getMultiplierIndicator().setAlpha(alphaVal);
+        Main.app.getLevelBar().setAlpha(alphaVal);
+        Main.app.getLvlIndicator().setAlpha(alphaVal);
+        Main.app.getScoreDisplay().setAlpha(alphaVal);
         Main.app.setCurrentPiece(null);
         Main.app.setMessages(new Piece("GameOver.piece", new Vector3f(0,0,+1), 0.8f, ColorRGBA.White));
     }
 
-    public static boolean isGameOver(Vector3f[] pieceBoxesAbsolutePos){
+    public static boolean verifyGameOver(Vector3f[] pieceBoxesAbsolutePos){
         for(Vector3f boxPos : Main.app.getBoard().posRelativeToBoard(pieceBoxesAbsolutePos)){
             if(boxPos.getY() <= Main.app.getBoard().getRow()){
                 if(Main.app.getBoard().getGeometryIndexMap()[(int)boxPos.getY() - 1][(int)boxPos.getX()] != null){
@@ -179,6 +183,10 @@ public final class BasicMechanics {
             }
         }
         return false;
+    }
+
+    public static boolean isGameOver() {
+        return gameOver;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

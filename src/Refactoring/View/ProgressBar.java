@@ -5,9 +5,11 @@ import Refactoring.Primary.Main;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 
 import java.util.logging.Level;
@@ -24,6 +26,7 @@ public class ProgressBar extends Frame {
     private ColorRGBA barColor;
     private Geometry progressBar;
     private ParticleEmitter particlesBar;
+    private float frameAlpha;
     protected static final Logger logger = Logger.getLogger(Piece.class.getName());
 
     public ProgressBar(Vector3f pos, Vector3f size, float max, float progress, ColorRGBA frameColor, ColorRGBA barColor) {
@@ -115,5 +118,25 @@ public class ProgressBar extends Frame {
 
     public ParticleEmitter getParticlesBar() {
         return particlesBar;
+    }
+
+    @Override
+    public void setAlpha(float alphaVal){
+        detachChild(particlesBar);
+        for (Spatial boxGeometry : getChildren()) {
+            if (boxGeometry != null) {
+                ColorRGBA alpha = new ColorRGBA(ColorRGBA.DarkGray);
+                alpha.a = alphaVal;
+                ((Geometry)boxGeometry).getMaterial().setColor("Diffuse", alpha);
+                ((Geometry)boxGeometry).getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+                ((Geometry)boxGeometry).getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaVal);
+                ((Geometry)boxGeometry).getMaterial().setBoolean("UseAlpha", true);
+            }
+        }
+        frameAlpha = alphaVal;
+    }
+    @Override
+    public float getAlpha(){
+        return frameAlpha;
     }
 }

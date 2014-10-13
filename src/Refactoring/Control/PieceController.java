@@ -44,6 +44,7 @@ public class PieceController extends BaseController {
         hotKeys.add(new Keys("RotateCounterClockwise", KeyInput.KEY_SPACE, Constant.ROTATIONINTERVAL));
         hotKeys.add(new Keys("MoveRight", KeyInput.KEY_RIGHT, Constant.MOVEINTERVAL));
         hotKeys.add(new Keys("MoveLeft", KeyInput.KEY_LEFT, Constant.MOVEINTERVAL));
+        hotKeys.add(new Keys("Escape", KeyInput.KEY_ESCAPE, Constant.MOVEINTERVAL));
     }
 
     @Override
@@ -111,7 +112,14 @@ public class PieceController extends BaseController {
                     }
 					break;
 
-				default:
+                case "Escape":
+                    if (BasicMechanics.isGameOver()){
+                        Main.app.unloadEndless();
+                        Main.app.startMenu();
+                    }
+                    break;
+
+                default:
 					break;
 			}
 		}else{
@@ -158,10 +166,10 @@ public class PieceController extends BaseController {
 					}
 				}else if (Main.app.getBoard().addPiece(((PlayablePiece) spatial).getBoxAbsolutePoint(), ((PlayablePiece) spatial).getMat())) {
 					keyActions("ChangePiece", true);
-					BasicMechanics.isGameOver(((PlayablePiece) spatial).getBoxAbsolutePoint());
+					BasicMechanics.verifyGameOver(((PlayablePiece) spatial).getBoxAbsolutePoint());
 					Main.app.getBoard().destroyCompletedLines();
 				}else{
-					BasicMechanics.isGameOver(((PlayablePiece) spatial).getBoxAbsolutePoint());
+					BasicMechanics.verifyGameOver(((PlayablePiece) spatial).getBoxAbsolutePoint());
 				}
 
 			}

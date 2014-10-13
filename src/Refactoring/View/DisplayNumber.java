@@ -1,10 +1,13 @@
 package Refactoring.View;
 
 import Refactoring.Control.Constant;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,11 +23,13 @@ public class DisplayNumber extends Node {
     protected static final Logger logger = Logger.getLogger(Piece.class.getName());
     private int value;
     private float size;
+    private float frameAlpha;
 
     public DisplayNumber(Vector3f pos, float resizeFactor, int initialValue, int maxDigits, ColorRGBA color){
         this.pos = pos;
         this.numbers = new BoxedNumber[maxDigits];
         this.maxDigits = maxDigits;
+        this.frameAlpha = 1;
 
         setLocalTranslation(this.pos);
 
@@ -74,5 +79,16 @@ public class DisplayNumber extends Node {
 
     public int getValue() {
         return value;
+    }
+
+    public void setAlpha(float alphaVal){
+        for(BoxedNumber boxed : numbers){
+            boxed.setAlpha(alphaVal);
+        }
+        frameAlpha = alphaVal;
+    }
+
+    public float getAlpha(){
+        return frameAlpha;
     }
 }

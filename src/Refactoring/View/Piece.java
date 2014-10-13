@@ -56,7 +56,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 
 		setLocalTranslation(pos); //move piece to position
 
-		if (!constructFromString(Main.app.getPieceLoader().getPieceMemoryMap().get(fileName), 1, material)) {
+		if (!constructFromString(Main.app.getPieceLoader().getPieceMemoryMap().get(fileName), 1)) {
             logger.log(Level.SEVERE, "Can Not Construct Piece {0}.", fileName);
         }
 	}
@@ -70,7 +70,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 
         setLocalTranslation(pos); //move piece to position
 
-        if (!constructFromString(Main.app.getPieceLoader().getPieceMemoryMap().get(fileName), resizeFactor, material)) {
+        if (!constructFromString(Main.app.getPieceLoader().getPieceMemoryMap().get(fileName), resizeFactor)) {
             logger.log(Level.SEVERE, "Can Not Construct Piece {0}.", fileName);
         }
     }
@@ -93,7 +93,7 @@ public class Piece extends Node implements Cloneable, Savable, Alpha {
 	}
 	//======================================================================//
 
-	private boolean constructFromString(List<String> lines, float resizeFactor, Material material){
+	private boolean constructFromString(List<String> lines, float resizeFactor){
 		Vector2f pos = new Vector2f();
 		List<Vector2f> pivotPos = new ArrayList<Vector2f>();
 
