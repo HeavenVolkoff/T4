@@ -18,9 +18,9 @@
 
 ##Wiki`s Links
 
->* [Wiki`s Usage](Wiki%60s%20Usage)
->* [T4 Docs](T4%20Docs)
->* [T4 API](T4%20API)
->* [Java(Metrics and Best-Practice)](Java)
->* [Diagramas de Classes](browse/Diagram)
->* [Ideais](browse/Ideas)
+>* [Wiki`s Usage](./Wiki%60s%20Usage.md)
+>* [T4 Docs](./T4%20Docs.md)
+>* [T4 API](./T4%20API.md)
+>* [Java(Metrics and Best-Practice)](./Java.md)
+>* [Diagramas de Classes](./browse/Diagram.md)
+>* [Ideais](./browse/Ideas.md)
