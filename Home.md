@@ -22,5 +22,5 @@
 >* [T4 Docs](./T4%20Docs.md)
 >* [T4 API](./T4%20API.md)
 >* [Java(Metrics and Best-Practice)](./Java.md)
->* [Diagramas de Classes](./browse/Diagram.md)
->* [Ideais](./browse/Ideas.md)
+>* [Diagramas de Classes](./Diagram/)
+>* [Ideais](./Ideas/)
